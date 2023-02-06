@@ -17,8 +17,7 @@ func InitGorm(userName, password, host, dbName string, port int) *gorm.DB {
 		log.Fatal(err.Error())
 	}
 
-	db.AutoMigrate(&model.User{})
-	// db.Migrator().DropTable(&model.User{})
+	db.AutoMigrate(&model.Fakultas{}, &model.Prodi{}, &model.User{})
 	
 	return db
 }
