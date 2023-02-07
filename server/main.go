@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"web-krs/config"
-	"fmt"
 	"github.com/joho/godotenv"
 )
 
@@ -17,7 +16,8 @@ func main() {
 
 	config := config.NewConfig()
 
-	fmt.Println(config)
+	// fmt.Println(config)
 
+	config.Database()
 	
 }
