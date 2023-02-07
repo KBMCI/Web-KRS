@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"web-krs/config"
-	"web-krs/model"
 	"web-krs/repository"
 
 	"github.com/gin-gonic/gin"
@@ -41,11 +40,13 @@ func (s *server) Run() {
 	
 	fakultasRepo := repository.NewFakultasRepository(s.cfg)
 
-	fakultas := model.Fakultas{
-		Nama:  "Fakultas Teknik",
-	}
+	// fakultas := model.Fakultas{
+	// 	Nama:  "Fakultas Teknik",
+	// }
 	
-	data, _ := fakultasRepo.Create(&fakultas)
+	// data, _ := fakultasRepo.Create(&fakultas)
+
+	data, _ := fakultasRepo.Fetch()
 	
 	s.httpServer.GET("/test", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{
