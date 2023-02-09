@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"web-krs/config"
+	"web-krs/model"
 	"web-krs/repository"
 
 	"github.com/gin-gonic/gin"
@@ -17,7 +18,7 @@ type (
 	}
 
 	Server interface {
-		Run()	
+		Run()
 	}
 )
 
@@ -37,22 +38,23 @@ func (s *server) Run() {
 			"message": "api connected",
 		})
 	})
-	
+
 	fakultasRepo := repository.NewFakultasRepository(s.cfg)
 
 	// fakultas := model.Fakultas{
-	// 	Nama:  "Fakultas Teknik",
+	// 	Nama: "Fakultas Peternakan",
 	// }
-	
+
 	// data, _ := fakultasRepo.Create(&fakultas)
+	// fakultasRepo.UpdateById(3, &fakultas)
 
 	data, _ := fakultasRepo.Fetch()
-	
+
 	s.httpServer.GET("/test", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{
 			"success": true,
-			"message":  "success",
-			"data": data,
+			"message": "success",
+			"data":    data,
 		})
 	})
 

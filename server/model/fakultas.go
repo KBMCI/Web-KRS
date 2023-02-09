@@ -14,7 +14,7 @@ type (
 		Create(fakultas *Fakultas) (*Fakultas, error)
 		Fetch() (*[]Fakultas, error)
 		FindById(id int) (*Fakultas, error)
-		UpdateById(id int, fakultas *Fakultas) (*Fakultas, error)
+		UpdateById(id uint, fakultas *Fakultas) (*Fakultas, error)
 		Delete(id int) error
 	}
 )
