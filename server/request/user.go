@@ -1,6 +1,5 @@
-package response
-
-type userResponse struct {
+package request
+type UserRequest struct {
 	ID           int    `json:"id"`
 	Email        string `json:"email"`
 	Nama         string `json:"nama"`

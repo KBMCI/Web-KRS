@@ -15,9 +15,22 @@ func main() {
 	}
 
 	config := config.NewConfig()
+	server := InitServer(config)
 
-	// fmt.Println(config)
+	server.Run()
+	// route := gin.Default()
 
-	config.Database()
+	// userRepository := repository.NewUserRepositoty(config)
+	// userService := service.NewUserService(userRepository)
+	// userHandler := handler.NewUserHandler(userService)
+
+	// group := route.Group("/user")
+
+	// group.GET("/")
+	// group.POST("/create", userHandler.CreateUser)
+	// group.PUT("/update")
+	// group.DELETE("/delete")
+
+	
 	
 }
