@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"web-krs/model"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -17,7 +18,7 @@ func InitGorm(username, password, host, database string, port int, ) *gorm.DB {
 	if err != nil {
 		log.Fatal("Cannot connect to database")
 	}
-	db.AutoMigrate(&model.User{})
+	db.AutoMigrate(&model.User{}, &model.Matkul{})
 
 	return db
   }

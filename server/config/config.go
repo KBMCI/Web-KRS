@@ -22,7 +22,7 @@ type (
 )
 
 func NewConfig() Config {
-return &config{}
+	return &config{}
 }
 
 func(c *config) Database() *gorm.DB{
