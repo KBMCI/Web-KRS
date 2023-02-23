@@ -4,6 +4,7 @@ import (
 	"time"
 	"web-krs/entity"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -30,7 +31,29 @@ func main() {
 		CreatedAt:  time.Now(),
 		UpdatedAt:  time.Now(),
 	}
-	kelas := [][]entity.Kelas{{ a,b }}
+	c := entity.Kelas{
+		Id:         3,
+		NamaKelas:  "C",
+		Hari:       "Rabu",
+		JamMulai:   "07.00",
+		JamSelesai: "07.49",
+		RuangKelas: "G1.2",
+		Matkul:     "Jaringan Komputer Dasar",
+		CreatedAt:  time.Now(),
+		UpdatedAt:  time.Now(),
+	}
+	d := entity.Kelas{
+		Id:         4,
+		NamaKelas:  "D",
+		Hari:       "Kamis",
+		JamMulai:   "07.00",
+		JamSelesai: "07.49",
+		RuangKelas: "G1.2",
+		Matkul:     "Jaringan Komputer Dasar",
+		CreatedAt:  time.Now(),
+		UpdatedAt:  time.Now(),
+	}
+	kelas := [][]entity.Kelas{{ a, b }, {c, d}}
 
 	app := gin.Default()
 
