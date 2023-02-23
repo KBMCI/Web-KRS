@@ -33,6 +33,14 @@ func main() {
 	kelas := [][]entity.Kelas{{ a,b }}
 
 	app := gin.Default()
+
+	app.Use(cors.New(cors.Config{
+		AllowAllOrigins:  true,
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
+		AllowCredentials: true,
+	}))
+	
 	app.GET("/test", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"data": kelas,
