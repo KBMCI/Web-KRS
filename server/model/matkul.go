@@ -9,7 +9,7 @@ import (
 type (
 	Matkul struct {
 		gorm.Model
-		Nama 			string	`json:"nama"`
+		Nama 			string	`json:"nama" gorm:"type:varchar(100)"`
 		TahunKurikulum 	int16	`json:"tahun_kurikulum"`
 		Sks				int8	`json:"sks"`
 	}

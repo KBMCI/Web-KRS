@@ -8,6 +8,7 @@ import (
 	"web-krs/repository"
 	"web-krs/service"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -44,6 +45,13 @@ func(s *server) Run() {
 	matkulHandler := handler.NewMatkulHandler(matkulService)
 	matkulGroup := s.httpServer.Group("/matkul")
 	matkulHandler.Mount(matkulGroup)
+
+	s.httpServer.Use(cors.New(cors.Config{
+		AllowAllOrigins:  true,
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
+		AllowCredentials: true,
+	}))
 
 	if err := s.httpServer.Run(); err != nil {
 		log.Fatal(err)
