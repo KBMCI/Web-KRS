@@ -15,6 +15,7 @@ func NewMatkulService(matkul model.MatkulRepository) model.MatkulService {
 
 func (s *matkulService) StoreMatkul(req *request.MatkulRequest) (*model.Matkul, error) {
 	matkul := &model.Matkul{
+		KodeMatkul: req.ID,
 		Nama: req.Nama,
 		TahunKurikulum: req.TahunKurikulum,
 		Sks: req.Sks,
@@ -29,12 +30,12 @@ func (s *matkulService) StoreMatkul(req *request.MatkulRequest) (*model.Matkul, 
 	return newMatkul, err
 }
 
-func (s *matkulService) EditMatkul(id int, req *request.MatkulRequest) (*model.Matkul, error) {
+func (s *matkulService) EditMatkul(id string, req *request.MatkulRequest) (*model.Matkul, error) {
 	matkul, err := s.matkulRepository.FindByID(id)
 	if err != nil {
 		return nil, err
 	}
-
+	
 	matkul.Nama = req.Nama
 	matkul.TahunKurikulum = req.TahunKurikulum
 	matkul.Sks = req.Sks
@@ -48,7 +49,7 @@ func (s *matkulService) EditMatkul(id int, req *request.MatkulRequest) (*model.M
 	return newMatkul, err
 }
 
-func (s *matkulService) GetByID(id int) (*model.Matkul, error) {
+func (s *matkulService) GetByID(id string) (*model.Matkul, error) {
 	matkul, err := s.matkulRepository.FindByID(id)
 	if err != nil {
 		return nil, err
@@ -57,7 +58,7 @@ func (s *matkulService) GetByID(id int) (*model.Matkul, error) {
 	return matkul, err
 }
 
-func (s *matkulService) DestroyMatkul(id int) error {
+func (s *matkulService) DestroyMatkul(id string) error {
 	matkul, _ := s.matkulRepository.FindByID(id)
 
 	_, err := s.matkulRepository.Delete(matkul)

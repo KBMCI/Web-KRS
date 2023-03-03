@@ -2,7 +2,6 @@ package handler
 
 import (
 	"net/http"
-	"strconv"
 	"web-krs/helper"
 	"web-krs/model"
 	"web-krs/request"
@@ -67,8 +66,7 @@ func (h *matkulHandler) EditMatkulHandler(c *gin.Context) {
 		return
 	}
 
-	idString := c.Param("id")
-	id, _ := strconv.Atoi(idString)
+	id := c.Param("id")
 
 	matkul, err := h.matkulService.EditMatkul(id, &req)
 	if err != nil {
@@ -80,8 +78,7 @@ func (h *matkulHandler) EditMatkulHandler(c *gin.Context) {
 }
 
 func (h *matkulHandler) DetailMatkulHandler(c *gin.Context) {
-	idString := c.Param("id")
-	id, _ := strconv.Atoi(idString)
+	id := c.Param("id")
 
 	matkul, err := h.matkulService.GetByID(id)
 	if err != nil {
@@ -93,8 +90,7 @@ func (h *matkulHandler) DetailMatkulHandler(c *gin.Context) {
 }
 
 func (h *matkulHandler) DeleteMatkulHandler(c *gin.Context) {
-	idString := c.Param("id")
-	id, _ := strconv.Atoi(idString)
+	id := c.Param("id")
 
 	err := h.matkulService.DestroyMatkul(id)
 	if err != nil {
