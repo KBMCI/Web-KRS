@@ -12,7 +12,14 @@ import (
 func InitGorm(username, password, host, database string, port int, ) *gorm.DB {
 	// refer https://github.com/go-sql-driver/mysql#dsn-data-source-name for details
 	// dsn := "user:pass@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local"
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local", username, password, host, port, database)
+	dsn := fmt.Sprintf(
+			"%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local", 
+			username, 
+			password, 
+			host, 
+			port, 
+			database,
+	)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
