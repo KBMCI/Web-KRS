@@ -8,12 +8,12 @@ import (
 
 type User struct {
 	gorm.Model
-	Email        string `json:"email"`
+	Email        string `json:"email" binding:"email" gorm:"unique;notnull"`
 	Nama         string `json:"nama" gorm:"type:varchar(100)"`
-	ProgramStudi string `json:"program_studi"`
+	ProgramStudi string `json:"program_studi" gorm:"type:varchar(30)"`
 	Nim          string `json:"nim" gorm:"type:varchar(20)"`
-	Password     string `json:"password"`
-	Role         string `json:"role"`
+	Password     string `json:"password" gorm:"type:varchar(100)"`
+	Role         string `json:"role" gorm:"type:varchar(5)"`
 }
 
 type UserRepository interface {
