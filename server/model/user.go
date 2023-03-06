@@ -1,29 +1,33 @@
 package model
 
-import "web-krs/request"
+import (
+	"web-krs/request"
+
+	"gorm.io/gorm"
+)
 
 type User struct {
-	ID           int    `json:"id"`
+	gorm.Model
 	Email        string `json:"email"`
-	Nama         string `json:"nama"`
+	Nama         string `json:"nama" gorm:"type:varchar(100)"`
 	ProgramStudi string `json:"program_studi"`
-	Nim          string `json:"nim"`
+	Nim          string `json:"nim" gorm:"type:varchar(20)"`
 	Password     string `json:"password"`
 	Role         string `json:"role"`
 }
 
 type UserRepository interface {
-	Create(user User) (User, error)
-	ReadAll() ([]User, error)
-	ReadByID(ID int) (User, error)
-	Update(user User) (User, error)
-	Delete(user User) (User, error)
+	Create(user *User) (*User, error)
+	ReadAll() ([]*User, error)
+	ReadByID(ID int) (*User, error)
+	Update(user *User) (*User, error)
+	Delete(user *User) (*User, error)
 }
 
 type UserService interface {
-	Create(user request.UserRequest) (User, error)
-	ReadAll() ([]User, error)
-	ReadByID(ID int) (User, error)
-	Update(ID int, user  request.UserRequest) (User, error)
-	Delete(ID int) (User, error)
+	Create(user *request.UserRequest) (*User, error)
+	ReadAll() ([]*User, error)
+	ReadByID(ID int) (*User, error)
+	Update(ID int, user  *request.UserRequest) (*User, error)
+	Delete(ID int) (*User, error)
 }
