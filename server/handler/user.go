@@ -1,7 +1,10 @@
 package handler
 
 import (
+	"net/http"
 	"strconv"
+	"regexp"
+	"strings"
 	"web-krs/helper"
 	"web-krs/model"
 	"web-krs/request"
@@ -45,6 +48,52 @@ func (h *userHandler) CreateUser(c *gin.Context)  {
 	var userRequset request.UserRequest
 
 	err := c.ShouldBindJSON(&userRequset)
+	
+	var (
+		numeric, lowerCase, upperCase, specialCharacter bool 
+	)
+
+	numeric = regexp.MustCompile(`\d`).MatchString(userRequset.Password) 
+	lowerCase = regexp.MustCompile(`[a-z]`).MatchString(userRequset.Password)
+	upperCase = regexp.MustCompile(`[A-Z]`).MatchString(userRequset.Password)
+	specialCharacter = strings.ContainsAny(userRequset.Password, "!@#$%^&*()_+-=/.,:;'`?{}[|]")
+
+	if len(userRequset.Password) <6 {
+		helper.ResponseErrorJson(c, "Too short password", err)
+		return 
+	}
+
+	if !numeric {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "password need numeric character",
+			"data": err,
+		})
+		return 
+	}
+ 
+	if !lowerCase {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "password need lower case character",
+			"data": err,
+		})
+		return
+	}
+ 
+	if !upperCase {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "password need upper case character",
+			"data": err,
+		})
+		return
+	}
+ 
+	if !specialCharacter {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "password need spesial character",
+			"data": err,
+		})
+		return
+	}
 
 	if err != nil {
 		helper.ResponeValidationError(c, err)

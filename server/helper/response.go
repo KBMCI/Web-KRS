@@ -12,7 +12,7 @@ func ResponseErrorJson(c *gin.Context, message string, detail interface{}) {
  c.JSON(http.StatusBadRequest, gin.H{
 	"message": message,
 	"status": true,
-	"detail": detail,
+	"data": detail,
  })
 }
 
@@ -25,7 +25,7 @@ func ResponseSuccessJson(c *gin.Context, message string, detail interface{})  {
 	c.JSON(http.StatusOK, gin.H{
 		"message": message,
 		"status": true,
-		"detail": detail,
+		"data": detail,
 	})
 }
 
@@ -38,11 +38,8 @@ func ResponeValidationError(c *gin.Context, err error)  {
 
 		c.JSON(http.StatusBadRequest, gin.H{
 			"massage": false,
-			"detail": errorMessages,
+			"data": errorMessages,
 			})
-			return
-	
-	
 }
 
 
