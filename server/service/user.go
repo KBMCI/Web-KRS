@@ -37,7 +37,7 @@ func (s *userService) Create(userRequest *request.UserRequest) (*model.User, err
 
 	user, err := s.userRepository.Create(user2)
 	if err != nil {
-		return &model.User{}, err
+		return nil, err
 	}
 
 	return user, nil
@@ -46,7 +46,7 @@ func (s *userService) Create(userRequest *request.UserRequest) (*model.User, err
 func (s *userService) ReadAll() ([]*model.User, error) {
 	users, err := s.userRepository.ReadAll()
 	if err != nil {
-		return []*model.User{}, err
+		return nil, err
 	}
 
 	return users, nil
@@ -54,8 +54,9 @@ func (s *userService) ReadAll() ([]*model.User, error) {
 
 func (s *userService) ReadByID(ID int) (*model.User, error) {
 	user, err := s.userRepository.ReadByID(ID)
+
 	if err != nil {
-		return &model.User{}, err
+		return nil, err
 	}
 
 	return user, nil
@@ -64,7 +65,7 @@ func (s *userService) ReadByID(ID int) (*model.User, error) {
 func (s *userService) Update(ID int, userRequest *request.UserRequest) (*model.User, error) {
 	user, err := s.userRepository.ReadByID(ID)
 	if err != nil {
-		return &model.User{}, err
+		return nil, err
 	}
 
 	user.Email = userRequest.Email
@@ -76,7 +77,7 @@ func (s *userService) Update(ID int, userRequest *request.UserRequest) (*model.U
 
 	user, err = s.userRepository.Update(user)
 	if err != nil {
-		return &model.User{}, err
+		return nil, err
 	}
 
 	return user, nil
@@ -85,12 +86,12 @@ func (s *userService) Update(ID int, userRequest *request.UserRequest) (*model.U
 func (s *userService) Delete(ID int) (*model.User, error) {
 	user, err := s.userRepository.ReadByID(ID)
 	if err != nil {
-		return &model.User{}, err
+		return nil, err
 	}
 
 	user, err = s.userRepository.Delete(user)
 	if err != nil {
-		return &model.User{}, err
+		return nil, err
 	}
 
 	return user, nil
