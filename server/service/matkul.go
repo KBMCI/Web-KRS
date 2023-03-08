@@ -22,7 +22,6 @@ func (s *matkulService) StoreMatkul(req *request.MatkulRequest) (*model.Matkul, 
 	}
 
 	newMatkul, err := s.matkulRepository.Create(matkul)
-
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +40,6 @@ func (s *matkulService) EditMatkul(id string, req *request.MatkulRequest) (*mode
 	matkul.Sks = req.Sks
 
 	newMatkul, err := s.matkulRepository.UpdateByID(matkul)
-
 	if err != nil {
 		return nil, err
 	}
@@ -60,9 +58,8 @@ func (s *matkulService) GetByID(id string) (*model.Matkul, error) {
 
 func (s *matkulService) DestroyMatkul(id string) error {
 	matkul, _ := s.matkulRepository.FindByID(id)
-
+	
 	_, err := s.matkulRepository.Delete(matkul)
-
 	if err != nil {
 		return err
 	}

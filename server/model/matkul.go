@@ -3,18 +3,20 @@ package model
 import (
 	"time"
 	"web-krs/request"
+
+	"github.com/gin-gonic/gin"
 )
 
 type (
 	Matkul struct {
 		// gorm.Model
-		KodeMatkul		string 	`json:"kode_matkul" gorm:"primaryKey;type:varchar(11)"`
-		Nama 			string	`json:"nama" gorm:"type:varchar(100)"`
-		TahunKurikulum 	int16	`json:"tahun_kurikulum"`
-		Sks				int8	`json:"sks"`
-		CreatedAt time.Time
-		UpdatedAt time.Time
-		// Kelas			[]Kelas // Relationship: One-to-Many (One course has many classes)
+		KodeMatkul		string 		`json:"kode_matkul" gorm:"primaryKey;type:varchar(11)"`
+		Nama 			string		`json:"nama" gorm:"type:varchar(100)"`
+		TahunKurikulum 	int16		`json:"tahun_kurikulum"`
+		Sks				int8		`json:"sks"`
+		CreatedAt 		time.Time 	`json:"-"`	
+		UpdatedAt 		time.Time 	`json:"-"`
+		Kelas			[]Kelas 	`gorm:"foreignKey:KodeMatkul;references:KodeMatkul"` // Relationship: One-to-Many (One course has many classes)
 	}
 
 	MatkulRepository interface {
@@ -31,5 +33,9 @@ type (
 		GetByID(id string) (*Matkul, error)
 		DestroyMatkul(id string) error
 		FetchMatkul() ([]*Matkul, error)
+	}
+
+	MatkulHandler interface {
+		Mount(group *gin.RouterGroup)
 	}
 )

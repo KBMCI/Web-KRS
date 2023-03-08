@@ -5,6 +5,7 @@ import (
 	"web-krs/helper"
 	"web-krs/model"
 	"web-krs/request"
+	"web-krs/response"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,11 +14,7 @@ type matkulHandler struct {
 	matkulService model.MatkulService
 }
 
-type MatkulHandler interface {
-	Mount(group *gin.RouterGroup)
-}
-
-func NewMatkulHandler(matkulService model.MatkulService) MatkulHandler {
+func NewMatkulHandler(matkulService model.MatkulService) model.MatkulHandler {
 	return &matkulHandler{matkulService: matkulService}
 }
 
@@ -38,6 +35,7 @@ func (h *matkulHandler) StoreMatkulHandler(c *gin.Context) {
 		return 
 	}
 
+	// error tidak terdeteksi
 	if err != nil {
 		helper.ResponseValidatorErrorJson(c, err)
 		return
@@ -49,7 +47,9 @@ func (h *matkulHandler) StoreMatkulHandler(c *gin.Context) {
 		return
 	}
 
-	helper.ResponseSuccessJson(c, "success", matkul)
+	MatkulResponse := response.ConvertToMatkulResponse(*matkul)
+
+	helper.ResponseSuccessJson(c, "success", MatkulResponse)
 }
 
 func (h *matkulHandler) EditMatkulHandler(c *gin.Context) {
@@ -74,7 +74,9 @@ func (h *matkulHandler) EditMatkulHandler(c *gin.Context) {
 		return
 	}
 
-	helper.ResponseSuccessJson(c, "success edit", matkul)
+	MatkulResponse := response.ConvertToMatkulResponse(*matkul)
+
+	helper.ResponseSuccessJson(c, "success", MatkulResponse)
 }
 
 func (h *matkulHandler) DetailMatkulHandler(c *gin.Context) {

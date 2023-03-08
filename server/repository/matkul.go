@@ -14,7 +14,7 @@ func NewMatkulRepository(cfg config.Config) model.MatkulRepository  {
 }
 
 func (m *matkulRepository) Create(matkul *model.Matkul) (*model.Matkul, error) {
-	err := m.cfg.Database().Create(&matkul).Error; 
+	err := m.cfg.Database().Create(&matkul).Error
 	if err != nil{
 		return nil, err
 	}
@@ -25,7 +25,7 @@ func (m *matkulRepository) Create(matkul *model.Matkul) (*model.Matkul, error) {
 func (m *matkulRepository) FindByID(id string) (*model.Matkul, error){
 	matkul := new(model.Matkul)
 
-	err := m.cfg.Database().First(matkul, "kode_matkul = ?", id).Error
+	err := m.cfg.Database().Preload("Kelas").First(matkul, "kode_matkul = ?", id).Error
 	if err != nil {
 		return nil, err
 	}
@@ -36,7 +36,7 @@ func (m *matkulRepository) FindByID(id string) (*model.Matkul, error){
 func (m *matkulRepository) Fetch() ([]*model.Matkul, error) {
 	var data []*model.Matkul
 
-	err := m.cfg.Database().Find(&data).Error
+	err := m.cfg.Database().Preload("Kelas").Find(&data).Error
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func (m *matkulRepository) Fetch() ([]*model.Matkul, error) {
 }
 
 func (m *matkulRepository) UpdateByID(matkul *model.Matkul) (*model.Matkul, error){
-	err := m.cfg.Database().Save(&matkul).Error;
+	err := m.cfg.Database().Save(&matkul).Error
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +54,7 @@ func (m *matkulRepository) UpdateByID(matkul *model.Matkul) (*model.Matkul, erro
 }
 
 func (m *matkulRepository) Delete(matkul *model.Matkul) (*model.Matkul, error) {
-	err := m.cfg.Database().Delete(&matkul).Error;
+	err := m.cfg.Database().Delete(&matkul).Error
 	if err != nil {
 		return nil, err
 	}
