@@ -53,6 +53,12 @@ func(s *server) Run() {
 	matkulGroup := s.httpServer.Group("/matkul")
 	matkulHandler.Mount(matkulGroup)
 
+	kelasRepo := repository.NewKelasRepository(s.cfg)
+	kelasService := service.NewKelasService(kelasRepo)
+	kelasHandler := handler.NewKelasHandler(kelasService)
+	kelasGroup := s.httpServer.Group("/kelas")
+	kelasHandler.Mount(kelasGroup)
+
 	if err := s.httpServer.Run(); err != nil {
 		log.Fatal(err)
 	}
