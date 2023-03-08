@@ -95,6 +95,11 @@ func (h *userHandler) CreateUser(c *gin.Context)  {
 		return
 	}
 
+	if userRequset.VerifPassword != userRequset.Password {
+		helper.ResponseErrorJson(c, "Password incorrect", err)
+		return
+	}
+
 	if err != nil {
 		helper.ResponeValidationError(c, err)
 		return 
@@ -196,6 +201,7 @@ func ConvertToUserResponse(u *model.User) response.UserResponse {
 		Nama: u.Nama,
 		Email: u.Email,
 		Password: hash,
+		VerifPassword: "verified",
 		ProgramStudi: u.ProgramStudi,
 		Role: u.Role,
 	}

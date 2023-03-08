@@ -21,6 +21,7 @@ func (s *userService) Create(userRequest *request.UserRequest) (*model.User, err
 		ProgramStudi: userRequest.ProgramStudi,
 		Nim:          userRequest.Nim,
 		Password:     userRequest.Password,
+		VerifPassword: userRequest.VerifPassword,
 		Role:         userRequest.Role,
 	}
 
@@ -32,6 +33,7 @@ func (s *userService) Create(userRequest *request.UserRequest) (*model.User, err
 		ProgramStudi: userRequest.ProgramStudi,
 		Nim:          userRequest.Nim,
 		Password:     hash,
+		VerifPassword: "Verified",
 		Role:         userRequest.Role,
 	}
 

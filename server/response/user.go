@@ -7,5 +7,6 @@ type UserResponse struct {
 	ProgramStudi string `json:"program_studi"`
 	Nim          string `json:"nim"`
 	Password     string `json:"password"`
+	VerifPassword string `json:"confirm_password"`
 	Role         string `json:"role"`
 }
