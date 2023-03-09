@@ -32,19 +32,16 @@ func (s *kelasService) StoreKelas(req *request.KelasRequest) (*model.Kelas, erro
 }
 
 func (s *kelasService) EditKelas(id uint, req *request.KelasRequest) (*model.Kelas, error) {
-	kelas, err := s.kelasRepository.FindByID(id)
-	if err != nil {
-		return nil, err
-	}
+	newKelas, err := s.kelasRepository.UpdateByID(&model.Kelas{
+		ID: id,
+		KodeMatkul: req.KodeMatkul,
+		Nama: req.Nama,
+		RuangKelas: req.RuangKelas,
+		Hari: req.Hari,
+		JamMulai: req.JamMulai,
+		JamSelesai: req.JamSelesai,
+	})
 
-	kelas.KodeMatkul = req.KodeMatkul
-	kelas.Nama = req.Nama
-	kelas.RuangKelas = req.RuangKelas
-	kelas.Hari = req.Hari
-	kelas.JamMulai = req.JamMulai
-	kelas.JamSelesai = req.JamSelesai
-
-	newKelas, err := s.kelasRepository.UpdateByID(kelas)
 	if err != nil {
 		return nil, err
 	}

@@ -45,7 +45,7 @@ func (k *kelasRepository) Fetch() ([]*model.Kelas, error) {
 }
 
 func (k *kelasRepository) UpdateByID(kelas *model.Kelas) (*model.Kelas, error) {
-	err := k.cfg.Database().Save(&kelas).Error
+	err := k.cfg.Database().Model(&kelas).Updates(&kelas).Error
 	if err != nil {
 		return nil, err
 	}
