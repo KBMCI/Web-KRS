@@ -42,6 +42,7 @@ func InitServer(cfg config.Config) Server {
 func(s *server) Run() {
 
 	s.httpServer.GET("/", func(c *gin.Context) {
+		s.cfg.Database()
 		c.JSON(http.StatusOK, gin.H{
 		  "message": "test success",
 		})
