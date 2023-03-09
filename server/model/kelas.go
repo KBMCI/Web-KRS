@@ -20,7 +20,7 @@ type (
 		JamSelesai	string 		`json:"jam_selesai" gorm:"type:varchar(11)"`
 		CreatedAt 	time.Time	`json:"-"`	
 		UpdatedAt 	time.Time	`json:"-"`	
-		Matkul		Matkul		`gorm:"foreignKey:KodeMatkul;references:KodeMatkul"`
+		Matkul		Matkul		`json:"-" gorm:"foreignKey:KodeMatkul;references:Kode"`
 	}
 
 	KelasRepository interface {

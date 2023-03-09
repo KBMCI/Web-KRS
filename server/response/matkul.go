@@ -27,27 +27,9 @@ type (
 
 func ConvertToMatkulResponse(m model.Matkul) MatkulResponse {
 	return MatkulResponse{
-		KodeMatkul: m.KodeMatkul,
+		KodeMatkul: m.Kode,
 		Nama: m.Nama,
 		TahunKurikulum: m.TahunKurikulum,
 		Sks: m.Sks,
-	}
-}
-
-func ConvertToMatkulResponseDetail(m model.Matkul) MatkulResponseDetail {
-
-	return MatkulResponseDetail{
-		KodeMatkul: m.KodeMatkul,
-		Nama: m.Nama,
-		TahunKurikulum: m.TahunKurikulum,
-		Sks: m.Sks,
-		Kelas: struct {
-			Nama       string `json:"nama"`
-			RuangKelas string `json:"ruang_kelas"`
-			Hari       string `json:"hari"`
-			JamMulai   string `json:"jam_mulai"`
-			JamSelesai string `json:"jam_selesai"`
-		}{
-		},
 	}
 }

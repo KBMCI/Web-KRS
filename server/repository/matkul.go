@@ -25,7 +25,7 @@ func (m *matkulRepository) Create(matkul *model.Matkul) (*model.Matkul, error) {
 func (m *matkulRepository) FindByID(id string) (*model.Matkul, error){
 	matkul := new(model.Matkul)
 
-	err := m.cfg.Database().Preload("Kelas").First(matkul, "kode_matkul = ?", id).Error
+	err := m.cfg.Database().Preload("Kelas").First(matkul, "kode = ?", id).Error
 	if err != nil {
 		return nil, err
 	}

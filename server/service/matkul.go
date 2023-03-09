@@ -15,7 +15,7 @@ func NewMatkulService(matkul model.MatkulRepository) model.MatkulService {
 
 func (s *matkulService) StoreMatkul(req *request.MatkulRequest) (*model.Matkul, error) {
 	matkul := &model.Matkul{
-		KodeMatkul: req.ID,
+		Kode: req.ID,
 		Nama: req.Nama,
 		TahunKurikulum: req.TahunKurikulum,
 		Sks: req.Sks,
