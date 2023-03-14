@@ -29,7 +29,7 @@ type (
 
 	MatkulService interface {
 		StoreMatkul(req *request.MatkulRequest) (*Matkul, error)
-		EditMatkul(id string, req *request.MatkulRequest) (*Matkul, error)
+		EditMatkul(id string, req *request.UpdateMatkulRequest) (*Matkul, error)
 		GetByID(id string) (*Matkul, error)
 		DestroyMatkul(id string) error
 		FetchMatkul() ([]*Matkul, error)
