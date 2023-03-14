@@ -53,7 +53,7 @@ func (h *matkulHandler) StoreMatkulHandler(c *gin.Context) {
 }
 
 func (h *matkulHandler) EditMatkulHandler(c *gin.Context) {
-	var req request.MatkulRequest
+	var req request.UpdateMatkulRequest
 
 	err := c.ShouldBindJSON(&req)
 	if err != nil {

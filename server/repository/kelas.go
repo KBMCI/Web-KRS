@@ -25,7 +25,7 @@ func (k *kelasRepository) Create(kelas *model.Kelas) (*model.Kelas, error) {
 func (k *kelasRepository) FindByID(id uint) (*model.Kelas, error) {
 	kelas := new(model.Kelas)
 
-	err := k.cfg.Database().Preload("Matkul").Find(kelas, id).Error
+	err := k.cfg.Database().Preload("Matkul").First(kelas, id).Error
 	if err != nil {
 		return nil, err
 	}
