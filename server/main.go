@@ -19,5 +19,4 @@ func main() {
 	server := InitServer(config)
 
 	server.Run()
-	
 }

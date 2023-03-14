@@ -47,3 +47,11 @@ func ResponseErrorJson(c *gin.Context, code int, err error) {
 		"error": err.Error(),
 	})
 }
+
+func ResponseDetailErrorJson(c *gin.Context, message string, detail interface{}) {
+	c.JSON(http.StatusBadRequest, gin.H{
+	   "message": message,
+	   "success": false,
+	   "data": detail,
+	})
+   }

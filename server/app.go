@@ -7,7 +7,6 @@ import (
 	"web-krs/handler"
 	"web-krs/repository"
 	"web-krs/service"
-
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -59,6 +58,12 @@ func(s *server) Run() {
 	kelasHandler := handler.NewKelasHandler(kelasService)
 	kelasGroup := s.httpServer.Group("/kelas")
 	kelasHandler.Mount(kelasGroup)
+
+	userRepository := repository.NewUserRepositoty(s.cfg)
+	userService := service.NewUserService(userRepository)
+	userHandler := handler.NewUserHandler(userService)
+	userGroup := s.httpServer.Group("/user")
+	userHandler.Mount(userGroup)
 
 	if err := s.httpServer.Run(); err != nil {
 		log.Fatal(err)
