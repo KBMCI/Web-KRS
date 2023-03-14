@@ -2,15 +2,16 @@ package handler
 
 import (
 	"net/http"
-	"strconv"
 	"regexp"
+	"strconv"
 	"strings"
 	"web-krs/helper"
 	"web-krs/model"
 	"web-krs/request"
 	"web-krs/response"
-	"golang.org/x/crypto/bcrypt"
+
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type userHandler struct {
@@ -48,6 +49,11 @@ func (h *userHandler) CreateUser(c *gin.Context)  {
 	var userRequset request.UserRequest
 
 	err := c.ShouldBindJSON(&userRequset)
+
+	if err != nil {
+		helper.ResponseValidationErrorJson(c, "Error binding struct", err)
+		return 
+	}
 	
 	var (
 		numeric, lowerCase, upperCase, specialCharacter bool 
@@ -59,15 +65,19 @@ func (h *userHandler) CreateUser(c *gin.Context)  {
 	specialCharacter = strings.ContainsAny(userRequset.Password, "!@#$%^&*()_+-=/.,:;'`?{}[|]")
 
 	if len(userRequset.Password) <6 {
-		helper.ResponseErrorJson(c, "Too short password", err)
+		helper.ResponseDetailErrorJson(c, "Too short password", err)
 		return 
 	}
 
+	// if !numeric {
+	// 	c.JSON(http.StatusBadRequest, gin.H{
+	// 		"message": "password need numeric character",
+	// 		"data": err,
+	// 	})
+	// 	return 
+	// }
 	if !numeric {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "password need numeric character",
-			"data": err,
-		})
+		helper.ResponseDetailErrorJson(c, "password need numeric character", err)
 		return 
 	}
  
@@ -96,19 +106,14 @@ func (h *userHandler) CreateUser(c *gin.Context)  {
 	}
 
 	if userRequset.VerifPassword != userRequset.Password {
-		helper.ResponseErrorJson(c, "Password incorrect", err)
+		helper.ResponseDetailErrorJson(c, "Password incorrect", err)
 		return
-	}
-
-	if err != nil {
-		helper.ResponeValidationError(c, err)
-		return 
 	}
 
 	createUser, err := h.userService.Create(&userRequset)
 
 	if err != nil {
-		helper.ResponseErrorJson(c, "Cannot create user", err)
+		helper.ResponseDetailErrorJson(c, "Cannot create user", err)
 		return
 	}
 
@@ -121,7 +126,7 @@ func (h *userHandler) ReadAll(c *gin.Context)  {
 	users, err := h.userService.ReadAll()
 	
 	if err != nil {
-		helper.ResponseErrorJson(c, "Error Fetch Users", err)
+		helper.ResponseDetailErrorJson(c, "Error Fetch Users", err)
 		return 
 	}
 
@@ -144,7 +149,7 @@ func (h *userHandler) ReadByID(c *gin.Context)  {
 	readByID, err := h.userService.ReadByID(id)
 
 	if err != nil {
-		helper.ResponseErrorJson(c, "Error fetch user", err)
+		helper.ResponseDetailErrorJson(c, "Error fetch user", err)
 		return 
 	}
 
@@ -165,7 +170,7 @@ func (h *userHandler) Update(c *gin.Context)  {
 	update, _ := h.userService.Update(id, &UserRequest)
 
 	if err != nil {
-		helper.ResponseErrorJson(c, "Error Update User",err)
+		helper.ResponseDetailErrorJson(c, "Error Update User",err)
 		return 
 	}
 
@@ -180,7 +185,7 @@ func (h *userHandler) Delete(c *gin.Context)  {
 	delete, err := h.userService.Delete(idInt)
 
 	if err != nil {
-		helper.ResponseErrorJson(c, "Error, cannot delete", err)
+		helper.ResponseDetailErrorJson(c, "Error, cannot delete", err)
 	}
 
 	helper.ResponseSuccessJson(c, "", delete)

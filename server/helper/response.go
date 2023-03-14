@@ -8,38 +8,50 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-func ResponseErrorJson(c *gin.Context, message string, detail interface{}) {
- c.JSON(http.StatusBadRequest, gin.H{
-	"message": message,
-	"status": true,
-	"data": detail,
- })
-}
-
-func ResponseSuccessJson(c *gin.Context, message string, detail interface{})  {
-
-	if message == "" {
-		message = "Success"
-	}
+func ResponseSuccessJson(c *gin.Context, message string, data interface{}) {
 	
+	if message == "" {
+		message = "success"
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"message": message,
-		"status": true,
+		"success": true,
+		"data": data,
+	})
+}
+
+func ResponseValidationErrorJson(c *gin.Context, message string, detail interface{}) {
+	c.JSON(http.StatusBadRequest, gin.H{
+		"message": message,
+		"success": false,
 		"data": detail,
 	})
 }
 
-func ResponeValidationError(c *gin.Context, err error)  {
+func ResponseValidatorErrorJson(c *gin.Context, err error) {
 	errorMessages := []string{}
-		for _, e := range err.(validator.ValidationErrors) {
-			errorMessage := fmt.Sprintf("Error on field %s, condition: %s", e.Field(), e.ActualTag())
-			errorMessages = append(errorMessages, errorMessage)
-		}
+	for _, e := range err.(validator.ValidationErrors) {
+		errorMessage := fmt.Sprintf("Error on field %s, condition: %s", e.Field(), e.ActualTag())
+		errorMessages = append(errorMessages, errorMessage)
+	}
 
-		c.JSON(http.StatusBadRequest, gin.H{
-			"massage": false,
-			"data": errorMessages,
-			})
+	c.JSON(http.StatusBadRequest, gin.H{
+		"success": false,
+		"detail": errorMessages,
+	})
 }
 
+func ResponseErrorJson(c *gin.Context, code int, err error) {
+	c.JSON(code, gin.H{
+		"error": err.Error(),
+	})
+}
 
+func ResponseDetailErrorJson(c *gin.Context, message string, detail interface{}) {
+	c.JSON(http.StatusBadRequest, gin.H{
+	   "message": message,
+	   "success": false,
+	   "data": detail,
+	})
+   }
