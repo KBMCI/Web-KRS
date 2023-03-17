@@ -232,9 +232,9 @@ export default function MatkulTambah() {
         </div>
         {accept ? (
           result ? (
-            <Feedback check="success" note="post" />
+            <Feedback check={true} note="post" />
           ) : (
-            <Feedback check="failed" note="post" />
+            <Feedback check={false} note="post" />
           )
         ) : (
           ""

@@ -1,12 +1,12 @@
-import TableMatkul from "./TableMatkul";
+import MatkulTabel from "./MatkulTabel";
 import Button from "../../component/Button";
 import { FiPlus, FiTrello } from "react-icons/fi";
 
-function ContentMatkul() {
+function MatkulContent() {
   return (
     <>
       <div
-        className={`px-10 pt-10 `}
+        className={`px-10 pt-10`}
       >
         <div className="flex items-center justify-between mb-12">
           <h1 className="text-4xl font-bold"> Mata Kuliah</h1>
@@ -19,11 +19,11 @@ function ContentMatkul() {
             />
           </div>
         </div>
-        <TableMatkul />
+        <MatkulTabel />
       </div>
       
     </>
   );
 }
 
-export default ContentMatkul;
+export default MatkulContent;
