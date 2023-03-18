@@ -5,9 +5,7 @@ import { FiPlus, FiTrello } from "react-icons/fi";
 function MatkulContent() {
   return (
     <>
-      <div
-        className={`px-10 pt-10`}
-      >
+      <div className={`px-10 pt-10`}>
         <div className="flex items-center justify-between mb-12">
           <h1 className="text-4xl font-bold"> Mata Kuliah</h1>
           <div className="flex gap-4">
@@ -19,9 +17,12 @@ function MatkulContent() {
             />
           </div>
         </div>
-        <MatkulTabel />
+        <div className="flex justify-center ">
+          <div className="grow">
+            <MatkulTabel />
+          </div>
+        </div>
       </div>
-      
     </>
   );
 }

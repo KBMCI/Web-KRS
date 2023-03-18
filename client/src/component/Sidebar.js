@@ -21,7 +21,7 @@ function Sidebar() {
     <aside
       className={` ${
         open ? "w-1/5 " : "w-1/12 text-primary"
-      } bg-secondary duration-300 shadow-lg fixed top-0 left-0 bottom-0 z-10 `}
+      } bg-secondary duration-300 shadow-lg fixed top-0 left-0 bottom-0 z-20 `}
     >
       <div
         className="mt-4 px-6 py-3 mb-7 flex text-2xl justify-center gap-x-3 cursor-pointer"

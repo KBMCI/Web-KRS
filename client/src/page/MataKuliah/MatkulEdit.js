@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { MatkulContext } from "../../api/contextMatkul";
 import { urlMatkul } from "../../api/url";
 import Feedback from "../../component/Feedback";
+import ReactLoading from "react-loading";
 
 export default function MatkulEdit() {
   const { Trigger } = useContext(MatkulContext);
@@ -12,6 +13,7 @@ export default function MatkulEdit() {
   const [getId, setGetId] = useState(true);
   const [accept, setAccept] = useState(false);
   const [result, setResult] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Initial State value form
   const [kode_matkul, setKode_matkul] = useState("");
@@ -32,6 +34,7 @@ export default function MatkulEdit() {
 
   const patchData = async ({ kode_matkul, nama, tahun_kurikulum, sks }) => {
     try {
+      setLoading(true);
       const res = await axios.patch(`${urlMatkul}/${kodeParams.kode}`, {
         kode_matkul,
         nama,
@@ -40,17 +43,21 @@ export default function MatkulEdit() {
         updated_at: null,
         created_at: null,
       });
-      console.log(res);
-      setResult(true);
-      feedback();
-      Trigger();
-      setTimeout(() => {
-        navigate("/mata-kuliah");
-      }, 2500);
+      if (res.status === 200) {
+        console.log(res);
+        setResult(true);
+        feedback();
+        Trigger();
+        setLoading(false);
+        setTimeout(() => {
+          navigate("/mata-kuliah");
+        }, 1501);
+      }
     } catch (err) {
       console.log(err);
       setResult(false);
       feedback();
+      setLoading(false);
     }
   };
 
@@ -118,7 +125,7 @@ export default function MatkulEdit() {
     setAccept(true);
     setTimeout(() => {
       setAccept(false);
-    }, 2000);
+    }, 1500);
   };
 
   return (
@@ -250,7 +257,7 @@ export default function MatkulEdit() {
                   type="submit"
                   className="bg-primary text-secondary py-2 px-5 rounded-lg  "
                 >
-                  Add
+                  {loading ? <ReactLoading height="5px" width="14px" /> : "Add"}
                 </button>
               </div>
             </form>
@@ -258,9 +265,9 @@ export default function MatkulEdit() {
         </div>
         {accept ? (
           result ? (
-            <Feedback check="success" note="patch" />
+            <Feedback check={true} note="patch" />
           ) : (
-            <Feedback check="failed" note="patch" />
+            <Feedback check={false} note="patch" />
           )
         ) : (
           ""

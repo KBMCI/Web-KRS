@@ -6,7 +6,7 @@ export const MatkulContext = createContext();
 
 export function MatkulProvider({ children }) {
   const [dataMatkul, setDataMatkul] = useState([]);
-  const [dataMatkulId, setDataMatkulId] = useState({});
+  // const [dataMatkulId, setDataMatkulId] = useState({});
   const [trigger, setTrigger] = useState(false);
   const [open, setOpen] = useState(true);
 
@@ -14,7 +14,7 @@ export function MatkulProvider({ children }) {
     const getDataMatkul = async () => {
       const res = await axios.get(urlMatkul);
       try {
-        setDataMatkul(res.data.data);
+          setDataMatkul(res.data.data);
       } catch (error) {
         console.log(error);
       }
@@ -58,7 +58,6 @@ export function MatkulProvider({ children }) {
     <MatkulContext.Provider
       value={{
         dataMatkul,
-        dataMatkulId,
         Trigger,
         tableNama,
         open,

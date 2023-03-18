@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { urlMatkul } from "../../api/url";
 import Feedback from "../../component/Feedback";
 import { MatkulContext } from "../../api/contextMatkul";
+import ReactLoading from "react-loading";
 
 export default function MatkulTambah() {
   const { Trigger } = useContext(MatkulContext);
@@ -11,6 +12,7 @@ export default function MatkulTambah() {
   const [result, setResult] = useState(true);
   const navigate = useNavigate();
   const form = useRef(null);
+  const [loading, setLoading] = useState(false);
 
   // Validation Form
   const intialValue = {
@@ -30,29 +32,33 @@ export default function MatkulTambah() {
     setFormValue({ ...formValue, [name]: value });
   };
 
-  
   useEffect(() => {
     const postData = async ({ kode_matkul, nama, tahun_kurikulum, sks }) => {
-    try {
-      const res = await axios.post(urlMatkul, {
-        kode_matkul: kode_matkul,
-        nama: nama,
-        tahun_kurikulum: parseInt(tahun_kurikulum),
-        sks: parseInt(sks),
-        updated_at: null,
-        created_at: null,
-      });
-      console.log(res);
-      setFormValue(intialValue);
-      Trigger();
-      setResult(true);
-      feedback();
-    } catch (err) {
-      console.log(err);
-      setResult(false);
-      feedback();
-    }
-  };
+      try {
+        setLoading(true);
+        const res = await axios.post(urlMatkul, {
+          kode_matkul: kode_matkul,
+          nama: nama,
+          tahun_kurikulum: parseInt(tahun_kurikulum),
+          sks: parseInt(sks),
+          updated_at: null,
+          created_at: null,
+        });
+        if (res.status === 200) {
+          console.log(res);
+          setFormValue(intialValue);
+          Trigger();
+          setResult(true);
+          feedback();
+          setLoading(false);
+        }
+      } catch (err) {
+        console.log(err);
+        setLoading(false);
+        setResult(false);
+        feedback();
+      }
+    };
 
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       postData(formValue);
@@ -100,7 +106,7 @@ export default function MatkulTambah() {
     setAccept(true);
     setTimeout(() => {
       setAccept(false);
-    }, 2000);
+    }, 1500);
   };
   return (
     <>
@@ -224,7 +230,7 @@ export default function MatkulTambah() {
                   type="submit"
                   className="bg-primary text-secondary py-2 px-5 rounded-lg  "
                 >
-                  Add
+                  {loading ? <ReactLoading height="5px" width="14px" /> : "Add"}
                 </button>
               </div>
             </form>

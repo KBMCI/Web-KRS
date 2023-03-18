@@ -1,6 +1,8 @@
 import { FiAlertTriangle } from "react-icons/fi"
+import ReactLoading from "react-loading";
 
-export default function PopUpDel({deleteHandlerFalse, deleteHandlerTrue}) {
+
+export default function PopUpDel({deleteHandlerFalse, deleteHandlerTrue, loading}) {
     return (
         <div className="flex justify-center align-center fixed inset-0 z-20 bg-black/30 backdrop-blur-sm ">
           <div className="relative w-full max-w-sm my-auto bg-secondary px-[50px] py-5 rounded-[10px] ">
@@ -23,7 +25,7 @@ export default function PopUpDel({deleteHandlerFalse, deleteHandlerTrue}) {
                 className="bg-primary text-secondary py-2 px-[60px] rounded-lg font-bold text-base"
                 onClick={deleteHandlerTrue}
               >
-                OK
+                 {loading ? <ReactLoading height="5px" width="14px" /> : "OK"}
               </button>
             </div>
           </div>
