@@ -38,19 +38,18 @@ export default function MatkulTabel() {
         const res = await axios.delete(`${urlMatkul}/${showDel.id}`);
         if (res.status === 200) {
           console.log(res);
-          setLoading(false);
           setResult(true);
+          setLoading(false);
           setShowDel({
             show: false,
             id: null,
           });
-          setResult(true);
-          setLoading(false);
           feedback();
           Trigger();
         }
       } catch (err) {
         setResult(false);
+        setLoading(false);
         feedback();
       }
     }
