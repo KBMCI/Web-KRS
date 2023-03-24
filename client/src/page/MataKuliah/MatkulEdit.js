@@ -1,12 +1,12 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { MatkulContext } from "../../context/contextMatkul";
+import { DataContext } from "../../context/DataContext";
 import { url } from "../../api/url";
 import MatkulForm from "./MatkulForm";
 
 export default function MatkulEdit() {
   const { feedbackHandler } = useOutletContext();
-  const { Trigger } = useContext(MatkulContext);
+  const { TriggerMatkul } = useContext(DataContext);
   const navigate = useNavigate();
   const kodeParams = useParams();
   const [loading, setLoading] = useState(false);
@@ -36,7 +36,7 @@ export default function MatkulEdit() {
       if (res.status === 200) {
         console.log(res);
         feedbackHandler(true, "patch");
-        Trigger();
+        TriggerMatkul();
         setLoading(false);
         navigate("/mata-kuliah");
       }

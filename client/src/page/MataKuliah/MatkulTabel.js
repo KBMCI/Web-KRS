@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import PopUpDel from "../../component/PopUpDel";
 
 export default function MatkulTabel({
-  tabel,
   data,
   showDel,
   deleteHandlerFalse,
@@ -11,6 +10,13 @@ export default function MatkulTabel({
   deleteHandler,
   loading,
 }) {
+  const table = [
+    "Kode MK",
+    "Nama Mata Kuliah",
+    "SKS",
+    "Tahun Kurikulum",
+    "",
+  ];
   // Style Component
   const barisTabel = () => {
     return "py-2 text-start px-4 font-semibold";
@@ -21,7 +27,7 @@ export default function MatkulTabel({
         <table className="border-collapse border-b border-neutral-400 w-full ">
           <thead>
             <tr className="bg-primary text-secondary">
-              {tabel.map((value) => {
+              {table.map((value) => {
                 return (
                   <th className="py-2 w-auto text-start p-4" key={value}>
                     {value}

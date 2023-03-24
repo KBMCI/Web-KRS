@@ -3,13 +3,22 @@ import { Link } from "react-router-dom";
 import PopUpDel from "../../component/PopUpDel";
 
 const KelasTable = ({
-  tabel,
   data,
   showDel,
   deleteHandlerFalse,
   deleteHandlerTrue,
   deleteHandler,
 }) => {
+  const tabel = [
+    "Nama Mata Kuliah",
+    "Nama Kelas",
+    "Ruang Kelas",
+    "Hari",
+    "Jam Mulai",
+    "Jam Selesai",
+    " ",
+  ];
+
   // Style Component
   const barisTabel = () => {
     return "py-2 text-start px-4 font-semibold";

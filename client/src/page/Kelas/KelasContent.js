@@ -2,21 +2,13 @@ import Button from "../../component/Button";
 import Paginate from "../../component/Paginate";
 import KelasTable from "./KelasTable";
 import { FiPlus, FiTrello } from "react-icons/fi";
-import FilterTable from "../../component/FilterTable"
-import { useState } from "react";
+import FilterTable from "../../component/FilterTable";
+import { useContext, useState } from "react";
 import { url } from "../../api/url";
+import { DataContext } from "../../context/DataContext";
 
-function KelasContent({ dataKelas, dataTrigger, feedbackHandler }) {
-  // Isi Tabel Kelas
-  const tabelKelas = [
-    "Nama Mata Kuliah",
-    "Nama Kelas",
-    "Ruang Kelas",
-    "Hari",
-    "Jam Mulai",
-    "Jam Selesai",
-    " ",
-  ];
+function KelasContent({ feedbackHandler }) {
+  const { dataKelas, TriggerKelas } = useContext(DataContext);
 
   // Create pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -63,7 +55,7 @@ function KelasContent({ dataKelas, dataTrigger, feedbackHandler }) {
         const res = await url.delete(`/kelas/${showDel.id}`);
         if (res.status === 200) {
           console.log(res);
-          dataTrigger();
+          TriggerKelas();
           feedbackHandler(true, "delete");
           setShowDel({
             show: false,
@@ -102,7 +94,6 @@ function KelasContent({ dataKelas, dataTrigger, feedbackHandler }) {
               <FilterTable />
               <KelasTable
                 data={currentPost}
-                tabel={tabelKelas}
                 showDel={showDel}
                 deleteHandler={deleteHandler}
                 deleteHandlerFalse={deleteHandlerFalse}

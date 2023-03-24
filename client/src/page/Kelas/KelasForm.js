@@ -22,7 +22,7 @@ const Form = ({
   };
 
   const errBaris = () => {
-    return "h-6 mb-3 text-end";
+    return "h-6 text-start";
   };
 
   const errText = () => {
@@ -47,6 +47,7 @@ const Form = ({
                   <label htmlFor="kode" className="block font-bold">
                     Kode MK
                   </label>
+                  <div className="h-6"></div>
                 </div>
                 <div className="w-2/3">
                   <select
@@ -67,18 +68,20 @@ const Form = ({
                       );
                     })}
                   </select>
+                  <div className={errBaris()}>
+                    {formErrors.kode_matkul && (
+                      <p className={errText()}>{formErrors.kode_matkul}</p>
+                    )}
+                  </div>
                 </div>
               </div>
-              <div className={errBaris()}>
-                {formErrors.kode_matkul && (
-                  <p className={errText()}>{formErrors.kode_matkul}</p>
-                )}
-              </div>
+
               <div className={barisTabel()}>
                 <div className="w-1/3">
                   <label htmlFor="nama" className="block font-bold">
                     Nama Kelas
                   </label>
+                  <div className="h-6"></div>
                 </div>
                 <div className="w-2/3">
                   <input
@@ -89,18 +92,20 @@ const Form = ({
                     className={inputStyle(formErrors.nama)}
                     onChange={handleChange}
                   />
+                  <div className={errBaris()}>
+                    {formErrors.nama && (
+                      <p className={errText()}>{formErrors.nama}</p>
+                    )}
+                  </div>
                 </div>
               </div>
-              <div className={errBaris()}>
-                {formErrors.nama && (
-                  <p className={errText()}>{formErrors.nama}</p>
-                )}
-              </div>
+
               <div className={barisTabel()}>
                 <div className="w-1/3">
                   <label htmlFor="ruang_kelas" className="block font-bold">
                     Ruang Kelas
                   </label>
+                  <div className="h-6"></div>
                 </div>
                 <div className="w-2/3">
                   <input
@@ -111,18 +116,19 @@ const Form = ({
                     value={formValue.ruang_kelas}
                     onChange={handleChange}
                   />
+                  <div className={errBaris()}>
+                    {formErrors.ruang_kelas && (
+                      <p className={errText()}>{formErrors.ruang_kelas}</p>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className={errBaris()}>
-                {formErrors.ruang_kelas && (
-                  <p className={errText()}>{formErrors.ruang_kelas}</p>
-                )}
               </div>
               <div className={barisTabel()}>
                 <div className="w-1/3">
                   <label htmlFor="hari" className="block font-bold">
                     Hari
                   </label>
+                  <div className="h-6"></div>
                 </div>
                 <div className="w-2/3">
                   <select
@@ -141,57 +147,54 @@ const Form = ({
                       );
                     })}
                   </select>
+                  <div className={errBaris()}>
+                    {formErrors.hari && (
+                      <p className={errText()}>{formErrors.hari}</p>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className={errBaris()}>
-                {formErrors.hari && (
-                  <p className={errText()}>{formErrors.hari}</p>
-                )}
               </div>
               <div className={barisTabel()}>
                 <div className="w-1/3">
                   <label htmlFor="jam_mulai" className="block font-bold">
                     Jam Mulai
                   </label>
+                  <div className="h-6"></div>
                 </div>
                 <div className="w-2/3">
-                  <input
-                    id="jam_mulai"
-                    name="jam_mulai"
-                    type="time"
-                    className={inputStyle(formErrors.jam_mulai)}
-                    value={formValue.jam_mulai}
-                    onChange={handleChange}
-                  />
+                  <div className="flex gap-2">
+                    <input
+                      id="jam_mulai"
+                      name="jam_mulai"
+                      type="time"
+                      className={`${inputStyle(formErrors.jam_mulai)} w-1/2`}
+                      value={formValue.jam_mulai}
+                      onChange={handleChange}
+                    />
+                    <input
+                      id="jam_selesai"
+                      name="jam_selesai"
+                      type="time"
+                      className={`${inputStyle(formErrors.jam_mulai)} w-1/2`}
+                      value={formValue.jam_selesai}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="flex gap-2">
+                    <div className={`${errBaris()} w-1/2`}>
+                      {formErrors.jam_mulai && (
+                        <p className={errText()}>{formErrors.jam_mulai}</p>
+                      )}
+                    </div>
+                    <div className={`${errBaris()} w-1/2`}>
+                      {formErrors.jam_selesai && (
+                        <p className={errText()}>{formErrors.jam_selesai}</p>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className={errBaris()}>
-                {formErrors.jam_mulai && (
-                  <p className={errText()}>{formErrors.jam_mulai}</p>
-                )}
-              </div>
-              <div className={barisTabel()}>
-                <div className="w-1/3">
-                  <label htmlFor="jam_selesai" className="block font-bold">
-                    Jam Selesai
-                  </label>
-                </div>
-                <div className="w-2/3">
-                  <input
-                    id="jam_selesai"
-                    name="jam_selesai"
-                    type="time"
-                    className={inputStyle(formErrors.jam_selesai)}
-                    value={formValue.jam_selesai}
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-              <div className={errBaris()}>
-                {formErrors.jam_selesai && (
-                  <p className={errText()}>{formErrors.jam_selesai}</p>
-                )}
-              </div>
+
               <div className="w-full flex justify-end gap-4 mt-5">
                 <button
                   type="button"

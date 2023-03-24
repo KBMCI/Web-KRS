@@ -1,12 +1,12 @@
 import { useState, useEffect, useContext } from "react";
-import { MatkulContext } from "../../context/contextMatkul";
+import { DataContext } from "../../context/DataContext";
 import MatkulForm from "./MatkulForm";
 import { url } from "../../api/url";
 import { useOutletContext } from "react-router-dom";
 
 export default function MatkulTambah() {
   const { feedbackHandler } = useOutletContext();
-  const { Trigger } = useContext(MatkulContext);
+  const { TriggerMatkul } = useContext(DataContext);
   const [loading, setLoading] = useState(false);
 
   // Validation Form
@@ -43,7 +43,7 @@ export default function MatkulTambah() {
         feedbackHandler(true, "post");
         setLoading(false);
         setFormValue(intialValue);
-        Trigger();
+        TriggerMatkul();
       }
     } catch (err) {
       console.log(err);

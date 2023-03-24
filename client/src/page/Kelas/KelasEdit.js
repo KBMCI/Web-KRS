@@ -1,10 +1,12 @@
 import Form from "./KelasForm";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { url } from "../../api/url";
 import { useParams, useOutletContext, useNavigate } from "react-router-dom";
+import { DataContext } from "../../context/DataContext";
 
 const KelasEdit = () => {
-  const { dataTrigger, feedbackHandler, dataMatkul } = useOutletContext();
+  const { feedbackHandler } = useOutletContext();
+  const { dataMatkul, TriggerKelas } = useContext(DataContext);
   const kodeParams = useParams();
   const navigate = useNavigate();
 
@@ -41,7 +43,7 @@ const KelasEdit = () => {
       });
       if (res.status === 200) {
         console.log(res);
-        dataTrigger();
+        TriggerKelas();
         navigate("/kelas");
         feedbackHandler(true, "patch");
       }

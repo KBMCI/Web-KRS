@@ -7,13 +7,13 @@ import Home from "./page/Home";
 import Dashboard from "./page/Dashboard/Dashboard";
 import MatkulTambah from "./page/MataKuliah/MatkulTambah";
 import MatkulEdit from "./page/MataKuliah/MatkulEdit";
-import { MatkulProvider } from "./context/contextMatkul";
+import { DataProvider } from "./context/DataContext";
 import { KelasTambah } from "./page/Kelas/KelasTambah";
 import KelasEdit from "./page/Kelas/KelasEdit";
 
 function App() {
   return (
-    <MatkulProvider>
+    <DataProvider>
       <div className="App">
         <Routes>
           <Route path="/" element={<Home />}>
@@ -30,7 +30,7 @@ function App() {
           </Route>
         </Routes>
       </div>
-    </MatkulProvider>
+    </DataProvider>
   );
 }
 

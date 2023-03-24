@@ -1,4 +1,3 @@
-
 import { NavLink } from "react-router-dom";
 import {
   FiActivity,
@@ -8,10 +7,10 @@ import {
   FiDatabase,
 } from "react-icons/fi";
 import { useContext } from "react";
-import { MatkulContext } from "../context/contextMatkul";
+import { DataContext } from "../context/DataContext";
 
 function Sidebar() {
-  const {open, SetOpen} = useContext(MatkulContext)
+  const { open, SetOpen } = useContext(DataContext);
   const normalLink =
     "py-3 px-4 mb-2 flex items-center gap-x-4 hover:text-neutral-900 duration-100";
   const activeLink =
@@ -20,7 +19,7 @@ function Sidebar() {
   return (
     <aside
       className={` ${
-        open ? "w-1/5 " : "w-1/12 text-primary"
+        open ? "w-2/12 " : "w-1/12 text-primary"
       } bg-secondary duration-300 shadow-lg fixed top-0 left-0 bottom-0 z-20 `}
     >
       <div

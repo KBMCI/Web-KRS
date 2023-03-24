@@ -5,12 +5,10 @@ import { useState, useContext } from "react";
 import { url } from "../../api/url";
 import Paginate from "../../component/Paginate";
 import FilterTable from "../../component/FilterTable";
-import { MatkulContext } from "../../context/contextMatkul";
-import ReactLoading from "react-loading";
+import { DataContext } from "../../context/DataContext";
 
 function MatkulContent({ feedbackHandler }) {
-  const { dataMatkul, tableNama } = useContext(MatkulContext);
-  const { Trigger } = useContext(MatkulContext);
+  const { dataMatkul, TriggerMatkul } = useContext(DataContext);
   const [loading, setLoading] = useState(false);
 
   // Membuat Pagination
@@ -60,7 +58,7 @@ function MatkulContent({ feedbackHandler }) {
         if (res.status === 200) {
           console.log(res);
           feedbackHandler(true, "delete");
-          Trigger();
+          TriggerMatkul();
           setLoading(false);
           setShowDel({
             show: false,
@@ -103,7 +101,6 @@ function MatkulContent({ feedbackHandler }) {
               <FilterTable />
               <MatkulTabel
                 data={currentPost}
-                tabel={tableNama}
                 showDel={showDel}
                 deleteHandler={deleteHandler}
                 deleteHandlerFalse={deleteHandlerFalse}

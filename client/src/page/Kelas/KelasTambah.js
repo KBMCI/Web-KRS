@@ -1,10 +1,12 @@
 import Form from "./KelasForm";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useOutletContext } from "react-router-dom";
 import { url } from "../../api/url";
+import { DataContext } from "../../context/DataContext";
 
 export const KelasTambah = () => {
-  const { dataTrigger, feedbackHandler, dataMatkul } = useOutletContext();
+  const { feedbackHandler } = useOutletContext();
+  const { TriggerKelas, dataMatkul } = useContext(DataContext);
 
   // Validation Form
   const intialValue = {
@@ -48,7 +50,7 @@ export const KelasTambah = () => {
       if (res.status === 200) {
         console.log(res);
         setFormValue(intialValue);
-        dataTrigger();
+        TriggerKelas();
         feedbackHandler(true, "post");
       }
     } catch (err) {}

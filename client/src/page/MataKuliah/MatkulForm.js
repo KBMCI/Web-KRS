@@ -21,7 +21,7 @@ const MatkulForm = ({
   };
 
   const errBaris = () => {
-    return "h-6 mb-3 text-end";
+    return "h-6 text-start";
   };
 
   const errText = () => {
@@ -45,6 +45,7 @@ const MatkulForm = ({
                   <label htmlFor="kode" className="block font-bold">
                     Kode MK
                   </label>
+                  <div className="h-6"></div>
                 </div>
                 <div className="w-2/3">
                   <input
@@ -55,18 +56,20 @@ const MatkulForm = ({
                     value={formValue.kode_matkul}
                     onChange={handleChange}
                   />
+                  <div className={errBaris()}>
+                    {formErrors.kode_matkul && (
+                      <p className={errText()}>{formErrors.kode_matkul}</p>
+                    )}
+                  </div>
                 </div>
               </div>
-              <div className={errBaris()}>
-                {formErrors.kode_matkul && (
-                  <p className={errText()}>{formErrors.kode_matkul}</p>
-                )}
-              </div>
+
               <div className={barisTabel()}>
                 <div className="w-1/3">
                   <label htmlFor="nama" className="block font-bold">
                     Nama Mata Kuliah
                   </label>
+                  <div className="h-6"></div>
                 </div>
                 <div className="w-2/3">
                   <input
@@ -77,18 +80,19 @@ const MatkulForm = ({
                     className={inputStyle(formErrors.nama)}
                     onChange={handleChange}
                   />
+                  <div className={errBaris()}>
+                    {formErrors.nama && (
+                      <p className={errText()}>{formErrors.nama}</p>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className={errBaris()}>
-                {formErrors.nama && (
-                  <p className={errText()}>{formErrors.nama}</p>
-                )}
               </div>
               <div className={barisTabel()}>
                 <div className="w-1/3">
                   <label htmlFor="sks" className="block font-bold">
                     Jumlah SKS
                   </label>
+                  <div className="h-6"></div>
                 </div>
                 <div className="w-2/3">
                   <input
@@ -99,18 +103,19 @@ const MatkulForm = ({
                     value={formValue.sks}
                     onChange={handleChange}
                   />
+                  <div className={errBaris()}>
+                    {formErrors.sks && (
+                      <p className={errText()}>{formErrors.sks}</p>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className={errBaris()}>
-                {formErrors.sks && (
-                  <p className={errText()}>{formErrors.sks}</p>
-                )}
               </div>
               <div className={barisTabel()}>
                 <div className="w-1/3">
                   <label htmlFor="tahun_kurikulum" className="block font-bold">
                     Tahun Kurikulum
                   </label>
+                  <div className="h-6"></div>
                 </div>
                 <div className="w-2/3">
                   <input
@@ -121,12 +126,12 @@ const MatkulForm = ({
                     value={formValue.tahun_kurikulum}
                     onChange={handleChange}
                   />
+                  <div className={errBaris()}>
+                    {formErrors.tahun_kurikulum && (
+                      <p className={errText()}>{formErrors.tahun_kurikulum}</p>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className={errBaris()}>
-                {formErrors.tahun_kurikulum && (
-                  <p className={errText()}>{formErrors.tahun_kurikulum}</p>
-                )}
               </div>
               <div className="w-full flex justify-end gap-4 mt-5">
                 <button
