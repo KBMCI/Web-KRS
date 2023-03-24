@@ -31,7 +31,6 @@ const Feedback = ({ check, note }) => {
   tempFeddback.current = setFeedback;
 
   useEffect(() => {
-    console.log(tempFeddback);
     tempFeddback.current();
   }, []);
 

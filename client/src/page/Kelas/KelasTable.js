@@ -10,6 +10,10 @@ const KelasTable = ({
   deleteHandlerTrue,
   deleteHandler,
 }) => {
+  // Style Component
+  const barisTabel = () => {
+    return "py-2 text-start px-4 font-semibold";
+  };
   return (
     <>
       <div className="min-h-[448px] bg-secondary">
@@ -32,24 +36,12 @@ const KelasTable = ({
                   key={value.id}
                   className="bg-secondary text-neutral-900 border-b border-neutral-400 "
                 >
-                  <th className="py-2 text-start px-4 font-semibold">
-                    {value.matkul.nama}
-                  </th>
-                  <th className="py-2 text-start px-4 font-semibold">
-                    {value.nama}
-                  </th>
-                  <th className="py-2 text-start px-4 font-semibold">
-                    {value.ruang_kelas}
-                  </th>
-                  <th className="py-2 text-start px-4 font-semibold">
-                    {value.hari}
-                  </th>
-                  <th className="py-2 text-start px-4 font-semibold">
-                    {value.jam_mulai}
-                  </th>
-                  <th className="py-2 text-start px-4 font-semibold">
-                    {value.jam_selesai}
-                  </th>
+                  <th className={barisTabel()}>{value.matkul.nama}</th>
+                  <th className={barisTabel()}>{value.nama}</th>
+                  <th className={barisTabel()}>{value.ruang_kelas}</th>
+                  <th className={barisTabel()}>{value.hari}</th>
+                  <th className={barisTabel()}>{value.jam_mulai}</th>
+                  <th className={barisTabel()}>{value.jam_selesai}</th>
                   <th className="py-2 px-4">
                     <div className="flex text-2xl justify-around gap-5 align-center">
                       <button>

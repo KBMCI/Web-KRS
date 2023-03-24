@@ -1,4 +1,32 @@
-const MatkulForm = () => {
+import { useNavigate } from "react-router-dom";
+import ReactLoading from "react-loading";
+
+const MatkulForm = ({
+  handleSubmit,
+  handleChange,
+  formValue,
+  formErrors,
+  loading,
+}) => {
+  const navigate = useNavigate();
+  // Style component
+  const inputStyle = (value) => {
+    return `p-2 w-full rounded-lg border bg-neutral-50 focus:outline-blue focus:bg-secondary ${
+      value ? "border-error" : "border-none"
+    }`;
+  };
+
+  const barisTabel = () => {
+    return "flex justify-between items-center w-full";
+  };
+
+  const errBaris = () => {
+    return "h-6 mb-3 text-end";
+  };
+
+  const errText = () => {
+    return "text-error text-[13px]";
+  };
   return (
     <>
       <div className="flex justify-center align-center fixed inset-0 z-50 bg-black/30 backdrop-blur-sm ">
@@ -10,10 +38,9 @@ const MatkulForm = () => {
             <form
               onSubmit={handleSubmit}
               className="text-neutral-900 mt-2"
-              ref={form}
               autoComplete="off"
             >
-              <div className="mb-3 flex justify-between items-center w-full">
+              <div className={barisTabel()}>
                 <div className="w-1/3">
                   <label htmlFor="kode" className="block font-bold">
                     Kode MK
@@ -28,16 +55,14 @@ const MatkulForm = () => {
                     value={formValue.kode_matkul}
                     onChange={handleChange}
                   />
-                  <div className="h-6">
-                    {formErrors.kode_matkul && (
-                      <p className="text-error text-[13px]">
-                        {formErrors.kode_matkul}
-                      </p>
-                    )}
-                  </div>
                 </div>
               </div>
-              <div className="mb-3 flex justify-between items-center w-full">
+              <div className={errBaris()}>
+                {formErrors.kode_matkul && (
+                  <p className={errText()}>{formErrors.kode_matkul}</p>
+                )}
+              </div>
+              <div className={barisTabel()}>
                 <div className="w-1/3">
                   <label htmlFor="nama" className="block font-bold">
                     Nama Mata Kuliah
@@ -52,16 +77,14 @@ const MatkulForm = () => {
                     className={inputStyle(formErrors.nama)}
                     onChange={handleChange}
                   />
-                  <div className="h-6">
-                    {formErrors.nama && (
-                      <p className="text-error text-[13px]">
-                        {formErrors.nama}
-                      </p>
-                    )}
-                  </div>
                 </div>
               </div>
-              <div className="mb-3 flex justify-between items-center w-full">
+              <div className={errBaris()}>
+                {formErrors.nama && (
+                  <p className={errText()}>{formErrors.nama}</p>
+                )}
+              </div>
+              <div className={barisTabel()}>
                 <div className="w-1/3">
                   <label htmlFor="sks" className="block font-bold">
                     Jumlah SKS
@@ -76,14 +99,14 @@ const MatkulForm = () => {
                     value={formValue.sks}
                     onChange={handleChange}
                   />
-                  <div className="h-6">
-                    {formErrors.sks && (
-                      <p className="text-error text-[13px]">{formErrors.sks}</p>
-                    )}
-                  </div>
                 </div>
               </div>
-              <div className="mb-3 flex justify-between items-center w-full">
+              <div className={errBaris()}>
+                {formErrors.sks && (
+                  <p className={errText()}>{formErrors.sks}</p>
+                )}
+              </div>
+              <div className={barisTabel()}>
                 <div className="w-1/3">
                   <label htmlFor="tahun_kurikulum" className="block font-bold">
                     Tahun Kurikulum
@@ -98,14 +121,12 @@ const MatkulForm = () => {
                     value={formValue.tahun_kurikulum}
                     onChange={handleChange}
                   />
-                  <div className="h-6">
-                    {formErrors.tahun_kurikulum && (
-                      <p className="text-error text-[13px]">
-                        {formErrors.tahun_kurikulum}
-                      </p>
-                    )}
-                  </div>
                 </div>
+              </div>
+              <div className={errBaris()}>
+                {formErrors.tahun_kurikulum && (
+                  <p className={errText()}>{formErrors.tahun_kurikulum}</p>
+                )}
               </div>
               <div className="w-full flex justify-end gap-4 mt-5">
                 <button

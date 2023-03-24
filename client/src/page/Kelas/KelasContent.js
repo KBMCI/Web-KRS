@@ -3,17 +3,10 @@ import Paginate from "../../component/Paginate";
 import KelasTable from "./KelasTable";
 import { FiPlus, FiTrello } from "react-icons/fi";
 import FilterTable from "../../component/FilterTable"
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { url } from "../../api/url";
 
 function KelasContent({ dataKelas, dataTrigger, feedbackHandler }) {
-  // Inisiasi data
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    setData(dataKelas);
-  }, [dataKelas]);
-
   // Isi Tabel Kelas
   const tabelKelas = [
     "Nama Mata Kuliah",
@@ -31,7 +24,7 @@ function KelasContent({ dataKelas, dataTrigger, feedbackHandler }) {
 
   const indexOfLastPost = currentPage * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
-  const currentPost = data.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPost = dataKelas.slice(indexOfFirstPost, indexOfLastPost);
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -44,7 +37,7 @@ function KelasContent({ dataKelas, dataTrigger, feedbackHandler }) {
   };
 
   const nextPage = () => {
-    if (currentPage !== Math.ceil(data.length / postPerPage)) {
+    if (currentPage !== Math.ceil(dataKelas.length / postPerPage)) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -117,7 +110,7 @@ function KelasContent({ dataKelas, dataTrigger, feedbackHandler }) {
               />
               <Paginate
                 postPerPage={postPerPage}
-                totalPost={data.length}
+                totalPost={dataKelas.length}
                 paginate={paginate}
                 previousPage={previousPage}
                 nextPage={nextPage}
