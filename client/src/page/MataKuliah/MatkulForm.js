@@ -1,133 +1,4 @@
-import axios from "axios";
-import { useState, useEffect, useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { MatkulContext } from "../../context/contextMatkul";
-import { urlMatkul } from "../../api/url";
-import Feedback from "../../component/Feedback";
-import ReactLoading from "react-loading";
-
-export default function MatkulEdit() {
-  const { Trigger } = useContext(MatkulContext);
-  const navigate = useNavigate();
-  const kodeParams = useParams();
-  // const [getId, setGetId] = useState(true);
-  const [accept, setAccept] = useState(false);
-  const [result, setResult] = useState(true);
-  const [loading, setLoading] = useState(false);
-
-  // Initial State value form
-  const [kode_matkul, setKode_matkul] = useState("");
-  const [nama, setNama] = useState("");
-  const [sks, setSks] = useState(0);
-  const [tahun_kurikulum, setTahun_kurikulum] = useState(0);
-
-  // Validation Form
-  const formValue = {
-    kode_matkul: kode_matkul,
-    nama: nama,
-    sks: sks,
-    tahun_kurikulum: tahun_kurikulum,
-  };
-
-  const [formErrors, setFormErrors] = useState({});
-  const [isSubmit, setIsSubmit] = useState(false);
-
-  const patchData = async ({ kode_matkul, nama, tahun_kurikulum, sks }) => {
-    try {
-      setLoading(true);
-      const res = await axios.patch(`${urlMatkul}/${kodeParams.kode}`, {
-        kode_matkul,
-        nama,
-        tahun_kurikulum: parseFloat(tahun_kurikulum),
-        sks: parseInt(sks),
-        updated_at: null,
-        created_at: null,
-      });
-      if (res.status === 200) {
-        console.log(res);
-        setResult(true);
-        feedback();
-        Trigger();
-        setLoading(false);
-        setTimeout(() => {
-          navigate("/mata-kuliah");
-        }, 1501);
-      }
-    } catch (err) {
-      console.log(err);
-      setResult(false);
-      feedback();
-      setLoading(false);
-    }
-  };
-
-  const getMatkulId = async () => {
-    try {
-      const { data } = await axios.get(`${urlMatkul}/${kodeParams.kode}`);
-      setKode_matkul(data.data.kode_matkul);
-      setNama(data.data.nama);
-      setSks(data.data.sks);
-      setTahun_kurikulum(data.data.tahun_kurikulum);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    getMatkulId();
-  }, []);
-
-  useEffect(() => {
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      console.log(formValue);
-      patchData(formValue);
-    }
-  }, [formErrors]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setFormErrors(validate(formValue));
-    setIsSubmit(true);
-  };
-
-  const validate = (values) => {
-    const errors = {};
-    const regexNumber = /^\d+$/;
-    if (!values.kode_matkul) {
-      errors.kode_matkul = "Kode Mata Kuliah is required";
-    }
-    if (!values.nama) {
-      errors.nama = "Nama Mata Kuliah is required";
-    }
-    if (!values.sks) {
-      errors.sks = "Jumlah SKS is required";
-    } else if (!regexNumber.test(values.sks)) {
-      errors.sks = "Number input type only";
-    }
-    if (!values.tahun_kurikulum) {
-      errors.tahun_kurikulum = "Tahun Kurikulum is required";
-    } else if (!regexNumber.test(values.tahun_kurikulum)) {
-      errors.tahun_kurikulum = "Number input type only";
-    }
-
-    return errors;
-  };
-
-  // Style component
-  const inputStyle = (value) => {
-    return `p-2 w-full rounded-lg border bg-neutral-50 focus:outline-blue focus:bg-secondary ${
-      value ? "border-error" : "border-none"
-    }`;
-  };
-
-  // Feedback
-  const feedback = () => {
-    setAccept(true);
-    setTimeout(() => {
-      setAccept(false);
-    }, 1500);
-  };
-
+const MatkulForm = () => {
   return (
     <>
       <div className="flex justify-center align-center fixed inset-0 z-50 bg-black/30 backdrop-blur-sm ">
@@ -139,6 +10,7 @@ export default function MatkulEdit() {
             <form
               onSubmit={handleSubmit}
               className="text-neutral-900 mt-2"
+              ref={form}
               autoComplete="off"
             >
               <div className="mb-3 flex justify-between items-center w-full">
@@ -153,10 +25,8 @@ export default function MatkulEdit() {
                     name="kode_matkul"
                     type="text"
                     className={inputStyle(formErrors.kode_matkul)}
-                    value={kode_matkul}
-                    onChange={(ev) => {
-                      setKode_matkul(ev.target.value);
-                    }}
+                    value={formValue.kode_matkul}
+                    onChange={handleChange}
                   />
                   <div className="h-6">
                     {formErrors.kode_matkul && (
@@ -178,11 +48,9 @@ export default function MatkulEdit() {
                     id="nama"
                     name="nama"
                     type="text"
-                    value={nama}
+                    value={formValue.nama}
                     className={inputStyle(formErrors.nama)}
-                    onChange={(ev) => {
-                      setNama(ev.target.value);
-                    }}
+                    onChange={handleChange}
                   />
                   <div className="h-6">
                     {formErrors.nama && (
@@ -205,10 +73,8 @@ export default function MatkulEdit() {
                     name="sks"
                     type="text"
                     className={inputStyle(formErrors.sks)}
-                    value={sks || ""}
-                    onChange={(ev) => {
-                      setSks(ev.target.value);
-                    }}
+                    value={formValue.sks}
+                    onChange={handleChange}
                   />
                   <div className="h-6">
                     {formErrors.sks && (
@@ -229,10 +95,8 @@ export default function MatkulEdit() {
                     name="tahun_kurikulum"
                     type="text"
                     className={inputStyle(formErrors.tahun_kurikulum)}
-                    value={tahun_kurikulum || ""}
-                    onChange={(ev) => {
-                      setTahun_kurikulum(ev.target.value);
-                    }}
+                    value={formValue.tahun_kurikulum}
+                    onChange={handleChange}
                   />
                   <div className="h-6">
                     {formErrors.tahun_kurikulum && (
@@ -263,16 +127,9 @@ export default function MatkulEdit() {
             </form>
           </div>
         </div>
-        {accept ? (
-          result ? (
-            <Feedback check={true} note="patch" />
-          ) : (
-            <Feedback check={false} note="patch" />
-          )
-        ) : (
-          ""
-        )}
       </div>
     </>
   );
-}
+};
+
+export default MatkulForm;

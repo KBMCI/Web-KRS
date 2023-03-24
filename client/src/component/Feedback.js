@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { FiCheck, FiInfo } from "react-icons/fi";
 
 const Feedback = ({ check, note }) => {
   const [icon, setIcon] = useState();
   const [text, setText] = useState();
-  const [result, setResult] = useState(false);
+  const tempFeddback = useRef(); // Penampungan sementara agar tidak depeb=ndecies
 
-  useEffect(() => {
+  const setFeedback = () => {
     if (check) {
       setIcon(<FiCheck />);
       if (note === "delete") {
@@ -16,7 +16,7 @@ const Feedback = ({ check, note }) => {
       } else if (note === "patch") {
         setText("Data telah berhasil diubah");
       }
-    } else  {
+    } else {
       setIcon(<FiInfo />);
       if (note === "delete") {
         setText("Data gagal dihapus");
@@ -26,17 +26,24 @@ const Feedback = ({ check, note }) => {
         setText("Data gagal diubah");
       }
     }
+  };
+
+  tempFeddback.current = setFeedback;
+
+  useEffect(() => {
+    console.log(tempFeddback);
+    tempFeddback.current();
   }, []);
 
   return (
     <div
       className={` ${
         check ? "bg-success" : "bg-error"
-      } px-4 py-3  text-secondary flex gap-3 items-center fixed z-30 right-3 bottom-3 rounded-[10px] duration-300 transition`}
+      } px-4 py-3  text-secondary flex gap-3 items-center fixed z-50 right-3 bottom-3 rounded-[10px] duration-300 transition`}
     >
       <div>{icon}</div>
       <div>
-        <p>{check === "success" ? "Yippie!" : "Oopps!"}</p>
+        <p>{check ? "Yippie!" : "Oopps!"}</p>
         <p>{text}</p>
       </div>
     </div>

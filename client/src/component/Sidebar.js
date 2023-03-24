@@ -8,7 +8,7 @@ import {
   FiDatabase,
 } from "react-icons/fi";
 import { useContext } from "react";
-import { MatkulContext } from "../api/contextMatkul";
+import { MatkulContext } from "../context/contextMatkul";
 
 function Sidebar() {
   const {open, SetOpen} = useContext(MatkulContext)

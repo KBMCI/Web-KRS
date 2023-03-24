@@ -7,7 +7,9 @@ import Home from "./page/Home";
 import Dashboard from "./page/Dashboard/Dashboard";
 import MatkulTambah from "./page/MataKuliah/MatkulTambah";
 import MatkulEdit from "./page/MataKuliah/MatkulEdit";
-import { MatkulProvider } from "./api/contextMatkul";
+import { MatkulProvider } from "./context/contextMatkul";
+import { KelasTambah } from "./page/Kelas/KelasTambah";
+import KelasEdit from "./page/Kelas/KelasEdit";
 
 function App() {
   return (
@@ -21,7 +23,10 @@ function App() {
               <Route path="tambah" element={<MatkulTambah />} />
               <Route path=":kode" element={<MatkulEdit />} />
             </Route>
-            <Route path="kelas" element={<Kelas />} />
+            <Route path="kelas" element={<Kelas />} >
+              <Route path="tambah" element={<KelasTambah/>}/>
+              <Route path=":kode" element={<KelasEdit/>}/>
+            </Route>
           </Route>
         </Routes>
       </div>

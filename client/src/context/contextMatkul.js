@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { urlMatkul } from "./url";
+import { urlMatkul } from "../api/url";
 import axios from "axios";
 
 export const MatkulContext = createContext();
@@ -14,7 +14,8 @@ export function MatkulProvider({ children }) {
     const getDataMatkul = async () => {
       const res = await axios.get(urlMatkul);
       try {
-          setDataMatkul(res.data.data);
+        setDataMatkul(res.data.data);
+        console.log(res);
       } catch (error) {
         console.log(error);
       }
@@ -25,22 +26,6 @@ export function MatkulProvider({ children }) {
   const Trigger = () => {
     setTrigger(!trigger);
   };
-
-  // const getMatkulId = async (kode) => {
-  //   const MatkulId = await axios.get(`${urlMatkul}/${kode}`);
-  //   try {
-  //     setDataMatkulId(MatkulId.data.data);
-  //     return MatkulId;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // const deleteMatkulId = async (kode) => {
-  //   const deleteMatkul = await axios.delete(`${urlMatkul}/${kode}`);
-  //   Trigger();
-  //   console.log(deleteMatkul);
-  // };
 
   const tableNama = [
     "Kode MK",

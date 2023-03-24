@@ -1,12 +1,12 @@
 import { Outlet } from "react-router-dom";
-import {MatkulProvider } from "../../api/contextMatkul";
+import { MatkulProvider } from "../../context/contextMatkul";
 import MatkulContent from "./MatkulContent";
 function MataKuliah() {
   return (
-    <MatkulProvider>
+    <>
       <MatkulContent />
       <Outlet />
-    </MatkulProvider>
+    </>
   );
 }
 

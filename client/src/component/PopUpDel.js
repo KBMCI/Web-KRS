@@ -1,7 +1,6 @@
 import { FiAlertTriangle } from "react-icons/fi"
 import ReactLoading from "react-loading";
 
-
 export default function PopUpDel({deleteHandlerFalse, deleteHandlerTrue, loading}) {
     return (
         <div className="flex justify-center align-center fixed inset-0 z-20 bg-black/30 backdrop-blur-sm ">

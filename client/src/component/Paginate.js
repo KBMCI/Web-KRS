@@ -14,7 +14,9 @@ export default function Paginate({
     pageNumber.push(i);
   }
   return (
-    <div className="pagination-container">
+
+    <div className="py-2 bg-primary text-secondary border-t border-neutral-400">
+              <div className="pagination-container">
       <ul className="flex justify-center gap-7 items-center">
         <li
           onClick={() => {
@@ -59,5 +61,7 @@ export default function Paginate({
         </li>
       </ul>
     </div>
+            </div>
+    
   );
 }

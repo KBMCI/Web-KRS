@@ -2,7 +2,7 @@ import Sidebar from "../component/Sidebar";
 import Navbar from "../component/Navbar";
 import { Outlet } from "react-router-dom";
 import { useContext } from "react";
-import { MatkulContext } from "../api/contextMatkul";
+import { MatkulContext } from "../context/contextMatkul";
 
 export function Home() {
   const { open } = useContext(MatkulContext);

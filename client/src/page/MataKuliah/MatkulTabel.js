@@ -1,6 +1,6 @@
 import { FiTrash2, FiEdit2, FiSearch } from "react-icons/fi";
 import { useContext, useState } from "react";
-import { MatkulContext } from "../../api/contextMatkul";
+import { MatkulContext } from "../../context/contextMatkul";
 import { Link } from "react-router-dom";
 import Paginate from "../../component/Paginate";
 import axios from "axios";
@@ -87,7 +87,6 @@ export default function MatkulTabel() {
     }
   };
 
-  console.log(currentPost);
   // Feedback
   const feedback = () => {
     setAccept(true);
@@ -160,15 +159,14 @@ export default function MatkulTabel() {
                 </tbody>
               </table>
             </div>
-            <div className="py-2 bg-primary text-secondary border-t border-neutral-400">
-              <Paginate
-                postPerPage={postPerPage}
-                totalPost={dataMatkul.length}
-                paginate={paginate}
-                previousPage={previousPage}
-                nextPage={nextPage}
-              />
-            </div>
+
+            <Paginate
+              postPerPage={postPerPage}
+              totalPost={dataMatkul.length}
+              paginate={paginate}
+              previousPage={previousPage}
+              nextPage={nextPage}
+            />
           </>
         ) : (
           <>
