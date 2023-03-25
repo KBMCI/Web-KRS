@@ -1,22 +1,23 @@
+import UserTabel from "./UserTabel";
 import Button from "../../component/Button";
-import Paginate from "../../component/Paginate";
-import KelasTable from "./KelasTable";
 import { FiPlus, FiTrello } from "react-icons/fi";
-import FilterTable from "../../component/FilterTable";
-import { useContext, useState } from "react";
+import { useState, useContext } from "react";
 import { url } from "../../api/url";
+import Paginate from "../../component/Paginate";
+import FilterTable from "../../component/FilterTable";
 import { DataContext } from "../../context/DataContext";
 
-function KelasContent({ feedbackHandler }) {
-  const { dataKelas, TriggerKelas } = useContext(DataContext);
+function UserContent({feedbackHandler}) {
+  const { dataUser, TriggerUser } = useContext(DataContext);
+  const [loading, setLoading] = useState(false);
 
-  // Create pagination
+  // Membuat Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage] = useState(10);
 
   const indexOfLastPost = currentPage * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
-  const currentPost = dataKelas?.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPost = dataUser?.slice(indexOfFirstPost, indexOfLastPost);
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -29,12 +30,12 @@ function KelasContent({ feedbackHandler }) {
   };
 
   const nextPage = () => {
-    if (currentPage !== Math.ceil(dataKelas?.length / postPerPage)) {
+    if (currentPage !== Math.ceil(dataUser?.length / postPerPage)) {
       setCurrentPage(currentPage + 1);
     }
   };
 
-  //  create delete show
+  // Delete Handler
   const [showDel, setShowDel] = useState({
     show: false,
     id: null,
@@ -50,58 +51,64 @@ function KelasContent({ feedbackHandler }) {
 
   // perform deletion and hide popup
   const deleteHandlerTrue = async () => {
+    setLoading(true);
     if (showDel.show && showDel.id) {
       try {
-        const res = await url.delete(`/kelas/${showDel.id}`);
+        const res = await url.delete(`/user/${showDel.id}`);
         if (res.status === 200) {
           console.log(res);
-          TriggerKelas();
           feedbackHandler(true, "delete");
+          TriggerUser();
+          setLoading(false);
           setShowDel({
             show: false,
             id: null,
           });
         }
       } catch (err) {
+        console.log(err);
         feedbackHandler(false, "delete");
+        setLoading(false);
       }
     }
   };
 
-  // hide confrimation box
+  // hide confrimation box when user click's cancel
   const deleteHandlerFalse = () => {
     setShowDel({
       show: false,
       id: null,
     });
   };
-
-  return (
-    <>
-      <div className="px-10 pt-10">
-        {/* Membuat Judul dan Button tambah, excel Kelas */}
+    return (
+      <>
+      <div className={`px-10 pt-10`}>
         <div className="flex items-center justify-between mb-12">
-          <h1 className="text-4xl font-bold">Kelas</h1>
+          <h1 className="text-4xl font-bold">User Panel</h1>
           <div className="flex gap-4">
-            <Button icon={<FiTrello />} name={"Import Excel"} />
-            <Button icon={<FiPlus />} name={"Add Kelas"} to="/kelas/tambah" />
+            <Button icon={<FiTrello />} to="" name="Import By Excel" />
+            <Button
+              icon={<FiPlus />}
+              to="/user-panel/tambah"
+              name="Add User"
+            />
           </div>
         </div>
-        {/* Tabel Kelas */}
-        <div className="flex justify-center">
+        <div className="flex justify-center ">
           <div className="grow">
             <div className="rounded-xl overflow-hidden shadow-lg bg-secondary">
               <FilterTable />
-              <KelasTable
+              <UserTabel
                 data={currentPost}
                 showDel={showDel}
                 deleteHandler={deleteHandler}
                 deleteHandlerFalse={deleteHandlerFalse}
                 deleteHandlerTrue={deleteHandlerTrue}
+                loading={loading}
               />
               <Paginate
                 postPerPage={postPerPage}
-                totalPost={dataKelas?.length}
+                totalPost={dataUser?.length}
                 paginate={paginate}
                 previousPage={previousPage}
                 nextPage={nextPage}
@@ -111,7 +118,7 @@ function KelasContent({ feedbackHandler }) {
         </div>
       </div>
     </>
-  );
-}
-
-export default KelasContent;
+    );
+  }
+  
+  export default UserContent;

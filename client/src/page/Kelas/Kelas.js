@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import KelasContent from "./KelasContent";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import Feedback from "../../component/Feedback";
 import { DataContext } from "../../context/DataContext";
 

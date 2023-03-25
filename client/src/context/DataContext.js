@@ -6,13 +6,15 @@ export const DataContext = createContext();
 export function DataProvider({ children }) {
   const [dataMatkul, setDataMatkul] = useState([]);
   const [triggerMatkul, setTriggerMatkul] = useState(false);
-  const [open, setOpen] = useState(true);
   const [dataKelas, setDataKelas] = useState([]);
-  const [triggerData, setTriggerData] = useState(false);
+  const [triggerKelas, setTriggerKelas] = useState(false);
+  const [dataUser, setDataUser] = useState([]);
+  const [triggerUser, setTriggerUser] = useState(false);
+  const [open, setOpen] = useState(true);
 
   useEffect(() => {
     const getDataMatkul = async () => {
-      const {data} = await url.get("/matkul");
+      const { data } = await url.get("/matkul");
       try {
         setDataMatkul(data.data);
         console.log(data);
@@ -38,10 +40,27 @@ export function DataProvider({ children }) {
       }
     };
     getDataKelas();
-  }, [triggerData]);
+  }, [triggerKelas]);
 
   const TriggerKelas = () => {
-    setTriggerData(!triggerData);
+    setTriggerKelas(!triggerKelas);
+  };
+
+  useEffect(() => {
+    const getDataUser = async () => {
+      try {
+        const { data } = await url.get("/user");
+        console.log(data);
+        setDataUser(data.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getDataUser();
+  }, [triggerUser]);
+
+  const TriggerUser = () => {
+    setTriggerUser(!triggerUser);
   };
 
   const SetOpen = () => {
@@ -53,8 +72,10 @@ export function DataProvider({ children }) {
       value={{
         dataMatkul,
         dataKelas,
+        dataUser,
         TriggerMatkul,
         TriggerKelas,
+        TriggerUser,
         open,
         SetOpen,
       }}

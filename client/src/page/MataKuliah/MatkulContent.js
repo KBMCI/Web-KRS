@@ -17,7 +17,7 @@ function MatkulContent({ feedbackHandler }) {
 
   const indexOfLastPost = currentPage * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
-  const currentPost = dataMatkul.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPost = dataMatkul?.slice(indexOfFirstPost, indexOfLastPost);
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -30,7 +30,7 @@ function MatkulContent({ feedbackHandler }) {
   };
 
   const nextPage = () => {
-    if (currentPage !== Math.ceil(dataMatkul.length / postPerPage)) {
+    if (currentPage !== Math.ceil(dataMatkul?.length / postPerPage)) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -85,13 +85,13 @@ function MatkulContent({ feedbackHandler }) {
     <>
       <div className={`px-10 pt-10`}>
         <div className="flex items-center justify-between mb-12">
-          <h1 className="text-4xl font-bold"> Mata Kuliah</h1>
+          <h1 className="text-4xl font-bold">Mata Kuliah</h1>
           <div className="flex gap-4">
             <Button icon={<FiTrello />} to="" name="Import By Excel" />
             <Button
               icon={<FiPlus />}
               to="/mata-kuliah/tambah"
-              name="Mata Kuliah"
+              name="Add Mata Kuliah"
             />
           </div>
         </div>
@@ -109,7 +109,7 @@ function MatkulContent({ feedbackHandler }) {
               />
               <Paginate
                 postPerPage={postPerPage}
-                totalPost={dataMatkul.length}
+                totalPost={dataMatkul?.length}
                 paginate={paginate}
                 previousPage={previousPage}
                 nextPage={nextPage}

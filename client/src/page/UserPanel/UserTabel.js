@@ -2,23 +2,15 @@ import { FiTrash2, FiEdit2 } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import PopUpDel from "../../component/PopUpDel";
 
-const KelasTable = ({
+export default function UserTabel({
   data,
   showDel,
   deleteHandlerFalse,
   deleteHandlerTrue,
   deleteHandler,
-}) => {
-  const tabel = [
-    "Nama Mata Kuliah",
-    "Nama Kelas",
-    "Ruang Kelas",
-    "Hari",
-    "Jam Mulai",
-    "Jam Selesai",
-    " ",
-  ];
-
+  loading,
+}) {
+  const table = ["Emai", "Nama", "NIM", "Program Studi", "Role",""];
   // Style Component
   const barisTabel = () => {
     return "py-2 text-start px-4 font-semibold";
@@ -29,9 +21,9 @@ const KelasTable = ({
         <table className="border-collapse border-b border-neutral-400 w-full ">
           <thead>
             <tr className="bg-primary text-secondary">
-              {tabel.map((value) => {
+              {table.map((value) => {
                 return (
-                  <th className="py-2 w-auto text-start px-4" key={value}>
+                  <th className="py-2 w-auto text-start p-4" key={value}>
                     {value}
                   </th>
                 );
@@ -45,20 +37,21 @@ const KelasTable = ({
                   key={value.id}
                   className="bg-secondary text-neutral-900 border-b border-neutral-400 "
                 >
-                  <th className={barisTabel()}>{value.matkul.nama}</th>
+                  <th className={barisTabel()}>{value.email}</th>
                   <th className={barisTabel()}>{value.nama}</th>
-                  <th className={barisTabel()}>{value.ruang_kelas}</th>
-                  <th className={barisTabel()}>{value.hari}</th>
-                  <th className={barisTabel()}>{value.jam_mulai}</th>
-                  <th className={barisTabel()}>{value.jam_selesai}</th>
-                  <th className="py-2 px-4">
+                  <th className={barisTabel()}>{value.nim} SKS</th>
+                  <th className={barisTabel()}>{value.program_studi}</th>
+                  <th className={barisTabel()}>{value.role}</th>
+                  <th className=" py-2 px-4">
                     <div className="flex text-2xl justify-around gap-5 align-center">
                       <button>
                         <Link to={`${value.id}`}>
                           <FiEdit2 className="text-primary" />
                         </Link>
                       </button>
-                      <button onClick={deleteHandler.bind(this, value.id)}>
+                      <button
+                        onClick={deleteHandler.bind(this, value.id)}
+                      >
                         <FiTrash2 className="text-primary" />
                       </button>
                     </div>
@@ -69,15 +62,15 @@ const KelasTable = ({
           </tbody>
         </table>
       </div>
+
       {/* Show Delete */}
       {showDel.show && (
         <PopUpDel
           deleteHandlerFalse={deleteHandlerFalse}
           deleteHandlerTrue={deleteHandlerTrue}
+          loading={loading}
         />
       )}
     </>
   );
-};
-
-export default KelasTable;
+}

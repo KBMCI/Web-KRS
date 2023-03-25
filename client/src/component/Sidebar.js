@@ -19,19 +19,21 @@ function Sidebar() {
   return (
     <aside
       className={` ${
-        open ? "w-2/12 " : "w-1/12 text-primary"
+        open ? "w-1/5 " : "w-1/12 text-primary"
       } bg-secondary duration-300 shadow-lg fixed top-0 left-0 bottom-0 z-20 `}
     >
       <div
-        className="mt-4 px-6 py-3 mb-7 flex text-2xl justify-center gap-x-3 cursor-pointer"
+        className="mt-4 px-8 mb-7 flex items-center gap-x-4 cursor-pointer"
         onClick={() => SetOpen()}
       >
-        <FiActivity />
-        {open && (
-          <h1 className="font-bold">
-            <span className="text-primary">Sobat</span> KRS
-          </h1>
-        )}
+        <FiActivity size={46} className={`${!open && "w-full"}`} />
+        <h1
+          className={`${
+            !open && "hidden"
+          } origin-left duration-100 font-bold text-[30px]`}
+        >
+          <span className="text-primary">Sobat</span> KRS
+        </h1>
       </div>
       <div className="px-4 font-semibold text-neutral-400">
         <NavLink

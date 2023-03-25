@@ -37,7 +37,7 @@ export default function MatkulTabel({
             </tr>
           </thead>
           <tbody>
-            {data.map((value) => {
+            {data?.map((value) => {
               return (
                 <tr
                   key={value.kode_matkul}
