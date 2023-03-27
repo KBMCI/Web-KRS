@@ -1,13 +1,11 @@
-import { FiSearch } from "react-icons/fi";
+import { FiFilter } from "react-icons/fi";
 
 const FilterTable = () => {
   return (
     <>
-      <div className="w-full py-2 px-4 flex align-center gap-x-2 bg-secondary">
-        <label htmlFor="">
-          <FiSearch className="inline-block" />
-        </label>
-        <input type="text" placeholder="Search Mata Kuliah" />
+      <div className="w-full py-3 px-4 flex align-center gap-[10px] bg-secondary">
+        <FiFilter size={20} className="inline-block" />
+        <h2 className="font-bold">Filter</h2>
       </div>
     </>
   );

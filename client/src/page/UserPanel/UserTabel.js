@@ -10,7 +10,7 @@ export default function UserTabel({
   deleteHandler,
   loading,
 }) {
-  const table = ["Emai", "Nama", "NIM", "Program Studi", "Role",""];
+  const table = ["Email", "Nama", "NIM", "Program Studi", "Role",""];
   // Style Component
   const barisTabel = () => {
     return "py-2 text-start px-4 font-semibold";

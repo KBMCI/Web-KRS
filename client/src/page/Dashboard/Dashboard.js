@@ -1,8 +1,8 @@
-import ContentDashboard from "./ContentDashboard";
+import DashboardContent from "./DashboardContent";
 
 function Dashboard() {
   return (
-    <ContentDashboard/>
+    <DashboardContent/>
   );
 }
 

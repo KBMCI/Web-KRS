@@ -1,11 +1,6 @@
 import { NavLink } from "react-router-dom";
-import {
-  FiActivity,
-  FiCoffee,
-  FiUsers,
-  FiAirplay,
-  FiDatabase,
-} from "react-icons/fi";
+import Logo from "../assets/Logo.png";
+import { FiCoffee, FiUsers, FiAirplay, FiFolder } from "react-icons/fi";
 import { useContext } from "react";
 import { DataContext } from "../context/DataContext";
 
@@ -19,20 +14,24 @@ function Sidebar() {
   return (
     <aside
       className={` ${
-        open ? "w-1/5 " : "w-1/12 text-primary"
+        open ? "w-1/5 " : "w-1/12 "
       } bg-secondary duration-300 shadow-lg fixed top-0 left-0 bottom-0 z-20 `}
     >
       <div
-        className="mt-4 px-8 mb-7 flex items-center gap-x-4 cursor-pointer"
+        className={`${
+          open && "pl-8"
+        } mt-4 mb-7 flex items-center gap-x-4 cursor-pointer text-primary`}
         onClick={() => SetOpen()}
       >
-        <FiActivity size={46} className={`${!open && "w-full"}`} />
+        <div className={`${!open && "w-full"} flex justify-center`}>
+          <img src={Logo} alt={Logo} width="46px" />
+        </div>
         <h1
           className={`${
             !open && "hidden"
           } origin-left duration-100 font-bold text-[30px]`}
         >
-          <span className="text-primary">Sobat</span> KRS
+          <span className="text-black">Sobat</span> KRS
         </h1>
       </div>
       <div className="px-4 font-semibold text-neutral-400">
@@ -40,8 +39,8 @@ function Sidebar() {
           to="/"
           className={({ isActive }) => (isActive ? activeLink : normalLink)}
         >
-          <FiDatabase size={24} className={`${!open && "w-full"}`} />{" "}
-          <h1 className={`${!open && "hidden"} origin-left duration-100`}>
+          <FiFolder size={24} className={`${!open && "w-full"}`} />{" "}
+          <h1 className={`${!open && "hidden"} origin-left duration-200`}>
             Dashboard
           </h1>
         </NavLink>
@@ -50,7 +49,7 @@ function Sidebar() {
           className={({ isActive }) => (isActive ? activeLink : normalLink)}
         >
           <FiAirplay size={24} className={`${!open && "w-full"}`} />{" "}
-          <h1 className={`${!open && "hidden"} origin-left duration-100`}>
+          <h1 className={`${!open && "hidden"} origin-left duration-200`}>
             User Panel
           </h1>
         </NavLink>

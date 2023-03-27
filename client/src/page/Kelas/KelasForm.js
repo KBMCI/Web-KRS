@@ -57,6 +57,7 @@ const Form = ({
                     value={formValue.kode_matkul}
                     onChange={handleChange}
                   >
+                    <option></option>
                     {dataMatkul.map((value) => {
                       return (
                         <option
@@ -139,6 +140,7 @@ const Form = ({
                     value={formValue.hari}
                     onChange={handleChange}
                   >
+                    <option></option>
                     {hari.map((value, index) => {
                       return (
                         <option value={value} key={index}>
