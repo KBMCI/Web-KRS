@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"strconv"
 	"web-krs/helper"
 	"web-krs/model"
 	"web-krs/request"
@@ -53,7 +54,7 @@ func (h *matkulHandler) StoreMatkulHandler(c *gin.Context) {
 }
 
 func (h *matkulHandler) EditMatkulHandler(c *gin.Context) {
-	var req request.UpdateMatkulRequest
+	var req request.MatkulRequest
 
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
@@ -67,8 +68,9 @@ func (h *matkulHandler) EditMatkulHandler(c *gin.Context) {
 	}
 
 	id := c.Param("id")
+	idUint, _ := strconv.ParseUint(id, 10, 32)
 
-	matkul, err := h.matkulService.EditMatkul(id, &req)
+	matkul, err := h.matkulService.EditMatkul(uint(idUint), &req)
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusUnprocessableEntity, err)
 		return
@@ -81,8 +83,9 @@ func (h *matkulHandler) EditMatkulHandler(c *gin.Context) {
 
 func (h *matkulHandler) DetailMatkulHandler(c *gin.Context) {
 	id := c.Param("id")
+	idUint, _ := strconv.ParseUint(id, 10, 32)
 
-	matkul, err := h.matkulService.GetByID(id)
+	matkul, err := h.matkulService.GetByID(uint(idUint))
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
 		return
@@ -93,8 +96,9 @@ func (h *matkulHandler) DetailMatkulHandler(c *gin.Context) {
 
 func (h *matkulHandler) DeleteMatkulHandler(c *gin.Context) {
 	id := c.Param("id")
+	idUint, _ := strconv.ParseUint(id, 10, 32)
 
-	err := h.matkulService.DestroyMatkul(id)
+	err := h.matkulService.DestroyMatkul(uint(idUint))
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusUnprocessableEntity, err)
 		return
