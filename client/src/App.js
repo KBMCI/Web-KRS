@@ -1,5 +1,5 @@
 import "./App.css";
-import { Route, Routes, Link} from "react-router-dom";
+import { Route, Routes, Link } from "react-router-dom";
 import UserPanel from "./page/UserPanel/UserPanel";
 import Kelas from "./page/Kelas/Kelas";
 import MataKuliah from "./page/MataKuliah/MataKuliah";
@@ -19,15 +19,9 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<Home />}>
-            <Route
-              index
-              element={<Dashboard />}
-              handle={{
-                crumb: () => <Link to="/">Dashboard</Link>,
-              }}
-            />
-            <Route path="user-panel" element={<UserPanel />} >
-            <Route path="tambah" element={<UserTambah />} />
+            <Route index element={<Dashboard />} />
+            <Route path="user-panel" element={<UserPanel />}>
+              <Route path="tambah" element={<UserTambah />} />
               <Route path=":kode" element={<UserEdit />} />
             </Route>
             <Route path="mata-kuliah" element={<MataKuliah />}>
