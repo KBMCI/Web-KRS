@@ -48,13 +48,10 @@ func(s *server) Run() {
 		})
 	})
 
-	s.httpServer.GET("/migrate", func(ctx *gin.Context) {
-		helper.InsertDummyData(s.cfg)
+	s.httpServer.GET("/seeder", func(ctx *gin.Context) {
+		helper.SeederRefresh(s.cfg)
 		
-		ctx.JSON(http.StatusOK, gin.H{
-			"success": true,
-			"message": "migration success",
-		})
+		helper.ResponseSuccessJson(ctx, "seeder success", "")
 	})
 
 	matkulRepo := repository.NewMatkulRepository(s.cfg)

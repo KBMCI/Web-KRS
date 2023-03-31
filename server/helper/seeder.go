@@ -5,7 +5,10 @@ import (
 	"web-krs/model"
 )
 
-func InsertDummyData(cfg config.Config) {
+func SeederRefresh(cfg config.Config) {
+
+	cfg.Database().Migrator().DropTable(&model.Matkul{})
+	cfg.Database().Migrator().DropTable(&model.Kelas{})
 
 	matkuls := []model.Matkul{
 		{Kode: "CIT60031", Nama: "Manajemen Proyek Teknologi Informasi", TahunKurikulum: 2022, Sks: 3},
@@ -22,7 +25,7 @@ func InsertDummyData(cfg config.Config) {
 		cfg.Database().Create(&matkul)
 	}
 
-	manyKelas := []model.Kelas{
+	classes := []model.Kelas{
 		{KodeMatkul: "CIT60031", Nama: "A", RuangKelas: "Gedung F FILKOM - F3.1", Hari: "Senin", JamMulai: "09:30", JamSelesai: "11:59"},
 		{KodeMatkul: "CIT60031", Nama: "B", RuangKelas: "Gedung F FILKOM - F3.2", Hari: "Selasa", JamMulai: "09:30", JamSelesai: "11:59"},
 
@@ -60,7 +63,7 @@ func InsertDummyData(cfg config.Config) {
 		{KodeMatkul: "CIT62018", Nama: "D", RuangKelas: "Gedung F FILKOM - F4.4", Hari: "Kamis", JamMulai: "09:30", JamSelesai: "11:59"},
 	}
 	
-	for _, kelas := range manyKelas {
+	for _, kelas := range classes {
 		cfg.Database().Create(&kelas)
 	}
 	
