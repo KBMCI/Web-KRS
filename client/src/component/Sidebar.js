@@ -1,10 +1,9 @@
 import { NavLink } from "react-router-dom";
 import Logo from "../assets/Logo.png";
-import { FiCoffee, FiUsers, FiAirplay, FiFolder } from "react-icons/fi";
 import { useContext } from "react";
 import { DataContext } from "../context/DataContext";
 
-function Sidebar() {
+function Sidebar({ items }) {
   const { open, SetOpen } = useContext(DataContext);
   const normalLink =
     "py-3 px-4 mb-2 flex items-center gap-x-4 hover:text-neutral-900 duration-100";
@@ -35,42 +34,20 @@ function Sidebar() {
         </h1>
       </div>
       <div className="px-4 font-semibold text-neutral-400">
-        <NavLink
-          to="/"
-          className={({ isActive }) => (isActive ? activeLink : normalLink)}
-        >
-          <FiFolder size={24} className={`${!open && "w-full"}`} />{" "}
-          <h1 className={`${!open && "hidden"} origin-left duration-200`}>
-            Dashboard
-          </h1>
-        </NavLink>
-        <NavLink
-          to="/user-panel"
-          className={({ isActive }) => (isActive ? activeLink : normalLink)}
-        >
-          <FiAirplay size={24} className={`${!open && "w-full"}`} />{" "}
-          <h1 className={`${!open && "hidden"} origin-left duration-200`}>
-            User Panel
-          </h1>
-        </NavLink>
-        <NavLink
-          to="/mata-kuliah"
-          className={({ isActive }) => (isActive ? activeLink : normalLink)}
-        >
-          <FiCoffee size={24} className={!open && "w-full "} />{" "}
-          <h1 className={`${!open && "hidden"} origin-left duration-200`}>
-            Mata Kuliah
-          </h1>
-        </NavLink>
-        <NavLink
-          to="/kelas"
-          className={({ isActive }) => (isActive ? activeLink : normalLink)}
-        >
-          <FiUsers size={24} className={!open && "w-full"} />{" "}
-          <h1 className={`${!open && "hidden"} origin-left duration-200`}>
-            Kelas
-          </h1>
-        </NavLink>
+        {items.map((item, index) => {
+          return (
+            <NavLink
+              key={index}
+              to={item.link}
+              className={({ isActive }) => (isActive ? activeLink : normalLink)}
+            >
+              {item.icon}
+              <h1 className={`${!open && "hidden"} origin-left duration-200`}>
+                {item.name}
+              </h1>
+            </NavLink>
+          );
+        })}
       </div>
     </aside>
   );

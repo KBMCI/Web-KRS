@@ -1,6 +1,6 @@
 import { NavLink, useLocation } from "react-router-dom";
 
-const Breadcrumb = () => {
+const Breadcrumb = ({ items }) => {
   const location = useLocation();
   // Components skill
   const activeLink = "text-primary font-bold capitalize";
@@ -10,6 +10,7 @@ const Breadcrumb = () => {
   const crumbs = location.pathname
     .split("/")
     .filter((crumb) => crumb !== "")
+    .filter((crumb) => crumb !== items.name)
     .map((crumb) => {
       return (
         <div key={crumb} className="flex gap-[10px]">
@@ -27,7 +28,7 @@ const Breadcrumb = () => {
     <div>
       <div className="flex gap-[10px] text-neutral-400">
         <NavLink
-          to="/"
+          to={items.link}
           className={({ isActive }) => (isActive ? activeLink : normalLink)}
         >
           Dashboard

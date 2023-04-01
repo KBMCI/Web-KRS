@@ -1,11 +1,11 @@
 import Breadcrumb from "./Breadcrumb";
 import { FiUser } from "react-icons/fi";
 
-function Navbar() {
+function Navbar({items}) {
   return (
     <nav className="flex justify-between items-center px-10 py-4 shadow-lg">
       <div className="mr-10 my-4">
-        <Breadcrumb />
+        <Breadcrumb items={items}/>
       </div>
       <div className="flex items-center gap-3">
         <FiUser size={40} className="rounded-full border-2 border-primary"/>

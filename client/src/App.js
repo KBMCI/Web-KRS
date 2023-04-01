@@ -12,13 +12,26 @@ import { KelasTambah } from "./page/Kelas/KelasTambah";
 import KelasEdit from "./page/Kelas/KelasEdit";
 import UserEdit from "./page/UserPanel/UserEdit";
 import UserTambah from "./page/UserPanel/UserTambah";
+import HomeUser from "./page/HomeUser";
+import DashboardUser from "./page/DashboardUser/DashboardUser";
+import RandomKrs from "./page/RandomKrs/RandomKrs";
+import PlanningKrs from "./page/PlanningKrs/PlanningKrs";
+import MyPlan from "./page/MyPlan/MyPlan";
 
 function App() {
   return (
     <DataProvider>
       <div className="App">
         <Routes>
-          <Route path="/" element={<Home />}>
+          {/* Route User */}
+          <Route path="/" element={<HomeUser />}>
+            <Route index element={<DashboardUser />} />
+            <Route path="random-krs" element={<RandomKrs />} />
+            <Route path="planning-krs" element={<PlanningKrs />} />
+            <Route path="myplan" element={<MyPlan />} />
+          </Route>
+          {/* Route Admin */}
+          <Route path="/admin" element={<Home />}>
             <Route index element={<Dashboard />} />
             <Route path="user-panel" element={<UserPanel />}>
               <Route path="tambah" element={<UserTambah />} />
