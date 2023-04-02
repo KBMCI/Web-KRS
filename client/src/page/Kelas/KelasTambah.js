@@ -1,11 +1,11 @@
 import Form from "./KelasForm";
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { useOutletContext } from "react-router-dom";
 import { url } from "../../api/url";
 import { DataContext } from "../../context/DataContext";
 
 export const KelasTambah = () => {
-  const { feedbackHandler } = useOutletContext();
+  const { feedbackHandler, validate } = useOutletContext();
   const { TriggerKelas, dataMatkul } = useContext(DataContext);
 
   // Validation Form
@@ -56,44 +56,19 @@ export const KelasTambah = () => {
     } catch (err) {}
   };
 
-  useEffect(() => {
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      postData(formValue);
-    }
-  }, [formErrors]);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormErrors(validate(formValue));
     setIsSubmit(true);
-  };
-
-  const validate = (values) => {
-    const errors = {};
-    if (!values.kode_matkul) {
-      errors.kode_matkul = "Kode Mata Kuliah is required";
+    if (Object.keys(formErrors).length === 0 && isSubmit) {
+      postData(formValue);
     }
-    if (!values.nama) {
-      errors.nama = "Nama Kelas is required";
-    }
-    if (!values.ruang_kelas) {
-      errors.ruang_kelas = "Ruang Kelas Kuliah is required";
-    }
-    if (!values.hari) {
-      errors.hari = "Hari is required";
-    }
-    if (!values.jam_mulai) {
-      errors.jam_mulai = "Jam Mulai is required";
-    }
-    if (!values.jam_selesai) {
-      errors.jam_selesai = "Jam Selesai is required";
-    }
-    return errors;
   };
 
   return (
     <>
       <Form
+        header="Add Kelas"
         handleSubmit={handleSubmit}
         handleChange={handleChange}
         formValue={formValue}

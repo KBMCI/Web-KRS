@@ -1,11 +1,11 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { DataContext } from "../../context/DataContext";
 import UserForm from "./UserForm";
 import { url } from "../../api/url";
 import { useOutletContext } from "react-router-dom";
 
 const UserTambah = () => {
-  const { feedbackHandler } = useOutletContext();
+  const { feedbackHandler, validate } = useOutletContext();
   const { TriggerUser } = useContext(DataContext);
   const [loading, setLoading] = useState(false);
 
@@ -57,41 +57,17 @@ const UserTambah = () => {
     }
   };
 
-  useEffect(() => {
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      console.log(formValue);
-      postData(formValue);
-    }
-  }, [formErrors]);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormErrors(validate(formValue));
     setIsSubmit(true);
+    if (Object.keys(formErrors).length === 0 && isSubmit) {
+      console.log(formValue);
+      postData(formValue);
+    }
   };
 
-  const validate = (values) => {
-    const errors = {};
-    if (!values.email) {
-      errors.email = "Email is required";
-    }
-    if (!values.nama) {
-      errors.nama = "Nama User is required";
-    }
-    if (!values.program_studi) {
-      errors.program_studi = "Program Studi is required";
-    }
-    if (!values.nim) {
-      errors.nim = "NIm is required";
-    }
-    if (!values.password) {
-      errors.password = "Password is required";
-    }
-    if (!values.role) {
-      errors.role = "Role is required";
-    }
-    return errors;
-  };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -100,6 +76,7 @@ const UserTambah = () => {
   };
   return (
     <UserForm
+      header="Add User Panel"
       handleSubmit={handleSubmit}
       handleChange={handleChange}
       formErrors={formErrors}

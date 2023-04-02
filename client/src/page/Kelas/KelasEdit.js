@@ -1,13 +1,14 @@
 import Form from "./KelasForm";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { url } from "../../api/url";
 import { useParams, useOutletContext, useNavigate } from "react-router-dom";
 import { DataContext } from "../../context/DataContext";
 
 const KelasEdit = () => {
-  const { feedbackHandler } = useOutletContext();
-  const { dataMatkul, TriggerKelas } = useContext(DataContext);
-  const kodeParams = useParams();
+  const { feedbackHandler, validate } = useOutletContext();
+  const { dataMatkul, TriggerKelas, link } = useContext(DataContext);
+  const kodeParams = useRef();
+  kodeParams.current = useParams();
   const navigate = useNavigate();
 
   // Validation Form
@@ -31,7 +32,7 @@ const KelasEdit = () => {
     jam_selesai,
   }) => {
     try {
-      const res = await url.patch(`/kelas/${kodeParams.kode}`, {
+      const res = await url.patch(`/kelas/${kodeParams.current.kode}`, {
         kode_matkul,
         nama,
         ruang_kelas,
@@ -44,7 +45,7 @@ const KelasEdit = () => {
       if (res.status === 200) {
         console.log(res);
         TriggerKelas();
-        navigate("/kelas");
+        navigate(link.admin.kelas);
         feedbackHandler(true, "patch");
       }
     } catch (err) {
@@ -56,7 +57,7 @@ const KelasEdit = () => {
   useEffect(() => {
     const getKelasId = async () => {
       try {
-        const { data } = await url.get(`/kelas/${kodeParams.kode}`);
+        const { data } = await url.get(`/kelas/${kodeParams.current.kode}`);
         setFormValue({
           kode_matkul: data.data.matkul.kode_matkul,
           nama: data.data.nama,
@@ -72,12 +73,6 @@ const KelasEdit = () => {
     getKelasId();
   }, []);
 
-  useEffect(() => {
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      patchData(formValue);
-    }
-  }, [formErrors]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     // name menjadi key dari value yang diinputkan
@@ -88,33 +83,15 @@ const KelasEdit = () => {
     e.preventDefault();
     setFormErrors(validate(formValue));
     setIsSubmit(true);
+    if (Object.keys(formErrors).length === 0 && isSubmit) {
+      patchData(formValue);
+    }
   };
 
-  const validate = (values) => {
-    const errors = {};
-    if (!values.kode_matkul) {
-      errors.kode_matkul = "Kode Mata Kuliah is required";
-    }
-    if (!values.nama) {
-      errors.nama = "Nama Mata Kuliah is required";
-    }
-    if (!values.ruang_kelas) {
-      errors.ruang_kelas = "Ruang KElas Kuliah is required";
-    }
-    if (!values.hari) {
-      errors.hari = "Hari is required";
-    }
-    if (!values.jam_mulai) {
-      errors.jam_mulai = "Jam Mulai is required";
-    }
-    if (!values.jam_selesai) {
-      errors.jam_selesai = "Jam Selesai is required";
-    }
-    return errors;
-  };
   return (
     <>
       <Form
+        header="Edit Kelas"
         handleSubmit={handleSubmit}
         handleChange={handleChange}
         formValue={formValue}

@@ -67,6 +67,18 @@ export function DataProvider({ children }) {
     setOpen(!open);
   };
 
+  const link = {
+    admin: {
+      user_panel: "/admin/user-panel",
+      mata_kuliah: "/admin/mata-kuliah",
+      kelas: "/admin/kelas",
+    },
+    user: {
+      random_krs: "/random-krs",
+      planning_krs: "/planning-krs",
+      my_plan: "/myplan",
+    },
+  };
   return (
     <DataContext.Provider
       value={{
@@ -78,6 +90,7 @@ export function DataProvider({ children }) {
         TriggerUser,
         open,
         SetOpen,
+        link,
       }}
     >
       {children}

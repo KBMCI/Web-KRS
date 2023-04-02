@@ -6,8 +6,10 @@ import { url } from "../../api/url";
 import Paginate from "../../component/Paginate";
 import FilterTable from "../../component/FilterTable";
 import { DataContext } from "../../context/DataContext";
+import { Outlet } from "react-router-dom";
+import Feedback from "../../component/Feedback";
 
-function UserContent({feedbackHandler}) {
+function UserContent() {
   const { dataUser, TriggerUser } = useContext(DataContext);
   const [loading, setLoading] = useState(false);
 
@@ -80,18 +82,61 @@ function UserContent({feedbackHandler}) {
       id: null,
     });
   };
-    return (
-      <>
+
+  // Menampilkan feedback
+  const [feedback, setFeedback] = useState({
+    show: false,
+    check: false,
+    note: null,
+  });
+
+  // Menampilkan feedback
+  const feedbackHandler = (check, note) => {
+    setFeedback({
+      show: true,
+      check: check,
+      note: note,
+    });
+    setTimeout(() => {
+      setFeedback({
+        show: false,
+        check: false,
+        note: null,
+      });
+    }, 3000);
+  };
+
+  // Validate
+  const validate = (values) => {
+    const errors = {};
+    if (!values.email) {
+      errors.email = "Email is required";
+    }
+    if (!values.nama) {
+      errors.nama = "Nama User is required";
+    }
+    if (!values.program_studi) {
+      errors.program_studi = "Program Studi is required";
+    }
+    if (!values.nim) {
+      errors.nim = "NIm is required";
+    }
+    if (!values.password) {
+      errors.password = "Password is required";
+    }
+    if (!values.role) {
+      errors.role = "Role is required";
+    }
+    return errors;
+  };
+  return (
+    <>
       <div className={`px-10 pt-10`}>
         <div className="flex items-center justify-between mb-12">
           <h1 className="text-4xl font-bold">User Panel</h1>
           <div className="flex gap-4">
             <Button icon={<FiTrello />} to="" name="Import By Excel" />
-            <Button
-              icon={<FiPlus />}
-              to="/user-panel/tambah"
-              name="Add User"
-            />
+            <Button icon={<FiPlus />} to="tambah" name="Add User" />
           </div>
         </div>
         <div className="flex justify-center ">
@@ -117,8 +162,12 @@ function UserContent({feedbackHandler}) {
           </div>
         </div>
       </div>
+      <Outlet context={{ feedbackHandler, validate }} />
+      {feedback.show && (
+        <Feedback check={feedback.check} note={feedback.note} />
+      )}
     </>
-    );
-  }
-  
-  export default UserContent;
+  );
+}
+
+export default UserContent;

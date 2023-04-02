@@ -1,5 +1,5 @@
 import "./App.css";
-import { Route, Routes, Link } from "react-router-dom";
+import { Route, Routes} from "react-router-dom";
 import UserPanel from "./page/UserPanel/UserPanel";
 import Kelas from "./page/Kelas/Kelas";
 import MataKuliah from "./page/MataKuliah/MataKuliah";
