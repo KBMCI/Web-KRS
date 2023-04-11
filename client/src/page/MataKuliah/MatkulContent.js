@@ -6,8 +6,10 @@ import { url } from "../../api/url";
 import Paginate from "../../component/Paginate";
 import FilterTable from "../../component/FilterTable";
 import { DataContext } from "../../context/DataContext";
+import { Outlet } from "react-router-dom";
+import Feedback from "../../component/Feedback";
 
-function MatkulContent({ feedbackHandler }) {
+function MatkulContent() {
   const { dataMatkul, TriggerMatkul } = useContext(DataContext);
   const [loading, setLoading] = useState(false);
 
@@ -81,6 +83,53 @@ function MatkulContent({ feedbackHandler }) {
     });
   };
 
+  // Menampilkan feedback
+  const [feedback, setFeedback] = useState({
+    show: false,
+    check: false,
+    note: null,
+  });
+
+  // Menampilkan feedback
+  const feedbackHandler = (check, note) => {
+    setFeedback({
+      show: true,
+      check: check,
+      note: note,
+    });
+    setTimeout(() => {
+      setFeedback({
+        show: false,
+        check: false,
+        note: null,
+      });
+    }, 3000);
+  };
+
+  // Validate
+  const validate = (values) => {
+    const errors = {};
+    const regexNumber = /^\d+$/;
+    if (!values.kode_matkul) {
+      errors.kode_matkul = "Kode Mata Kuliah is required";
+    }
+    if (!values.nama) {
+      errors.nama = "Nama Mata Kuliah is required";
+    }
+    if (!values.sks) {
+      errors.sks = "Jumlah SKS is required";
+    } else if (!regexNumber.test(values.sks)) {
+      errors.sks = "Number input type only";
+    }
+    if (!values.tahun_kurikulum) {
+      errors.tahun_kurikulum = "Tahun Kurikulum is required";
+    } else if (!regexNumber.test(values.tahun_kurikulum)) {
+      errors.tahun_kurikulum = "Number input type only";
+    }
+
+    return errors;
+  };
+
   return (
     <>
       <div className={`px-10 pt-10`}>
@@ -90,7 +139,7 @@ function MatkulContent({ feedbackHandler }) {
             <Button icon={<FiTrello />} to="" name="Import By Excel" />
             <Button
               icon={<FiPlus />}
-              to="/mata-kuliah/tambah"
+              to="tambah"
               name="Add Mata Kuliah"
             />
           </div>
@@ -118,6 +167,10 @@ function MatkulContent({ feedbackHandler }) {
           </div>
         </div>
       </div>
+      <Outlet context={{ feedbackHandler, validate }} />
+      {feedback.show && (
+        <Feedback check={feedback.check} note={feedback.note} />
+      )}
     </>
   );
 }

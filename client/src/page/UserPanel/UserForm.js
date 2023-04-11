@@ -1,14 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import ReactLoading from "react-loading";
-import { useState } from "react";
+import { useContext } from "react";
+import { DataContext } from "../../context/DataContext";
 
 const UserForm = ({
+  header,
   handleSubmit,
   handleChange,
   formValue,
   formErrors,
   loading,
 }) => {
+  const { link } = useContext(DataContext);
   const navigate = useNavigate();
   // Style component
   const inputStyle = (value) => {
@@ -34,7 +37,7 @@ const UserForm = ({
         <div className="relative w-full max-w-2xl my-auto bg-secondary p-7 rounded-xl ">
           <div>
             <h1 className="text-black font-extrabold text-2xl mb-4">
-              Add User
+              {header}
             </h1>
             <form
               onSubmit={handleSubmit}
@@ -182,7 +185,7 @@ const UserForm = ({
                         name="role"
                         type="radio"
                         value="admin"
-                        checked={formValue.role == "admin"}
+                        checked={formValue.role === "admin"}
                         onChange={handleChange}
                       />
                       <p>Admin</p>
@@ -200,7 +203,7 @@ const UserForm = ({
                   type="button"
                   className="text-neutral-400 py-2 px-4 rounded-lg border-2 border-neutral-400 "
                   onClick={() => {
-                    navigate("/user-panel");
+                    navigate(link.admin.user_panel);
                   }}
                 >
                   Cancel

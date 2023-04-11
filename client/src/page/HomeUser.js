@@ -5,33 +5,33 @@ import { useContext } from "react";
 import { DataContext } from "../context/DataContext";
 import { FiCoffee, FiUsers, FiAirplay, FiFolder } from "react-icons/fi";
 
-export function Home() {
+const HomeUser = () => {
   const { open } = useContext(DataContext);
   // Items Navbar
   const itemsNavbar = {
-    name : "admin",
-    link : "/admin/"
-  }
+    name: "user",
+    link: "/",
+  };
   // Items Sidebar
   const itemsSidebar = [
     {
       name: "Dashboard",
-      link: "/admin/",
+      link: "/",
       icon: <FiFolder size={24} className={`${!open && "w-full"}`} />,
     },
     {
-      name: "User Panel",
-      link: "/admin/user-panel",
+      name: "Random KRS",
+      link: "/random-krs",
       icon: <FiUsers size={24} className={`${!open && "w-full"}`} />,
     },
     {
-      name: "Mata Kuliah",
-      link: "/admin/mata-kuliah",
+      name: "Planning KRS",
+      link: "/planning-krs",
       icon: <FiCoffee size={24} className={`${!open && "w-full"}`} />,
     },
     {
-      name: "Kelas",
-      link: "/admin/kelas",
+      name: "My Plan",
+      link: "/myplan",
       icon: <FiAirplay size={24} className={`${!open && "w-full"}`} />,
     },
   ];
@@ -45,7 +45,7 @@ export function Home() {
             open ? "w-4/5" : "w-11/12"
           } fixed bg-neutral-100 right-0 z-10 duration-300  bg-neutral-50`}
         >
-          <Navbar items={itemsNavbar}/>
+          <Navbar items={itemsNavbar} />
         </div>
         <div
           className={`${
@@ -57,6 +57,6 @@ export function Home() {
       </div>
     </div>
   );
-}
+};
 
-export default Home;
+export default HomeUser;

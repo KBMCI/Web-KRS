@@ -1,12 +1,16 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { DataContext } from "../../context/DataContext";
 
 const Form = ({
+  header,
   handleChange,
   handleSubmit,
   formValue,
   formErrors,
   dataMatkul,
 }) => {
+  const { link } = useContext(DataContext);
   const hari = ["Senin", "Selasa", "Rabu", "Kamis", "Jum'at"];
   const navigate = useNavigate();
 
@@ -35,7 +39,7 @@ const Form = ({
         <div className="relative w-full max-w-2xl my-auto bg-secondary p-7 rounded-xl ">
           <div>
             <h1 className="text-black font-extrabold text-2xl mb-4">
-              Add Kelas
+              {header}
             </h1>
             <form
               onSubmit={handleSubmit}
@@ -100,7 +104,6 @@ const Form = ({
                   </div>
                 </div>
               </div>
-
               <div className={barisTabel()}>
                 <div className="w-1/3">
                   <label htmlFor="ruang_kelas" className="block font-bold">
@@ -202,7 +205,7 @@ const Form = ({
                   type="button"
                   className="text-neutral-400 py-2 px-4 rounded-lg border-2 border-neutral-400 "
                   onClick={() => {
-                    navigate("/kelas");
+                    navigate(link.admin.kelas);
                   }}
                 >
                   Cancel

@@ -1,14 +1,15 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { DataContext } from "../../context/DataContext";
 import { url } from "../../api/url";
 import MatkulForm from "./MatkulForm";
 
 export default function MatkulEdit() {
-  const { feedbackHandler } = useOutletContext();
-  const { TriggerMatkul } = useContext(DataContext);
+  const { feedbackHandler, validate } = useOutletContext();
+  const { TriggerMatkul, link } = useContext(DataContext);
   const navigate = useNavigate();
-  const kodeParams = useParams();
+  const kodeParams = useRef();
+  kodeParams.current = useParams();
   const [loading, setLoading] = useState(false);
 
   // Validation Form
@@ -25,7 +26,7 @@ export default function MatkulEdit() {
   const patchData = async ({ kode_matkul, nama, tahun_kurikulum, sks }) => {
     try {
       setLoading(true);
-      const res = await url.patch(`matkul/${kodeParams.kode}`, {
+      const res = await url.patch(`matkul/${kodeParams.current.kode}`, {
         kode_matkul,
         nama,
         tahun_kurikulum: parseInt(tahun_kurikulum),
@@ -38,7 +39,7 @@ export default function MatkulEdit() {
         feedbackHandler(true, "patch");
         TriggerMatkul();
         setLoading(false);
-        navigate("/mata-kuliah");
+        navigate(link.admin.mata_kuliah);
       }
     } catch (err) {
       console.log(err);
@@ -50,7 +51,7 @@ export default function MatkulEdit() {
   useEffect(() => {
     const getMatkulId = async () => {
       try {
-        const { data } = await url.get(`matkul/${kodeParams.kode}`);
+        const { data } = await url.get(`matkul/${kodeParams.current.kode}`);
         setFormValue({
           kode_matkul: data.data.kode_matkul,
           nama: data.data.nama,
@@ -64,13 +65,6 @@ export default function MatkulEdit() {
     getMatkulId();
   }, []);
 
-  useEffect(() => {
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      console.log(formValue);
-      patchData(formValue);
-    }
-  }, [formErrors]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     // name menjadi key dari value yang diinputkan
@@ -81,34 +75,16 @@ export default function MatkulEdit() {
     e.preventDefault();
     setFormErrors(validate(formValue));
     setIsSubmit(true);
-  };
-
-  const validate = (values) => {
-    const errors = {};
-    const regexNumber = /^\d+$/;
-    if (!values.kode_matkul) {
-      errors.kode_matkul = "Kode Mata Kuliah is required";
+    if (Object.keys(formErrors).length === 0 && isSubmit) {
+      console.log(formValue);
+      patchData(formValue);
     }
-    if (!values.nama) {
-      errors.nama = "Nama Mata Kuliah is required";
-    }
-    if (!values.sks) {
-      errors.sks = "Jumlah SKS is required";
-    } else if (!regexNumber.test(values.sks)) {
-      errors.sks = "Number input type only";
-    }
-    if (!values.tahun_kurikulum) {
-      errors.tahun_kurikulum = "Tahun Kurikulum is required";
-    } else if (!regexNumber.test(values.tahun_kurikulum)) {
-      errors.tahun_kurikulum = "Number input type only";
-    }
-
-    return errors;
   };
 
   return (
     <>
       <MatkulForm
+        header="Edit Mata Kuliah"
         handleSubmit={handleSubmit}
         handleChange={handleChange}
         formValue={formValue}

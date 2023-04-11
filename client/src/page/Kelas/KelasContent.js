@@ -6,8 +6,10 @@ import FilterTable from "../../component/FilterTable";
 import { useContext, useState } from "react";
 import { url } from "../../api/url";
 import { DataContext } from "../../context/DataContext";
+import Feedback from "../../component/Feedback";
+import { Outlet } from "react-router-dom";
 
-function KelasContent({ feedbackHandler }) {
+function KelasContent() {
   const { dataKelas, TriggerKelas } = useContext(DataContext);
 
   // Create pagination
@@ -76,6 +78,53 @@ function KelasContent({ feedbackHandler }) {
     });
   };
 
+  // Menampilkan feedback
+   const [feedback, setFeedback] = useState({
+    show: false,
+    check: false,
+    note: null,
+  });
+
+  // Menampilkan feedback
+  const feedbackHandler = (check, note) => {
+    setFeedback({
+      show: true,
+      check: check,
+      note: note,
+    });
+    setTimeout(() => {
+      setFeedback({
+        show: false,
+        check: false,
+        note: null,
+      });
+    }, 3000);
+  };
+
+  // Validate
+  const validate = (values) => {
+    const errors = {};
+    if (!values.kode_matkul) {
+      errors.kode_matkul = "Kode Mata Kuliah is required";
+    }
+    if (!values.nama) {
+      errors.nama = "Nama Mata Kuliah is required";
+    }
+    if (!values.ruang_kelas) {
+      errors.ruang_kelas = "Ruang KElas Kuliah is required";
+    }
+    if (!values.hari) {
+      errors.hari = "Hari is required";
+    }
+    if (!values.jam_mulai) {
+      errors.jam_mulai = "Jam Mulai is required";
+    }
+    if (!values.jam_selesai) {
+      errors.jam_selesai = "Jam Selesai is required";
+    }
+    return errors;
+  };
+
   return (
     <>
       <div className="px-10 pt-10">
@@ -84,7 +133,7 @@ function KelasContent({ feedbackHandler }) {
           <h1 className="text-4xl font-bold">Kelas</h1>
           <div className="flex gap-4">
             <Button icon={<FiTrello />} name={"Import Excel"} />
-            <Button icon={<FiPlus />} name={"Add Kelas"} to="/kelas/tambah" />
+            <Button icon={<FiPlus />} name={"Add Kelas"} to="tambah" />
           </div>
         </div>
         {/* Tabel Kelas */}
@@ -110,6 +159,10 @@ function KelasContent({ feedbackHandler }) {
           </div>
         </div>
       </div>
+      <Outlet context={{ feedbackHandler, validate }} />
+      {feedback.show && (
+        <Feedback check={feedback.check} note={feedback.note} />
+      )}
     </>
   );
 }

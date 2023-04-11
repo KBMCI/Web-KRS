@@ -1,14 +1,15 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { DataContext } from "../../context/DataContext";
 import { url } from "../../api/url";
 import UserForm from "./UserForm";
 
 const UserEdit = () => {
-  const { feedbackHandler } = useOutletContext();
-  const { TriggerMatkul } = useContext(DataContext);
+  const { feedbackHandler, validate } = useOutletContext();
+  const { TriggerMatkul, link } = useContext(DataContext);
   const navigate = useNavigate();
-  const kodeParams = useParams();
+  const kodeParams = useRef();
+  kodeParams.current = useParams();
   const [loading, setLoading] = useState(false);
 
   // Validation Form
@@ -34,7 +35,7 @@ const UserEdit = () => {
   }) => {
     try {
       setLoading(true);
-      const res = await url.patch(`user/${kodeParams.kode}`, {
+      const res = await url.patch(`user/${kodeParams.current.kode}`, {
         id: null,
         email,
         nama,
@@ -50,7 +51,7 @@ const UserEdit = () => {
         feedbackHandler(true, "patch");
         TriggerMatkul();
         setLoading(false);
-        navigate("/user-panel");
+        navigate(link.admin.user_panel);
       }
     } catch (err) {
       console.log(err);
@@ -62,7 +63,7 @@ const UserEdit = () => {
   useEffect(() => {
     const getMatkulId = async () => {
       try {
-        const { data } = await url.get(`user/${kodeParams.kode}`);
+        const { data } = await url.get(`user/${kodeParams.current.kode}`);
         console.log(data);
         setFormValue({
           email: data.data.email,
@@ -79,13 +80,6 @@ const UserEdit = () => {
     getMatkulId();
   }, []);
 
-  useEffect(() => {
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      console.log(formValue);
-      patchData(formValue);
-    }
-  }, [formErrors]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     // name menjadi key dari value yang diinputkan
@@ -96,33 +90,15 @@ const UserEdit = () => {
     e.preventDefault();
     setFormErrors(validate(formValue));
     setIsSubmit(true);
-  };
-
-  const validate = (values) => {
-    const errors = {};
-    if (!values.email) {
-      errors.email = "Email is required";
+    if (Object.keys(formErrors).length === 0 && isSubmit) {
+      console.log(formValue);
+      patchData(formValue);
     }
-    if (!values.nama) {
-      errors.nama = "Nama User is required";
-    }
-    if (!values.program_studi) {
-      errors.program_studi = "Program Studi is required";
-    }
-    if (!values.nim) {
-      errors.nim = "NIm is required";
-    }
-    if (!values.password) {
-      errors.password = "Password is required";
-    }
-    if (!values.role) {
-      errors.role = "Role is required";
-    }
-    return errors;
   };
 
   return (
     <UserForm
+      header="Edit User Panel"
       handleSubmit={handleSubmit}
       handleChange={handleChange}
       formErrors={formErrors}

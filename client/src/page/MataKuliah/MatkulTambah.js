@@ -1,11 +1,11 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { DataContext } from "../../context/DataContext";
 import MatkulForm from "./MatkulForm";
 import { url } from "../../api/url";
 import { useOutletContext } from "react-router-dom";
 
 export default function MatkulTambah() {
-  const { feedbackHandler } = useOutletContext();
+  const { feedbackHandler, validate } = useOutletContext();
   const { TriggerMatkul } = useContext(DataContext);
   const [loading, setLoading] = useState(false);
 
@@ -25,6 +25,7 @@ export default function MatkulTambah() {
     const { name, value } = e.target;
     // name menjadi key dari value yang diinputkan
     setFormValue({ ...formValue, [name]: value });
+    console.log(formValue);
   };
 
   const postData = async ({ kode_matkul, nama, tahun_kurikulum, sks }) => {
@@ -51,42 +52,18 @@ export default function MatkulTambah() {
     }
   };
 
-  useEffect(() => {
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      postData(formValue);
-    }
-  }, [formErrors]);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormErrors(validate(formValue));
     setIsSubmit(true);
-  };
-
-  const validate = (values) => {
-    const errors = {};
-    const regexNumber = /^\d+$/;
-    if (!values.kode_matkul) {
-      errors.kode_matkul = "Kode Mata Kuliah is required";
+    if (Object.keys(formErrors).length === 0 && isSubmit) {
+      postData(formValue);
     }
-    if (!values.nama) {
-      errors.nama = "Nama Mata Kuliah is required";
-    }
-    if (!values.sks) {
-      errors.sks = "Jumlah SKS is required";
-    } else if (!regexNumber.test(values.sks)) {
-      errors.sks = "Number input type only";
-    }
-    if (!values.tahun_kurikulum) {
-      errors.tahun_kurikulum = "Tahun Kurikulum is required";
-    } else if (!regexNumber.test(values.tahun_kurikulum)) {
-      errors.tahun_kurikulum = "Number input type only";
-    }
-    return errors;
   };
 
   return (
     <MatkulForm
+      header="Add Mata Kuliah"
       handleSubmit={handleSubmit}
       handleChange={handleChange}
       formErrors={formErrors}
