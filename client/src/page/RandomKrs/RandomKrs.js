@@ -1,9 +1,10 @@
-import TableMatkul from "../../component/TableMatkul";
-
 const RandomKrs = () => {
-    return <>
-    <TableMatkul/>
+  
+  return (
+    <>
+      // Isi disini
     </>
-}
+  );
+};
 
 export default RandomKrs;
