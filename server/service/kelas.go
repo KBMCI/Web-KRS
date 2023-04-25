@@ -16,11 +16,15 @@ func NewKelasService(kelas model.KelasRepository) model.KelasService {
 func (s *kelasService) StoreKelas(req *request.KelasRequest) (*model.Kelas, error) {
 	kelas := &model.Kelas{
 		KodeMatkul: req.KodeMatkul,
-		Nama: req.Nama,
-		RuangKelas: req.RuangKelas,
-		Hari: req.Hari,
-		JamMulai: req.JamMulai,
-		JamSelesai: req.JamSelesai,
+		Nama:       req.Nama,
+		JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       req.Hari,
+				JamMulai:   req.JamMulai,
+				JamSelesai: req.JamSelesai,
+				RuangKelas: req.RuangKelas,
+			},
+		},
 	}
 
 	newKelas, err := s.kelasRepository.Create(kelas)
@@ -31,20 +35,30 @@ func (s *kelasService) StoreKelas(req *request.KelasRequest) (*model.Kelas, erro
 	return newKelas, err
 }
 
-func (s *kelasService) EditKelas(id uint, req *request.KelasRequest) (*model.Kelas, error) {
-	newKelas, err := s.kelasRepository.UpdateByID(&model.Kelas{
-		ID: id,
+func (s *kelasService) EditKelas(idKelas uint, idJadwal uint, req *request.KelasRequest) (*model.Kelas, error) {
+	newKelas, err := s.kelasRepository.UpdateByKelasID(&model.Kelas{
+		ID:         idKelas,
 		KodeMatkul: req.KodeMatkul,
-		Nama: req.Nama,
-		RuangKelas: req.RuangKelas,
-		Hari: req.Hari,
-		JamMulai: req.JamMulai,
-		JamSelesai: req.JamSelesai,
+		Nama:       req.Nama,
 	})
 
 	if err != nil {
 		return nil, err
 	}
+
+	newJadwalKelas, err := s.kelasRepository.UpdateByJadwalID(&model.JadwalKelas{
+		ID:         idJadwal,
+		Hari:       req.Hari,
+		JamMulai:   req.JamMulai,
+		JamSelesai: req.JamSelesai,
+		RuangKelas: req.RuangKelas,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	newKelas.JadwalKelas = []model.JadwalKelas{*newJadwalKelas}
 
 	return newKelas, err
 }
