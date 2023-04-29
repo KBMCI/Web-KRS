@@ -21,7 +21,7 @@ func NewKelasHandler(kelasService model.KelasService) model.KelasHandler {
 
 func (h *kelasHandler) Mount(group *gin.RouterGroup) {
 	group.POST("", h.StoreKelasHandler) // create
-	group.PATCH("/:id", h.EditKelasHandler) //update
+	group.PATCH("/:id_kelas/jadwal/:id_jadwal", h.EditKelasHandler) //update
 	group.GET("/:id", h.DetailKelasHandler) //getById
 	group.DELETE("/:id", h.DeleteKelasHandler) //delete
 	group.GET("", h.FetchKelasHandler) //getAll
@@ -56,10 +56,13 @@ func (h *kelasHandler) EditKelasHandler(c *gin.Context) {
 		return
 	}
 
-	id := c.Param("id")
-	idUint, _ := strconv.ParseUint(id, 10, 32)
+	idKelas := c.Param("id_kelas")
+	idKelasUint, _ := strconv.ParseUint(idKelas, 10, 32)
+
+	idJadwal := c.Param("id_jadwal")
+	idJadwalUint, _ := strconv.ParseUint(idJadwal, 10, 32)
 	
-	kelas, err := h.kelasService.EditKelas(uint(idUint), &req)
+	kelas, err := h.kelasService.EditKelas(uint(idKelasUint), uint(idJadwalUint), &req)
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusUnprocessableEntity, err)
 		return

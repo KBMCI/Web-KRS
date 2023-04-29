@@ -33,6 +33,17 @@ func (m *matkulRepository) FindByID(id uint) (*model.Matkul, error){
 	return matkul, err
 }
 
+func (m *matkulRepository) FindBySomeID(id []string) ([]*model.Matkul, error) {
+	var data []*model.Matkul
+
+	err := m.cfg.Database().Preload("Kelas").Find(&data, id).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return data, err
+}
+
 func (m *matkulRepository) Fetch() ([]*model.Matkul, error) {
 	var data []*model.Matkul
 

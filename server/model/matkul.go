@@ -23,7 +23,8 @@ type (
 	MatkulRepository interface {
 		Create(matkul *Matkul) (*Matkul, error)
 		UpdateByID(matkul *Matkul) (*Matkul, error)
-		FindByID(id uint) (*Matkul, error)
+		FindByID(id string) (*Matkul, error)
+		FindBySomeID(id []string) ([]*Matkul, error)
 		Delete(matkul *Matkul) (*Matkul, error)
 		Fetch() ([]*Matkul, error)
 	}
