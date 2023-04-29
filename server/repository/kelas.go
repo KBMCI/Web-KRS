@@ -14,29 +14,54 @@ func NewKelasRepository(cfg config.Config) model.KelasRepository {
 }
 
 func (k *kelasRepository) Create(kelas *model.Kelas) (*model.Kelas, error) {
-	err := k.cfg.Database().Create(&kelas).Error
-	if err != nil {
-		return nil, err
+	kelasExist := new(model.Kelas)
+	rowEffect := k.cfg.Database().Find(&kelasExist, "kode_matkul = ? AND nama = ?", kelas.KodeMatkul, kelas.Nama)
+
+	if rowEffect.Error != nil {
+		return nil, rowEffect.Error
 	}
 
-	return kelas, err
+	if rowEffect.RowsAffected != 0 {
+		kelas.ID = kelasExist.ID
+		if err := k.cfg.Database().Model(&kelasExist).Association("JadwalKelas").Append(&kelas.JadwalKelas[0]); err != nil {
+			return nil, err
+		}
+		return kelasExist, nil
+	}
+
+	result := k.cfg.Database().Create(&kelas)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	kelasOutput := model.Kelas{
+		ID:          kelas.ID,
+		KodeMatkul:  kelas.KodeMatkul,
+		Nama:        kelas.Nama,
+		JadwalKelas: kelas.JadwalKelas,
+	}
+
+	if err := k.cfg.Database().Model(&kelas).Association("JadwalKelas").Append(&kelas.JadwalKelas[0]); err != nil {
+		return nil, err
+	}
+	return &kelasOutput, nil
 }
 
 func (k *kelasRepository) FindByID(id uint) (*model.Kelas, error) {
 	kelas := new(model.Kelas)
 
-	err := k.cfg.Database().Preload("Matkul").First(kelas, id).Error
+	err := k.cfg.Database().Preload("Matkul").Preload("JadwalKelas").Find(kelas, id).Error
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return kelas, err
 }
 
 func (k *kelasRepository) Fetch() ([]*model.Kelas, error) {
 	var data []*model.Kelas
 
-	err := k.cfg.Database().Preload("Matkul").Find(&data).Error
+	err := k.cfg.Database().Preload("Matkul").Preload("JadwalKelas").Find(&data).Error
 	if err != nil {
 		return nil, err
 	}
@@ -44,13 +69,21 @@ func (k *kelasRepository) Fetch() ([]*model.Kelas, error) {
 	return data, err
 }
 
-func (k *kelasRepository) UpdateByID(kelas *model.Kelas) (*model.Kelas, error) {
+func (k *kelasRepository) UpdateByKelasID(kelas *model.Kelas) (*model.Kelas, error) {
 	err := k.cfg.Database().Model(&kelas).Updates(&kelas).Error
 	if err != nil {
 		return nil, err
 	}
 
 	return kelas, err
+}
+func (k *kelasRepository) UpdateByJadwalID(jadwalKelas *model.JadwalKelas) (*model.JadwalKelas, error) {
+	err := k.cfg.Database().Model(&jadwalKelas).Updates(&jadwalKelas).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return jadwalKelas, err
 }
 
 func (k *kelasRepository) Delete(kelas *model.Kelas) (*model.Kelas, error) {
@@ -60,4 +93,4 @@ func (k *kelasRepository) Delete(kelas *model.Kelas) (*model.Kelas, error) {
 	}
 
 	return kelas, err
-} 
+}
