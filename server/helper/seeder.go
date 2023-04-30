@@ -25,46 +25,46 @@ func SeederRefresh(cfg config.Config) {
 		cfg.Database().Create(&matkul)
 	}
 
-	classes := []model.Kelas{
-		{KodeMatkul: "CIT60031", Nama: "A", RuangKelas: "Gedung F FILKOM - F3.1", Hari: "Senin", JamMulai: "09:30", JamSelesai: "11:59"},
-		{KodeMatkul: "CIT60031", Nama: "B", RuangKelas: "Gedung F FILKOM - F3.2", Hari: "Selasa", JamMulai: "09:30", JamSelesai: "11:59"},
+	// classes := []model.Kelas{
+	// 	{KodeMatkul: "CIT60031", Nama: "A", RuangKelas: "Gedung F FILKOM - F3.1", Hari: "Senin", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT60031", Nama: "B", RuangKelas: "Gedung F FILKOM - F3.2", Hari: "Selasa", JamMulai: "09:30", JamSelesai: "11:59"},
 
-		{KodeMatkul: "CIT62012", Nama: "A", RuangKelas: "Gedung F FILKOM - F3.1", Hari: "Senin", JamMulai: "09:30", JamSelesai: "11:59"},
-		{KodeMatkul: "CIT62012", Nama: "B", RuangKelas: "Gedung F FILKOM - F3.2", Hari: "Selasa", JamMulai: "09:30", JamSelesai: "11:59"},
-		{KodeMatkul: "CIT62012", Nama: "C", RuangKelas: "Gedung F FILKOM - F4.3", Hari: "Rabu", JamMulai: "09:30", JamSelesai: "11:59"},
-		{KodeMatkul: "CIT62012", Nama: "D", RuangKelas: "Gedung F FILKOM - F4.4", Hari: "Kamis", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62012", Nama: "A", RuangKelas: "Gedung F FILKOM - F3.1", Hari: "Senin", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62012", Nama: "B", RuangKelas: "Gedung F FILKOM - F3.2", Hari: "Selasa", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62012", Nama: "C", RuangKelas: "Gedung F FILKOM - F4.3", Hari: "Rabu", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62012", Nama: "D", RuangKelas: "Gedung F FILKOM - F4.4", Hari: "Kamis", JamMulai: "09:30", JamSelesai: "11:59"},
 		
-		{KodeMatkul: "CIT62013", Nama: "A", RuangKelas: "Gedung F FILKOM - F3.1", Hari: "Senin", JamMulai: "09:30", JamSelesai: "11:59"},
-		{KodeMatkul: "CIT62013", Nama: "B", RuangKelas: "Gedung F FILKOM - F3.2", Hari: "Selasa", JamMulai: "09:30", JamSelesai: "11:59"},
-		{KodeMatkul: "CIT62013", Nama: "C", RuangKelas: "Gedung F FILKOM - F4.3", Hari: "Rabu", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62013", Nama: "A", RuangKelas: "Gedung F FILKOM - F3.1", Hari: "Senin", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62013", Nama: "B", RuangKelas: "Gedung F FILKOM - F3.2", Hari: "Selasa", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62013", Nama: "C", RuangKelas: "Gedung F FILKOM - F4.3", Hari: "Rabu", JamMulai: "09:30", JamSelesai: "11:59"},
 
-		{KodeMatkul: "CIT62014", Nama: "A", RuangKelas: "Gedung F FILKOM - F3.1", Hari: "Senin", JamMulai: "09:30", JamSelesai: "11:59"},
-		{KodeMatkul: "CIT62014", Nama: "B", RuangKelas: "Gedung F FILKOM - F3.2", Hari: "Selasa", JamMulai: "09:30", JamSelesai: "11:59"},
-		{KodeMatkul: "CIT62014", Nama: "C", RuangKelas: "Gedung F FILKOM - F4.3", Hari: "Rabu", JamMulai: "09:30", JamSelesai: "11:59"},
-		{KodeMatkul: "CIT62014", Nama: "D", RuangKelas: "Gedung F FILKOM - F4.4", Hari: "Kamis", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62014", Nama: "A", RuangKelas: "Gedung F FILKOM - F3.1", Hari: "Senin", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62014", Nama: "B", RuangKelas: "Gedung F FILKOM - F3.2", Hari: "Selasa", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62014", Nama: "C", RuangKelas: "Gedung F FILKOM - F4.3", Hari: "Rabu", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62014", Nama: "D", RuangKelas: "Gedung F FILKOM - F4.4", Hari: "Kamis", JamMulai: "09:30", JamSelesai: "11:59"},
 
-		{KodeMatkul: "CIT62015", Nama: "A", RuangKelas: "Gedung F FILKOM - F3.1", Hari: "Senin", JamMulai: "09:30", JamSelesai: "11:59"},
-		{KodeMatkul: "CIT62015", Nama: "B", RuangKelas: "Gedung F FILKOM - F3.2", Hari: "Selasa", JamMulai: "09:30", JamSelesai: "11:59"},
-		{KodeMatkul: "CIT62015", Nama: "C", RuangKelas: "Gedung F FILKOM - F4.3", Hari: "Rabu", JamMulai: "09:30", JamSelesai: "11:59"},
-		{KodeMatkul: "CIT62015", Nama: "D", RuangKelas: "Gedung F FILKOM - F4.4", Hari: "Kamis", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62015", Nama: "A", RuangKelas: "Gedung F FILKOM - F3.1", Hari: "Senin", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62015", Nama: "B", RuangKelas: "Gedung F FILKOM - F3.2", Hari: "Selasa", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62015", Nama: "C", RuangKelas: "Gedung F FILKOM - F4.3", Hari: "Rabu", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62015", Nama: "D", RuangKelas: "Gedung F FILKOM - F4.4", Hari: "Kamis", JamMulai: "09:30", JamSelesai: "11:59"},
 
-		{KodeMatkul: "CIT62016", Nama: "A", RuangKelas: "Gedung F FILKOM - F3.1", Hari: "Senin", JamMulai: "09:30", JamSelesai: "11:59"},
-		{KodeMatkul: "CIT62016", Nama: "B", RuangKelas: "Gedung F FILKOM - F3.2", Hari: "Selasa", JamMulai: "09:30", JamSelesai: "11:59"},
-		{KodeMatkul: "CIT62016", Nama: "C", RuangKelas: "Gedung F FILKOM - F4.3", Hari: "Rabu", JamMulai: "09:30", JamSelesai: "11:59"},
-		{KodeMatkul: "CIT62016", Nama: "D", RuangKelas: "Gedung F FILKOM - F4.4", Hari: "Kamis", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62016", Nama: "A", RuangKelas: "Gedung F FILKOM - F3.1", Hari: "Senin", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62016", Nama: "B", RuangKelas: "Gedung F FILKOM - F3.2", Hari: "Selasa", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62016", Nama: "C", RuangKelas: "Gedung F FILKOM - F4.3", Hari: "Rabu", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62016", Nama: "D", RuangKelas: "Gedung F FILKOM - F4.4", Hari: "Kamis", JamMulai: "09:30", JamSelesai: "11:59"},
 
-		{KodeMatkul: "CIT62017", Nama: "A", RuangKelas: "Gedung F FILKOM - F3.1", Hari: "Senin", JamMulai: "09:30", JamSelesai: "11:59"},
-		{KodeMatkul: "CIT62017", Nama: "B", RuangKelas: "Gedung F FILKOM - F3.2", Hari: "Selasa", JamMulai: "09:30", JamSelesai: "11:59"},
-		{KodeMatkul: "CIT62017", Nama: "C", RuangKelas: "Gedung F FILKOM - F4.3", Hari: "Rabu", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62017", Nama: "A", RuangKelas: "Gedung F FILKOM - F3.1", Hari: "Senin", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62017", Nama: "B", RuangKelas: "Gedung F FILKOM - F3.2", Hari: "Selasa", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62017", Nama: "C", RuangKelas: "Gedung F FILKOM - F4.3", Hari: "Rabu", JamMulai: "09:30", JamSelesai: "11:59"},
 
-		{KodeMatkul: "CIT62018", Nama: "A", RuangKelas: "Gedung F FILKOM - F3.1", Hari: "Senin", JamMulai: "09:30", JamSelesai: "11:59"},
-		{KodeMatkul: "CIT62018", Nama: "B", RuangKelas: "Gedung F FILKOM - F3.2", Hari: "Selasa", JamMulai: "09:30", JamSelesai: "11:59"},
-		{KodeMatkul: "CIT62018", Nama: "C", RuangKelas: "Gedung F FILKOM - F4.3", Hari: "Rabu", JamMulai: "09:30", JamSelesai: "11:59"},
-		{KodeMatkul: "CIT62018", Nama: "D", RuangKelas: "Gedung F FILKOM - F4.4", Hari: "Kamis", JamMulai: "09:30", JamSelesai: "11:59"},
-	}
+	// 	{KodeMatkul: "CIT62018", Nama: "A", RuangKelas: "Gedung F FILKOM - F3.1", Hari: "Senin", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62018", Nama: "B", RuangKelas: "Gedung F FILKOM - F3.2", Hari: "Selasa", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62018", Nama: "C", RuangKelas: "Gedung F FILKOM - F4.3", Hari: "Rabu", JamMulai: "09:30", JamSelesai: "11:59"},
+	// 	{KodeMatkul: "CIT62018", Nama: "D", RuangKelas: "Gedung F FILKOM - F4.4", Hari: "Kamis", JamMulai: "09:30", JamSelesai: "11:59"},
+	// }
 	
-	for _, kelas := range classes {
-		cfg.Database().Create(&kelas)
-	}
+	// for _, kelas := range classes {
+	// 	cfg.Database().Create(&kelas)
+	// }
 	
 }
