@@ -3,7 +3,14 @@ package helper
 import (
 	"web-krs/config"
 	"web-krs/model"
+
+	"golang.org/x/crypto/bcrypt"
 )
+
+func HashPassword(password string) (string, error){
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+	return string(bytes),err
+}
 
 func SeederRefresh(cfg config.Config) {
 
@@ -11,9 +18,12 @@ func SeederRefresh(cfg config.Config) {
 	cfg.Database().Migrator().DropTable(&model.Matkul{})
 	cfg.Database().Migrator().DropTable(&model.Kelas{})
 
+	hashAdmin, _ := HashPassword("Admin123.")
+	hashUser, _ := HashPassword("User123.")
+
 	users := []model.User{
-		{Nama: "Admin", Email: "admin@gmail.com", ProgramStudi: "Teknologi Informasi", Nim: "215150700111021", Password: "Admin123.", Role: "admin"},
-		{Nama: "User", Email: "user@gmail.com", ProgramStudi: "Teknologi Informasi", Nim: "215150700111022", Password: "User123.", Role: "user"},
+		{Nama: "Admin", Email: "admin@gmail.com", ProgramStudi: "Teknologi Informasi", Nim: "215150700111021", Password: hashAdmin, Role: "admin"},
+		{Nama: "User", Email: "user@gmail.com", ProgramStudi: "Teknologi Informasi", Nim: "215150700111022", Password: hashUser, Role: "user"},
 	}
 
 	matkuls := []model.Matkul{

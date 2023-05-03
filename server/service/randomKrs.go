@@ -21,7 +21,7 @@ func NewRandomKrsService(matkul model.MatkulRepository, kelas model.KelasReposit
 }
 
 func (r *randomKrsService) FetchRandomKrs() ([][]model.RandomKrs, error) {
-	var allIdMatkul []string
+	var allIdMatkul []uint
 
 	allMatkul, err := r.matkulRepository.Fetch()
 	if err != nil {
@@ -29,7 +29,7 @@ func (r *randomKrsService) FetchRandomKrs() ([][]model.RandomKrs, error) {
 	}
 
 	for _, id := range allMatkul {
-		allIdMatkul = append(allIdMatkul, id.Kode)
+		allIdMatkul = append(allIdMatkul, id.ID)
 	}
 
 	matkuls, err := r.matkulRepository.FindBySomeID(allIdMatkul)
