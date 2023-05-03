@@ -1,9 +1,11 @@
 package handler
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 	"web-krs/helper"
+	"web-krs/middleware"
 	"web-krs/model"
 	"web-krs/request"
 	"web-krs/response"
@@ -20,14 +22,20 @@ func NewMatkulHandler(matkulService model.MatkulService) model.MatkulHandler {
 }
 
 func (h *matkulHandler) Mount(group *gin.RouterGroup) {
-	group.POST("", h.StoreMatkulHandler) // create
-	group.PATCH("/:id", h.EditMatkulHandler) //update
-	group.GET("/:id", h.DetailMatkulHandler) //getById
-	group.DELETE("/:id", h.DeleteMatkulHandler) //delete
-	group.GET("", h.FetchMatkulHandler) //getAll
+	group.POST("", middleware.ValidateToken(), h.StoreMatkulHandler) // create
+	group.PATCH("/:id", middleware.ValidateToken(), h.EditMatkulHandler) //update
+	group.GET("/:id", middleware.ValidateToken(), h.DetailMatkulHandler) //getById
+	group.DELETE("/:id", middleware.ValidateToken(), h.DeleteMatkulHandler) //delete
+	group.GET("", middleware.ValidateToken(), h.FetchMatkulHandler) //getAll
 }
 
 func (h *matkulHandler) StoreMatkulHandler(c *gin.Context) {
+	role := c.MustGet("role").(string)
+	if role != "admin" {
+		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
+		return
+	}
+
 	var req request.MatkulRequest
 
 	err := c.ShouldBindJSON(&req)
@@ -54,6 +62,12 @@ func (h *matkulHandler) StoreMatkulHandler(c *gin.Context) {
 }
 
 func (h *matkulHandler) EditMatkulHandler(c *gin.Context) {
+	role := c.MustGet("role").(string)
+	if role != "admin" {
+		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
+		return
+	}
+	
 	var req request.MatkulRequest
 
 	err := c.ShouldBindJSON(&req)
@@ -82,6 +96,12 @@ func (h *matkulHandler) EditMatkulHandler(c *gin.Context) {
 }
 
 func (h *matkulHandler) DetailMatkulHandler(c *gin.Context) {
+	role := c.MustGet("role").(string)
+	if role != "admin" {
+		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
+		return
+	}
+	
 	id := c.Param("id")
 	idUint, _ := strconv.ParseUint(id, 10, 32)
 
@@ -95,6 +115,12 @@ func (h *matkulHandler) DetailMatkulHandler(c *gin.Context) {
 }
 
 func (h *matkulHandler) DeleteMatkulHandler(c *gin.Context) {
+	role := c.MustGet("role").(string)
+	if role != "admin" {
+		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
+		return
+	}
+	
 	id := c.Param("id")
 	idUint, _ := strconv.ParseUint(id, 10, 32)
 
@@ -108,6 +134,12 @@ func (h *matkulHandler) DeleteMatkulHandler(c *gin.Context) {
 }
 
 func (h *matkulHandler) FetchMatkulHandler(c *gin.Context) {
+	role := c.MustGet("role").(string)
+	if role != "admin" {
+		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
+		return
+	}
+	
 	matkulList, err := h.matkulService.FetchMatkul()
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
