@@ -34,6 +34,7 @@ type (
 		Create(kelas *Kelas) (*Kelas, error)
 		UpdateByKelasID(kelas *Kelas) (*Kelas, error)
 		FindByID(id uint) (*Kelas, error)
+		FindBySomeID(id []uint) ([]*Kelas, error)
 		UpdateByJadwalID(jadwalKelas *JadwalKelas) (*JadwalKelas, error)
 		Delete(kelas *Kelas) (*Kelas, error)
 		Fetch() ([]*Kelas, error)
