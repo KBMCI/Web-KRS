@@ -58,6 +58,17 @@ func (k *kelasRepository) FindByID(id uint) (*model.Kelas, error) {
 	return kelas, err
 }
 
+func (k *kelasRepository) FindBySomeID(id []uint) ([]*model.Kelas, error) {
+	var kelas []*model.Kelas
+
+	err := k.cfg.Database().Preload("Matkul").Preload("JadwalKelas").Find(&kelas, id).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return kelas, err
+}
+
 func (k *kelasRepository) Fetch() ([]*model.Kelas, error) {
 	var data []*model.Kelas
 

@@ -72,6 +72,11 @@ func(s *server) Run() {
 	userGroup := s.httpServer.Group("/user")
 	userHandler.Mount(userGroup)
 
+	randomKrsService := service.NewRandomKrsService(matkulRepo, kelasRepo)
+	randomKrsHandler := handler.NewRandomKrsHandler(randomKrsService)
+	randomKrsGroup := s.httpServer.Group("/random-krs")
+	randomKrsHandler.Mount(randomKrsGroup)
+
 	if err := s.httpServer.Run(); err != nil {
 		log.Fatal(err)
 	}
