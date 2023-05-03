@@ -1,8 +1,11 @@
 package handler
 
 import (
+	"errors"
 	"net/http"
+	"strconv"
 	"web-krs/helper"
+	"web-krs/middleware"
 	"web-krs/model"
 	"web-krs/request"
 	"web-krs/response"
@@ -19,14 +22,20 @@ func NewMatkulHandler(matkulService model.MatkulService) model.MatkulHandler {
 }
 
 func (h *matkulHandler) Mount(group *gin.RouterGroup) {
-	group.POST("", h.StoreMatkulHandler) // create
-	group.PATCH("/:id", h.EditMatkulHandler) //update
-	group.GET("/:id", h.DetailMatkulHandler) //getById
-	group.DELETE("/:id", h.DeleteMatkulHandler) //delete
-	group.GET("", h.FetchMatkulHandler) //getAll
+	group.POST("", middleware.ValidateToken(), h.StoreMatkulHandler) // create
+	group.PATCH("/:id", middleware.ValidateToken(), h.EditMatkulHandler) //update
+	group.GET("/:id", middleware.ValidateToken(), h.DetailMatkulHandler) //getById
+	group.DELETE("/:id", middleware.ValidateToken(), h.DeleteMatkulHandler) //delete
+	group.GET("", middleware.ValidateToken(), h.FetchMatkulHandler) //getAll
 }
 
 func (h *matkulHandler) StoreMatkulHandler(c *gin.Context) {
+	role := c.MustGet("role").(string)
+	if role != "admin" {
+		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
+		return
+	}
+
 	var req request.MatkulRequest
 
 	err := c.ShouldBindJSON(&req)
@@ -53,7 +62,13 @@ func (h *matkulHandler) StoreMatkulHandler(c *gin.Context) {
 }
 
 func (h *matkulHandler) EditMatkulHandler(c *gin.Context) {
-	var req request.UpdateMatkulRequest
+	role := c.MustGet("role").(string)
+	if role != "admin" {
+		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
+		return
+	}
+	
+	var req request.MatkulRequest
 
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
@@ -67,8 +82,9 @@ func (h *matkulHandler) EditMatkulHandler(c *gin.Context) {
 	}
 
 	id := c.Param("id")
+	idUint, _ := strconv.ParseUint(id, 10, 32)
 
-	matkul, err := h.matkulService.EditMatkul(id, &req)
+	matkul, err := h.matkulService.EditMatkul(uint(idUint), &req)
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusUnprocessableEntity, err)
 		return
@@ -80,9 +96,16 @@ func (h *matkulHandler) EditMatkulHandler(c *gin.Context) {
 }
 
 func (h *matkulHandler) DetailMatkulHandler(c *gin.Context) {
+	role := c.MustGet("role").(string)
+	if role != "admin" {
+		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
+		return
+	}
+	
 	id := c.Param("id")
+	idUint, _ := strconv.ParseUint(id, 10, 32)
 
-	matkul, err := h.matkulService.GetByID(id)
+	matkul, err := h.matkulService.GetByID(uint(idUint))
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
 		return
@@ -92,9 +115,16 @@ func (h *matkulHandler) DetailMatkulHandler(c *gin.Context) {
 }
 
 func (h *matkulHandler) DeleteMatkulHandler(c *gin.Context) {
+	role := c.MustGet("role").(string)
+	if role != "admin" {
+		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
+		return
+	}
+	
 	id := c.Param("id")
+	idUint, _ := strconv.ParseUint(id, 10, 32)
 
-	err := h.matkulService.DestroyMatkul(id)
+	err := h.matkulService.DestroyMatkul(uint(idUint))
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusUnprocessableEntity, err)
 		return
@@ -104,6 +134,12 @@ func (h *matkulHandler) DeleteMatkulHandler(c *gin.Context) {
 }
 
 func (h *matkulHandler) FetchMatkulHandler(c *gin.Context) {
+	role := c.MustGet("role").(string)
+	if role != "admin" {
+		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
+		return
+	}
+	
 	matkulList, err := h.matkulService.FetchMatkul()
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusInternalServerError, err)

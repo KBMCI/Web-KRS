@@ -5,8 +5,10 @@ import (
 	"net/http"
 	"web-krs/config"
 	"web-krs/handler"
+	"web-krs/helper"
 	"web-krs/repository"
 	"web-krs/service"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -41,10 +43,15 @@ func InitServer(cfg config.Config) Server {
 func(s *server) Run() {
 
 	s.httpServer.GET("/", func(c *gin.Context) {
-		s.cfg.Database()
 		c.JSON(http.StatusOK, gin.H{
 		  "message": "test success",
 		})
+	})
+
+	s.httpServer.GET("/seeder", func(ctx *gin.Context) {
+		helper.SeederRefresh(s.cfg)
+		
+		helper.ResponseSuccessJson(ctx, "seeder success", "")
 	})
 
 	matkulRepo := repository.NewMatkulRepository(s.cfg)
