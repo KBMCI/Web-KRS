@@ -1,11 +1,13 @@
 package handler
 
 import (
+	"errors"
 	"net/http"
 	"regexp"
 	"strconv"
 	"strings"
 	"web-krs/helper"
+	"web-krs/middleware"
 	"web-krs/model"
 	"web-krs/request"
 	"web-krs/response"
@@ -27,11 +29,12 @@ func NewUserHandler(userService model.UserService) *userHandler  {
 }
 
 func (h *userHandler) Mount(group *gin.RouterGroup)  {
-	group.POST("", h.CreateUser)		// create
-    group.GET("", h.ReadAll)			// ReadAll
-    group.GET("/:id", h.ReadByID)		// ReadByID
-    group.PUT("/:id", h.Update)		// Update 
-    group.DELETE("/:id", h.Delete)		// Delete
+	group.POST("/register", h.CreateUser)		// create
+	group.POST("/login", h.UserLogin)		// create
+    group.GET("", middleware.ValidateToken(), h.ReadAll)			// ReadAll
+    group.GET("/:id", middleware.ValidateToken(), h.ReadByID)		// ReadByID
+    group.PUT("/:id", middleware.ValidateToken(), h.Update)		// Update 
+    group.DELETE("/:id", middleware.ValidateToken(), h.Delete)		// Delete
 }
 
 func HashPassword(password string) (string, error){
@@ -69,13 +72,6 @@ func (h *userHandler) CreateUser(c *gin.Context)  {
 		return 
 	}
 
-	// if !numeric {
-	// 	c.JSON(http.StatusBadRequest, gin.H{
-	// 		"message": "password need numeric character",
-	// 		"data": err,
-	// 	})
-	// 	return 
-	// }
 	if !numeric {
 		helper.ResponseDetailErrorJson(c, "password need numeric character", err)
 		return 
@@ -110,7 +106,7 @@ func (h *userHandler) CreateUser(c *gin.Context)  {
 		return
 	}
 
-	createUser, err := h.userService.Create(&userRequset)
+	createUser, err := h.userService.Register(&userRequset)
 
 	if err != nil {
 		helper.ResponseDetailErrorJson(c, "Cannot create user", err)
@@ -118,11 +114,53 @@ func (h *userHandler) CreateUser(c *gin.Context)  {
 	}
 
 	create := ConvertToUserResponse(createUser)
-	
+
 	helper.ResponseSuccessJson(c, "Create user success", create)
 }
 
+func (h *userHandler) UserLogin(c *gin.Context) {
+	var userLoginRequset request.UserLoginRequest
+
+	err := c.ShouldBindJSON(&userLoginRequset)
+
+	if err != nil {
+		helper.ResponseValidationErrorJson(c, "Error binding struct", err)
+		return 
+	}
+	
+	// cek email
+	user, err := h.userService.GetByEmail(userLoginRequset.Email)
+	if err != nil {
+		helper.ResponseErrorJson(c, http.StatusBadRequest, errors.New("invalid email or password"))
+		return
+	}
+
+	// cek password
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(userLoginRequset.Password)); err != nil {
+		helper.ResponseErrorJson(c, http.StatusBadRequest, errors.New("invalid email or password"))
+		return
+	}
+
+	tokenJwt, err := middleware.GenerateToken(user.ID, user.Role) // generate token
+	if err != nil {
+		helper.ResponseErrorJson(c, http.StatusBadRequest, errors.New("error generating token"))
+		return
+	}
+
+	helper.ResponseSuccessJson(c, "User logged in", gin.H{
+		"data": user,
+		"token": tokenJwt,
+	})
+
+}
+
 func (h *userHandler) ReadAll(c *gin.Context)  {
+	role := c.MustGet("role").(string)
+	if role != "admin" {
+		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
+		return
+	}
+	
 	users, err := h.userService.ReadAll()
 	
 	if err != nil {
@@ -137,12 +175,17 @@ func (h *userHandler) ReadAll(c *gin.Context)  {
 
 		usersResponse = append(usersResponse, userResponse)
 	}
-
+	
 	helper.ResponseSuccessJson(c, "Success Fetch Users", usersResponse)
 }
 
 func (h *userHandler) ReadByID(c *gin.Context)  {
-
+	role := c.MustGet("role").(string)
+	if role != "admin" {
+		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
+		return
+	}
+	
 	idString := c.Param("id")
 	id, _ := strconv.Atoi(idString)
 
@@ -155,11 +198,19 @@ func (h *userHandler) ReadByID(c *gin.Context)  {
 
 	userResponse := ConvertToUserResponse(readByID)
 
-	helper.ResponseSuccessJson(c, "Success fetch user", userResponse)
+	// helper.ResponseSuccessJson(c, "Success fetch user", userResponse)
+	helper.ResponseSuccessJson(c, "Success fetch user", gin.H{
+		"data": userResponse,
+	})
 }
 
 func (h *userHandler) Update(c *gin.Context)  {
-	
+	role := c.MustGet("role").(string)
+	if role != "admin" {
+		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
+		return
+	}
+
 	var UserRequest request.UserRequest
 
 	err:= c.ShouldBindJSON(&UserRequest)
@@ -178,7 +229,12 @@ func (h *userHandler) Update(c *gin.Context)  {
 }
 
 func (h *userHandler) Delete(c *gin.Context)  {
-	
+	role := c.MustGet("role").(string)
+	if role != "admin" {
+		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
+		return
+	}
+
 	id := c.Param("id")
 	idInt, _ := strconv.Atoi(id)
 
