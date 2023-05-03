@@ -14,7 +14,7 @@ func NewUserService(repo model.UserRepository) *userService {
 	return &userService{userRepository: repo}
 }
 
-func (s *userService) Create(userRequest *request.UserRequest) (*model.User, error) {
+func (s *userService) Register(userRequest *request.UserRequest) (*model.User, error) {
 	user := &model.User{
 		Email:        userRequest.Email,
 		Nama:         userRequest.Nama,
@@ -54,6 +54,16 @@ func (s *userService) ReadAll() ([]*model.User, error) {
 
 func (s *userService) ReadByID(ID int) (*model.User, error) {
 	user, err := s.userRepository.ReadByID(ID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func (s *userService) GetByEmail(email string) (*model.User, error) {
+	user, err := s.userRepository.FindByEmail(email)
 
 	if err != nil {
 		return nil, err

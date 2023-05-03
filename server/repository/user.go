@@ -40,7 +40,19 @@ func (u *userRepositoty) ReadByID(ID int) (*model.User, error){
 	
 	var user *model.User
 
-	err := u.Cfg.Database().Find(&user, ID).Error
+	err := u.Cfg.Database().First(&user, ID).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return user, err
+}
+
+func (u *userRepositoty) FindByEmail(email string) (*model.User, error) {
+	var user *model.User
+
+	err := u.Cfg.Database().First(&user, "email = ?", email).Error
 
 	if err != nil {
 		return nil, err

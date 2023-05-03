@@ -22,10 +22,10 @@ func (m *matkulRepository) Create(matkul *model.Matkul) (*model.Matkul, error) {
 	return matkul, err
 }
 
-func (m *matkulRepository) FindByID(id string) (*model.Matkul, error){
+func (m *matkulRepository) FindByID(id uint) (*model.Matkul, error){
 	matkul := new(model.Matkul)
 
-	err := m.cfg.Database().Preload("Kelas").First(matkul, "kode = ?", id).Error
+	err := m.cfg.Database().Preload("Kelas").First(matkul, id).Error
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func (m *matkulRepository) Fetch() ([]*model.Matkul, error) {
 }
 
 func (m *matkulRepository) UpdateByID(matkul *model.Matkul) (*model.Matkul, error){
-	err := m.cfg.Database().Save(&matkul).Error
+	err := m.cfg.Database().Model(&matkul).Updates(&matkul).First(&matkul).Error
 	if err != nil {
 		return nil, err
 	}

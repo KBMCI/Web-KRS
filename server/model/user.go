@@ -20,14 +20,16 @@ type UserRepository interface {
 	Create(user *User) (*User, error)
 	ReadAll() ([]*User, error)
 	ReadByID(ID int) (*User, error)
+	FindByEmail(email string) (*User, error)
 	Update(user *User) (*User, error)
 	Delete(user *User) (*User, error)
 }
 
 type UserService interface {
-	Create(user *request.UserRequest) (*User, error)
+	Register(user *request.UserRequest) (*User, error)
 	ReadAll() ([]*User, error)
 	ReadByID(ID int) (*User, error)
+	GetByEmail(email string) (*User, error)
 	Update(ID int, user  *request.UserRequest) (*User, error)
 	Delete(ID int) (*User, error)
 }
