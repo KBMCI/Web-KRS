@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"strconv"
 	"web-krs/helper"
-	"web-krs/middleware"
 	"web-krs/model"
 	"web-krs/request"
 	"web-krs/response"
@@ -22,11 +21,11 @@ func NewKelasHandler(kelasService model.KelasService) model.KelasHandler {
 }
 
 func (h *kelasHandler) Mount(group *gin.RouterGroup) {
-	group.POST("", middleware.ValidateToken(), h.StoreKelasHandler) // create
-	group.PATCH("/:id_kelas/jadwal/:id_jadwal", middleware.ValidateToken(), h.EditKelasHandler) //update
-	group.GET("/:id", middleware.ValidateToken(), h.DetailKelasHandler) //getById
-	group.DELETE("/:id", middleware.ValidateToken(), h.DeleteKelasHandler) //delete
-	group.GET("", middleware.ValidateToken(), h.FetchKelasHandler) //getAll
+	group.POST("", h.StoreKelasHandler) // create
+	group.PATCH("/:id_kelas/jadwal/:id_jadwal", h.EditKelasHandler) //update
+	group.GET("/:id", h.DetailKelasHandler) //getById
+	group.DELETE("/:id", h.DeleteKelasHandler) //delete
+	group.GET("", h.FetchKelasHandler) //getAll
 }
 
 func (h *kelasHandler) StoreKelasHandler(c *gin.Context) {

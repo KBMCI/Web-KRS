@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"strconv"
 	"web-krs/helper"
-	"web-krs/middleware"
 	"web-krs/model"
 	"web-krs/request"
 	"web-krs/response"
@@ -22,11 +21,11 @@ func NewMatkulHandler(matkulService model.MatkulService) model.MatkulHandler {
 }
 
 func (h *matkulHandler) Mount(group *gin.RouterGroup) {
-	group.POST("", middleware.ValidateToken(), h.StoreMatkulHandler) // create
-	group.PATCH("/:id", middleware.ValidateToken(), h.EditMatkulHandler) //update
-	group.GET("/:id", middleware.ValidateToken(), h.DetailMatkulHandler) //getById
-	group.DELETE("/:id", middleware.ValidateToken(), h.DeleteMatkulHandler) //delete
-	group.GET("", middleware.ValidateToken(), h.FetchMatkulHandler) //getAll
+	group.POST("", h.StoreMatkulHandler) // create
+	group.PATCH("/:id", h.EditMatkulHandler) //update
+	group.GET("/:id", h.DetailMatkulHandler) //getById
+	group.DELETE("/:id", h.DeleteMatkulHandler) //delete
+	group.GET("", h.FetchMatkulHandler) //getAll
 }
 
 func (h *matkulHandler) StoreMatkulHandler(c *gin.Context) {

@@ -6,6 +6,7 @@ import (
 	"web-krs/config"
 	"web-krs/handler"
 	"web-krs/helper"
+	"web-krs/middleware"
 	"web-krs/repository"
 	"web-krs/service"
 
@@ -58,12 +59,14 @@ func(s *server) Run() {
 	matkulService := service.NewMatkulService(matkulRepo)
 	matkulHandler := handler.NewMatkulHandler(matkulService)
 	matkulGroup := s.httpServer.Group("/matkul")
+	matkulGroup.Use(middleware.ValidateToken())
 	matkulHandler.Mount(matkulGroup)
 
 	kelasRepo := repository.NewKelasRepository(s.cfg)
 	kelasService := service.NewKelasService(kelasRepo)
 	kelasHandler := handler.NewKelasHandler(kelasService)
 	kelasGroup := s.httpServer.Group("/kelas")
+	kelasGroup.Use(middleware.ValidateToken())
 	kelasHandler.Mount(kelasGroup)
 
 	userRepository := repository.NewUserRepositoty(s.cfg)
