@@ -30,7 +30,8 @@ func NewUserHandler(userService model.UserService) *userHandler  {
 
 func (h *userHandler) Mount(group *gin.RouterGroup)  {
 	group.POST("/register", h.CreateUser)		// create
-	group.POST("/login", h.UserLogin)		// create
+	group.POST("/login", h.UserLogin)		// login
+	group.POST("/matkul", middleware.ValidateToken(), h.HasMatkul)		// hasMatkul
     group.GET("", middleware.ValidateToken(), h.ReadAll)			// ReadAll
     group.GET("/:id", middleware.ValidateToken(), h.ReadByID)		// ReadByID
     group.PUT("/:id", middleware.ValidateToken(), h.Update)		// Update 
@@ -226,6 +227,26 @@ func (h *userHandler) Update(c *gin.Context)  {
 	}
 
 	helper.ResponseSuccessJson(c, "Success Update User", update)
+}
+
+func (h *userHandler) HasMatkul(c *gin.Context) {
+	userId := c.MustGet("id").(float64)
+
+	var user model.UserHasMatkulReq
+
+	err:= c.ShouldBindJSON(&user)
+	if err != nil {
+		helper.ResponseValidationErrorJson(c, "Error binding struct", err.Error())
+		return 
+	}
+
+	update, err := h.userService.UserHasMatkul(uint(userId), &user)
+	if err != nil {
+		helper.ResponseErrorJson(c, http.StatusUnprocessableEntity, err)
+		return
+	}
+
+	helper.ResponseSuccessJson(c, "success", update)
 }
 
 func (h *userHandler) Delete(c *gin.Context)  {

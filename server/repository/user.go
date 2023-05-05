@@ -63,7 +63,8 @@ func (u *userRepositoty) FindByEmail(email string) (*model.User, error) {
 
 func (u *userRepositoty) Update(user *model.User) (*model.User, error){
 	
-	err := u.Cfg.Database().Save(&user).Error
+	// err := u.Cfg.Database().Save(&user).Error
+	err := u.Cfg.Database().Model(&user).Preload("Matkuls").Updates(&user).First(&user).Error
 
 	if err != nil {
 		return nil, err
@@ -82,5 +83,16 @@ func (u *userRepositoty) Delete(user *model.User) (*model.User, error)  {
 	}
 
 	return user,err
+}
+
+func (u *userRepositoty) DeleteMatkul(userHasMatkuls *model.UserHasMatkuls, id uint) error  {
+	
+	err := u.Cfg.Database().Delete(&userHasMatkuls, id).Error
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
