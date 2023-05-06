@@ -1,4 +1,8 @@
 import { useEffect, useState } from "react";
+import { header } from "./TableHeader";
+import Button from "../../component/Button";
+import Paginate from "../../component/Paginate";
+import { FiFilter, FiPlus } from "react-icons/fi";
 
 
 const TablePlan = ({ data }) => {
@@ -172,59 +176,51 @@ const TablePlan = ({ data }) => {
     return "py-2 px-4 text-center font-bold text-[14px]";
   };
 
+  const headerTabel = () => {
+    return "px-4 py-2"
+  }
+
   return (
     <>
-      <div className="min-h-[448px] bg-secondary p-7">
-        <div className="flex flex-row justify-between items-center">
-          <h3 className="text-sm font-semibold mb-4 pt-4">
-            Kamu dapat menemukan Plan KRS tanpa melakukan perencanaan KRS secara
-            manual.
-          </h3>
-          {/* <Button icon={<FiFilter />} name="Filter" /> */}
-        </div>
+    <div className="min-h-[448px] bg-secondary px-7 pb-7 pt-4">
+      <div className="mt-5 mb-9"> {/* mbungkus semua plan */}
+        
+        <> {/* isi tiap plan */}
+          <h1 className="text-2xl font-bold mb-4">Plan 1</h1>
 
-        <div className="mt-5 mb-9">
-          {" "}
-          {/* mbungkus semua plan */}
-          <>
-            {" "}
-            {/* isi tiap plan */}
-            <h1 className="text-2xl font-bold mb-4">Plan 1</h1>
-            <table className="table-fixed border-collapse border-b border-neutral-400 w-full drop-shadow-2xl rounded-2xl overflow-hidden">
-              <thead>
-                <tr className="bg-primary text-secondary">
-                  <th className="border px-4 py-2"></th>
-                  <th className="border px-4 py-2">Senin</th>
-                  <th className="border px-4 py-2">Selasa</th>
-                  <th className="border px-4 py-2">Rabu</th>
-                  <th className="border px-4 py-2">Kamis</th>
-                  <th className="border px-4 py-2">Jumat</th>
-                </tr>
-              </thead>
-              <tbody>
-                {jadwalKuliah.map((jadwal, index) => (
-                  <tr
-                    key={index}
+          <table className="table-fixed border-collapse border-b border-neutral-400 w-full drop-shadow-2xl rounded-2xl overflow-hidden">
+            <thead>
+              <tr className="bg-primary text-secondary"> 
+                <th className={headerTabel()}></th>
+                <th className={headerTabel()}>Senin</th>
+                <th className={headerTabel()}>Selasa</th>
+                <th className={headerTabel()}>Rabu</th>
+                <th className={headerTabel()}>Kamis</th>
+                <th className={headerTabel()}>Jumat</th>
+              </tr>
+            </thead>
+            <tbody>
+              {jadwalKuliah.map((jadwal, index) => (
+                <tr key={index}
                     className="bg-secondary text-neutral-900 border-b border-neutral-400">
-                    <td className={jamTabel()}>{jadwal.jam}</td>
-                    <td className={barisTabel()}>{jadwal.senin}</td>
-                    <td className={barisTabel()}>{jadwal.selasa}</td>
-                    <td className={barisTabel()}>{jadwal.rabu}</td>
-                    <td className={barisTabel()}>{jadwal.kamis}</td>
-                    <td className={barisTabel()}>{jadwal.jumat}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <div className="my-6 flex justify-end">
-              {/* <Button icon={<FiPlus />} name='Add to "MyPlans"' /> */}
-            </div>
-          </>
-        </div>
-
-        {/* <Paginate postPerPage={5} totalPost={25} paginate={Paginate} /> */}
+                  <td className={jamTabel()}>{jadwal.jam}</td>
+                  <td className={barisTabel()}>{jadwal.senin}</td>
+                  <td className={barisTabel()}>{jadwal.selasa}</td>
+                  <td className={barisTabel()}>{jadwal.rabu}</td>
+                  <td className={barisTabel()}>{jadwal.kamis}</td>
+                  <td className={barisTabel()}>{jadwal.jumat}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="my-6 flex justify-end">
+            <Button icon={<FiPlus/>} name="Add to &quot;MyPlans&quot;" />
+          </div>
+        </>
       </div>
-    </>
+      
+    </div>
+  </>
   );
 };
 
