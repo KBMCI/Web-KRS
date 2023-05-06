@@ -24,7 +24,7 @@ type (
 		Create(matkul *Matkul) (*Matkul, error)
 		UpdateByID(matkul *Matkul) (*Matkul, error)
 		FindByID(id uint) (*Matkul, error)
-		FindBySomeID(id []string) ([]*Matkul, error)
+		FindBySomeID(id []uint) ([]*Matkul, error)
 		Delete(matkul *Matkul) (*Matkul, error)
 		Fetch() ([]*Matkul, error)
 	}
