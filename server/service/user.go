@@ -43,6 +43,25 @@ func (s *userService) Register(userRequest *request.UserRequest) (*model.User, e
 	return user, nil
 }
 
+func (s *userService) UserHasMatkul(id uint, userHasMatkuls *model.UserHasMatkulReq) (*model.User, error)  {
+	
+	err := s.userRepository.DeleteMatkul(&model.UserHasMatkuls{}, id)
+	if err != nil {
+		return nil, err
+	}
+
+	addMatkul, err := s.userRepository.Update(&model.User{
+		ID: id,
+		Matkuls: userHasMatkuls.Matkuls,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return addMatkul, err
+}
+
 func (s *userService) ReadAll() ([]*model.User, error) {
 	users, err := s.userRepository.ReadAll()
 	if err != nil {
