@@ -27,7 +27,7 @@ func (u *userRepositoty) ReadAll() ([]*model.User, error){
 	
 	var user []*model.User
 
-	err := u.Cfg.Database().Find(&user).Error
+	err := u.Cfg.Database().Preload("Matkuls").Find(&user).Error
 
 	if err != nil {
 		return nil, err
@@ -40,7 +40,7 @@ func (u *userRepositoty) ReadByID(ID int) (*model.User, error){
 	
 	var user *model.User
 
-	err := u.Cfg.Database().First(&user, ID).Error
+	err := u.Cfg.Database().Preload("Matkuls").First(&user, ID).Error
 
 	if err != nil {
 		return nil, err

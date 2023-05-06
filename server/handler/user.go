@@ -286,6 +286,7 @@ func ConvertToUserResponse(u *model.User) response.UserResponse {
 		VerifPassword: "verified",
 		ProgramStudi: u.ProgramStudi,
 		Role: u.Role,
+		Matkuls: u.Matkuls,
 	}
 	
 }
