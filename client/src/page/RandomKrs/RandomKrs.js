@@ -4,23 +4,44 @@ import { FiFilter } from "react-icons/fi";
 import Button from "../../component/Button";
 import Paginate from "../../component/Paginate";
 import TablePlan from "./TablePlan";
+import { PaginationRandom } from "./PaginationRandom";
+
 
 const RandomKrs = () => {
-  const [matkul, setMatkul] = useState([]);
+  const [plan, setPlan] = useState([]);
+  // Pagination Logic
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(5);
+  const [clear, setClear] = useState(false)
+  
+  console.log(plan)
+
 
   useEffect(() => {
     const fetchRandomKrs = async () => {
       try {
         const respone = await axios.get("http://localhost:8080/random-krs");
-        console.log(respone.data);
-        setMatkul(respone.data.data);
+        // console.log("===============GET DATA=================")
+        // console.log(respone.data);
+        setPlan(respone.data.data);
       } catch (err) {
         console.log(err);
       }
     };
     fetchRandomKrs();
+    
   }, []);
+  console.log()
 
+  useEffect(()=>{
+    setClear(true)
+  },[currentPage])
+
+
+  // Pagination Logic
+  const lastPostIndex = currentPage * postsPerPage;
+  const firstPostIndex = lastPostIndex - postsPerPage
+ 
   return (
     <>
       <div className=" bg-secondary px-7 pt-7">
@@ -32,11 +53,22 @@ const RandomKrs = () => {
           <Button icon={<FiFilter />} name="Filter" />
         </div>
       </div>
-      <TablePlan data={matkul[1]}></TablePlan>
-      <TablePlan data={matkul[2]}></TablePlan>
-      <TablePlan data={matkul[3]}></TablePlan>
+    
+      {plan &&
+        plan.slice(firstPostIndex, lastPostIndex).map((plans, i ) => (
+          <div key={i}>
+            {console.log("dijalankan")}
+            {console.log(plans)}
+            <TablePlan data={plans} plan={firstPostIndex+i+1} clear={currentPage}></TablePlan>
+          </div>
+        ))}
       <div className=" bg-secondary p-7">
-        <Paginate postPerPage={5} totalPost={25} paginate={Paginate} />
+        <Paginate postPerPage={1} totalPost={8} paginate={Paginate} />
+        <PaginationRandom
+          totalPosts = {plan.length}
+          postsPerPage = {postsPerPage}
+          setCurrentPage={setCurrentPage}
+        ></PaginationRandom>
       </div>
     </>
   );

@@ -1,61 +1,68 @@
 import { useEffect, useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import Button from "../../component/Button";
-import { clear, header } from "./TableHeader";
+import { header } from "./TableHeader";
 
-const TablePlan = ({ data }) => {
+const TablePlan = ({ data, plan, clear }) => {
   // menetapkan agar header tidak akan berubah
   Object.freeze(header);
   // menyalin header untuk dimanipulasi
   const newData = [...header];
+  const [refresh, setRefresh] = useState();
   const [jadwalKuliah, setJadwalKuliah] = useState(newData);
+
   // membuat plan
-  const setPlan = () => {
-    Array.isArray(data) &&
-      data.map((item, i) => (
-        <div key={item.id}>
-          {item.jadwal_kelas.map((jadwal, index) => (
-            <div key={index}>
-              {setTable(
-                `${jadwal.jam_mulai} - ${jadwal.jam_selesai}`,
-                jadwal.hari.toLowerCase(),
-                item.nama_kelas,
-                item.nama_matkul
-              )}
-            </div>
-          ))}
-        </div>
-      ));
-  };
-
-  // Mengatur posisi data dalam tabel
-  const setTable = (waktu, hari, kelas, matkul) => {
-    // Menemukan object yang sesuai untuk di edit
-    const found = jadwalKuliah.find((obj) => {
-      return obj.jam === waktu;
-    });
-
-    // merubah object terpilih (found)
-    const updateJadwal = {
-      ...found,
-      [hari]: `${matkul} (${kelas})`,
+  useEffect(() => {
+    const setPlan = () => {
+      Array.isArray(data) &&
+        data.map((item, i) => (
+          <div key={item.id}>
+            {item.jadwal_kelas.map((jadwal, index) => (
+              <div key={index}>
+                {setTable(
+                  `${jadwal.jam_mulai} - ${jadwal.jam_selesai}`,
+                  jadwal.hari.toLowerCase(),
+                  item.nama_kelas,
+                  item.nama_matkul
+                )}
+              </div>
+            ))}
+          </div>
+        ));
     };
 
-    // jadwal palsu yang di updated
-    const telahUpdated = [...jadwalKuliah];
-    telahUpdated.map((item, i) => {
-      if (item.jam === updateJadwal.jam) {
-        return (jadwalKuliah[i] = updateJadwal);
-      }
-    });
+    // Mengatur posisi data dalam tabel
+    const setTable = (waktu, hari, kelas, matkul) => {
+      // Menemukan object yang sesuai untuk di edit
+      const found = jadwalKuliah.find((obj) => {
+        return obj.jam === waktu;
+      });
+      // merubah object terpilih (found)
+      const updateJadwal = {
+        ...found,
+        [hari]: `${matkul} (${kelas})`,
+      };
+      // jadwal palsu yang di updated
+      const telahUpdated = [...jadwalKuliah];
+      telahUpdated.map((item, i) => {
+        if (item.jam === updateJadwal.jam) {
+          return (jadwalKuliah[i] = updateJadwal);
+        }
+        return null;
+      });
 
-    // merubah jadwal asli
-    setJadwalKuliah(telahUpdated);
-  };
-
-  useEffect(() => {
+      // merubah jadwal asli
+      setJadwalKuliah(telahUpdated);
+    };
     setPlan();
-  }, [data]);
+    setRefresh(false)
+  }, [data, refresh, jadwalKuliah]);
+
+  // Clear Jadwal Tabel agar bisa dipakai
+  useEffect(() => {
+    setJadwalKuliah(newData);
+    setRefresh(true)
+  }, [clear]);
 
   const barisTabel = () => {
     return "py-2 text-center px-4 font-semibold 2xl:text-sm xl:text-sm lg:text-sm md:text-xs md:px-2 sm:text-xs sm:px-2";
@@ -78,7 +85,7 @@ const TablePlan = ({ data }) => {
           <>
             {" "}
             {/* isi tiap plan */}
-            <h1 className="text-2xl font-bold mb-4">Plan 1</h1>
+            <h1 className="text-2xl font-bold mb-4">Plan {plan}</h1>
             <table className="table-fixed border-collapse border-b border-neutral-400 w-full drop-shadow-2xl rounded-2xl overflow-hidden">
               <thead>
                 <tr className="bg-primary text-secondary">
