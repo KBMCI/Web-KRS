@@ -5,40 +5,48 @@ import (
 	"strings"
 	"web-krs/helper"
 	"web-krs/model"
+	"web-krs/response"
 
 	"github.com/gin-gonic/gin"
 )
 
 type randomKrsHandler struct {
 	randomKrsService model.RandomKrsService
+	planService      model.PlanService
 }
 
-
-func NewRandomKrsHandler(randomKrsService model.RandomKrsService) model.RandomKrsHandler {
+func NewRandomKrsHandler(randomKrsService model.RandomKrsService, planService model.PlanService) model.RandomKrsHandler {
 	return &randomKrsHandler{
 		randomKrsService: randomKrsService,
+		planService:      planService,
 	}
 }
 
 // Mount implements model.RandomKrsHandler
 func (r *randomKrsHandler) Mount(group *gin.RouterGroup) {
-	group.GET("", r.FetchRandomKrsHandler) //getAll
+	group.GET("", r.FetchRandomKrsHandler)         //getAll
 	group.GET("/filter", r.FilterRandomKrsHandler) //getByFilter
 }
 
-func (r *randomKrsHandler) FetchRandomKrsHandler(c *gin.Context)  {
+func (r *randomKrsHandler) FetchRandomKrsHandler(c *gin.Context) {
+	idUser := c.MustGet("id").(float64)
+	
 	randomKrsList, err := r.randomKrsService.FetchRandomKrs()
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
 		return
 	}
 
-	helper.ResponseSuccessJson(c, "success", randomKrsList)
+	randomKrsResponse := response.ConvertFormatRandomKrsToReponseRandomKrs(r.planService, uint(idUser), randomKrsList)
+
+	helper.ResponseSuccessJson(c, "success", randomKrsResponse)
 }
 
-func (r *randomKrsHandler) FilterRandomKrsHandler(c *gin.Context)  {
-	kelasQueries := c.QueryArray("kelas")
-	jadwalQueries := c.QueryArray("jadwal")
+func (r *randomKrsHandler) FilterRandomKrsHandler(c *gin.Context) {
+	idUser := c.MustGet("id").(float64)
+	
+	kelasQueries := c.QueryArray("kelas[]")
+	jadwalQueries := c.QueryArray("jadwal[]")
 
 	var filterKelas []model.FilterKelas
 	var filterJadwals []model.FilterJadwal
@@ -61,8 +69,10 @@ func (r *randomKrsHandler) FilterRandomKrsHandler(c *gin.Context)  {
 	filterKrsList, err := r.randomKrsService.FilterRandomKrs(filterJadwals, filterKelas)
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
-		return 
+		return
 	}
-	
-	helper.ResponseSuccessJson(c, "success", filterKrsList)
+
+	randomKrsResponse := response.ConvertFormatRandomKrsToReponseRandomKrs(r.planService, uint(idUser), filterKrsList)
+
+	helper.ResponseSuccessJson(c, "success", randomKrsResponse)
 }
