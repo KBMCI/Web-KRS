@@ -3,7 +3,7 @@ import { FiPlus } from "react-icons/fi";
 import Button from "../../component/Button";
 import { header } from "./TableHeader";
 
-const TablePlan = ({ data, plan, clear }) => {
+const TablePlan = ({ data, plan, currentPage }) => {
   // menetapkan agar header tidak akan berubah
   Object.freeze(header);
   // menyalin header untuk dimanipulasi
@@ -55,14 +55,14 @@ const TablePlan = ({ data, plan, clear }) => {
       setJadwalKuliah(telahUpdated);
     };
     setPlan();
-    setRefresh(false)
-  }, [data, refresh, jadwalKuliah]);
+    setRefresh(false);
+  }, [data, refresh]);
 
   // Clear Jadwal Tabel agar bisa dipakai
   useEffect(() => {
     setJadwalKuliah(newData);
-    setRefresh(true)
-  }, [clear]);
+    setRefresh(true);
+  }, [currentPage]);
 
   const barisTabel = () => {
     return "py-2 text-center px-4 font-semibold 2xl:text-sm xl:text-sm lg:text-sm md:text-xs md:px-2 sm:text-xs sm:px-2";
