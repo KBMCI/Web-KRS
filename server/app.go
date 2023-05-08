@@ -75,9 +75,17 @@ func(s *server) Run() {
 	userGroup := s.httpServer.Group("/user")
 	userHandler.Mount(userGroup)
 
+	myPlanRepository := repository.NewPlanRepository(s.cfg)
+	myPlanService := service.NewPlanService(myPlanRepository, kelasRepo, userRepository)
+	myPlanHandler := handler.NewPlandHandler(myPlanService)
+	myPlanGroup := s.httpServer.Group("/my-plan")
+	myPlanGroup.Use(middleware.ValidateToken())
+	myPlanHandler.Mount(myPlanGroup)
+	
 	randomKrsService := service.NewRandomKrsService(matkulRepo, kelasRepo)
-	randomKrsHandler := handler.NewRandomKrsHandler(randomKrsService)
+	randomKrsHandler := handler.NewRandomKrsHandler(randomKrsService, myPlanService)
 	randomKrsGroup := s.httpServer.Group("/random-krs")
+	randomKrsGroup.Use(middleware.ValidateToken())
 	randomKrsHandler.Mount(randomKrsGroup)
 
 	if err := s.httpServer.Run(); err != nil {

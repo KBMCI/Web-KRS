@@ -16,7 +16,8 @@ type(
 		Role         string 	`json:"role" gorm:"type:enum('admin', 'user');not null"`
 		CreatedAt 	 time.Time 	`json:"-"`	
 		UpdatedAt 	 time.Time 	`json:"-"`
-		Matkuls 	 []Matkul 	`json:"matkuls" gorm:"many2many:user_has_matkuls"`
+		Matkuls 	   []Matkul 	`json:"matkuls" gorm:"many2many:user_has_matkuls"`
+    Plans        []*Plan `json:"plans" gorm:"many2many:user_plans;"`
 	}
 
 	UserHasMatkuls struct {
@@ -47,6 +48,6 @@ type UserService interface {
 	ReadAll() ([]*User, error)
 	ReadByID(ID int) (*User, error)
 	GetByEmail(email string) (*User, error)
-	Update(ID int, user  *request.UserRequest) (*User, error)
+	Update(ID int, user *request.UserRequest) (*User, error)
 	Delete(ID int) (*User, error)
 }
