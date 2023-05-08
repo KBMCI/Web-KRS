@@ -8,12 +8,13 @@ import (
 
 type User struct {
 	gorm.Model
-	Email        string `json:"email" binding:"email" gorm:"unique;not null"`
-	Nama         string `json:"nama" gorm:"type:varchar(100)"`
-	ProgramStudi string `json:"program_studi" gorm:"type:varchar(30)"`
-	Nim          string `json:"nim" gorm:"type:varchar(20)"`
-	Password     string `json:"password" gorm:"type:varchar(100)"`
-	Role         string `json:"role" gorm:"type:enum('admin', 'user');not null"`
+	Email        string  `json:"email" binding:"email" gorm:"unique;not null"`
+	Nama         string  `json:"nama" gorm:"type:varchar(100)"`
+	ProgramStudi string  `json:"program_studi" gorm:"type:varchar(30)"`
+	Nim          string  `json:"nim" gorm:"type:varchar(20)"`
+	Password     string  `json:"password" gorm:"type:varchar(100)"`
+	Role         string  `json:"role" gorm:"type:enum('admin', 'user');not null"`
+	Plans        []*Plan `json:"plans" gorm:"many2many:user_plans;" `
 }
 
 type UserRepository interface {
@@ -30,6 +31,6 @@ type UserService interface {
 	ReadAll() ([]*User, error)
 	ReadByID(ID int) (*User, error)
 	GetByEmail(email string) (*User, error)
-	Update(ID int, user  *request.UserRequest) (*User, error)
+	Update(ID int, user *request.UserRequest) (*User, error)
 	Delete(ID int) (*User, error)
 }
