@@ -91,7 +91,7 @@ func (s *userService) GetByEmail(email string) (*model.User, error) {
 	return user, nil
 }
 
-func (s *userService) Update(ID int, userRequest *request.UserRequest) (*model.User, error) {
+func (s *userService) Update(ID int, userRequest *request.UserUpdateRequest) (*model.User, error) {
 	user, err := s.userRepository.ReadByID(ID)
 	if err != nil {
 		return nil, err
@@ -101,8 +101,25 @@ func (s *userService) Update(ID int, userRequest *request.UserRequest) (*model.U
 	user.Nama = userRequest.Nama
 	user.ProgramStudi = userRequest.ProgramStudi
 	user.Nim = userRequest.Nim
-	user.Password = userRequest.Password
 	user.Role = userRequest.Role
+
+	user, err = s.userRepository.Update(user)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func (s *userService) ForgotPassword(ID int, userRequest *request.ForgotPasswordRequest) (*model.User, error) {
+
+	user, err := s.userRepository.ReadByID(ID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	user.Password, _ = handler.HashPassword(userRequest.Password)
 
 	user, err = s.userRepository.Update(user)
 	if err != nil {

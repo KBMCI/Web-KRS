@@ -47,6 +47,7 @@ type UserService interface {
 	ReadAll() ([]*User, error)
 	ReadByID(ID int) (*User, error)
 	GetByEmail(email string) (*User, error)
-	Update(ID int, user *request.UserRequest) (*User, error)
+	Update(ID int, user *request.UserUpdateRequest) (*User, error)
+	ForgotPassword(ID int, user *request.ForgotPasswordRequest) (*User, error)
 	Delete(ID int) (*User, error)
 }
