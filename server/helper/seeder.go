@@ -379,4 +379,14 @@ func SeederRefresh(cfg config.Config) {
 		cfg.Database().Create(&kelas)
 	}
 	
+	// User add matkuls
+	var matkulAdmin []model.Matkul
+	var userAdmin model.User
+
+	cfg.Database().First(&userAdmin)
+	cfg.Database().Find(&matkulAdmin, []int{1,2,3,4,5,6,7,8})
+
+	userAdmin.Matkuls = matkulAdmin
+	
+	cfg.Database().Model(&userAdmin).Updates(&userAdmin)
 }

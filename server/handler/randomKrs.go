@@ -31,7 +31,7 @@ func (r *randomKrsHandler) Mount(group *gin.RouterGroup) {
 func (r *randomKrsHandler) FetchRandomKrsHandler(c *gin.Context) {
 	idUser := c.MustGet("id").(float64)
 	
-	randomKrsList, err := r.randomKrsService.FetchRandomKrs()
+	randomKrsList, err := r.randomKrsService.FetchRandomKrs(uint(idUser))
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
 		return
@@ -66,7 +66,7 @@ func (r *randomKrsHandler) FilterRandomKrsHandler(c *gin.Context) {
 		})
 	}
 
-	filterKrsList, err := r.randomKrsService.FilterRandomKrs(filterJadwals, filterKelas)
+	filterKrsList, err := r.randomKrsService.FilterRandomKrs(uint(idUser), filterJadwals, filterKelas)
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
 		return

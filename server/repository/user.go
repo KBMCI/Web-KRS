@@ -40,7 +40,7 @@ func (u *userRepositoty) ReadByID(ID int) (*model.User, error){
 	
 	var user *model.User
 
-	err := u.Cfg.Database().Preload("Matkuls").First(&user, ID).Error
+	err := u.Cfg.Database().Preload("Matkuls.Kelas.JadwalKelas").First(&user, ID).Error
 
 	if err != nil {
 		return nil, err

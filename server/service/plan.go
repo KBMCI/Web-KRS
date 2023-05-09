@@ -50,3 +50,35 @@ func (p *planService) GetByIdUser(idUser uint) ([]*model.Plan, error) {
 
 	return plans, nil
 }
+
+func (p *planService) EditPlan(idUser uint, idPlan uint, idKelas []uint) ([]*model.Kelas, error) {
+	
+	if err := p.DestroyPlan(idUser, idPlan); err != nil {
+		return nil, err
+	}
+
+	kelasList, err := p.StorePlan(idUser, idKelas)
+	if err != nil {
+		return nil, err
+	}
+
+	return kelasList, nil
+}
+
+func (p *planService) DestroyPlan(idUser uint, idPlan uint) error {
+	user, err := p.userRepository.ReadByID(int(idUser))
+	if err != nil {
+		return err
+	}
+
+	plan, err := p.planRepository.FindByIdPlan(idPlan)
+	if err != nil {
+		return err
+	}
+
+	if err := p.planRepository.DeletePlan(user, plan); err != nil{
+		return err
+	}
+
+	return nil
+}
