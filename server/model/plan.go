@@ -11,19 +11,22 @@ type (
 		ID        uint      `gorm:"primaryKey"`
 		CreatedAt time.Time `json:"-"`
 		UpdatedAt time.Time `json:"-"`
-		Users     []*User   `gorm:"many2many:user_plans;"`
-		Kelas     []*Kelas  `gorm:"many2many:plan_kelas;"`
+		Users     []*User   `gorm:"many2many:user_plans;constraint:OnDelete:CASCADE"`
+		Kelas     []*Kelas  `gorm:"many2many:plan_kelas;constraint:OnDelete:CASCADE"`
 	}
 
 	PlanRepository interface {
 		Create(user *User, plan *Plan) (*Plan, error)
 		Fetch() ([]*Plan, error)
+		FindByIdPlan(idPlan uint) (*Plan, error) 
 		FindByIdUser(idUser uint) ([]*Plan, error)
+		DeletePlan(user *User, plan *Plan) error
 	}
 
 	PlanService interface {
 		StorePlan(idUser uint, idKelas []uint) ([]*Kelas, error)
 		GetByIdUser(idUser uint) ([]*Plan, error)
+		DestroyPlan(idUser uint, idPlan uint) error
 	}
 
 	PlanHandler interface {

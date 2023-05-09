@@ -50,3 +50,21 @@ func (p *planService) GetByIdUser(idUser uint) ([]*model.Plan, error) {
 
 	return plans, nil
 }
+
+func (p *planService) DestroyPlan(idUser uint, idPlan uint) error {
+	user, err := p.userRepository.ReadByID(int(idUser))
+	if err != nil {
+		return err
+	}
+
+	plan, err := p.planRepository.FindByIdPlan(idPlan)
+	if err != nil {
+		return err
+	}
+
+	if err := p.planRepository.DeletePlan(user, plan); err != nil{
+		return err
+	}
+
+	return nil
+}

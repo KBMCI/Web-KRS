@@ -48,6 +48,17 @@ func (p *planRepository) Fetch() ([]*model.Plan, error) {
 	return planList, nil
 }
 
+func (p *planRepository) FindByIdPlan(idPlan uint) (*model.Plan, error) {
+	var plan *model.Plan
+
+	err := p.cfg.Database().Find(&plan, idPlan).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return plan, nil
+}
+
 func (p *planRepository) FindByIdUser(idUser uint) ([]*model.Plan, error) {
 	var user model.User
 
@@ -59,9 +70,33 @@ func (p *planRepository) FindByIdUser(idUser uint) ([]*model.Plan, error) {
 	return user.Plans, err
 }
 
+func (p *planRepository) DeletePlan(user *model.User, plan *model.Plan) error {
+	var currentPlan *model.Plan
+
+	err := p.cfg.Database().Model(&user).Association("Plans").Delete(plan)
+	if err != nil {
+		return err
+	}
+
+	p.cfg.Database().Model(&model.Plan{}).Preload("Users").Find(&currentPlan, plan.ID)
+	if len(currentPlan.Users) == 0 {
+		err := p.cfg.Database().Delete(&plan).Error
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 func CheckDuplicatePlan(currentPlan []*model.Plan, kelas []*model.Kelas) *model.Plan {
 	for _, curPlan := range currentPlan {
 		count := 0
+
+		if len(curPlan.Kelas) != len(kelas) {
+			continue
+		}
+		
 		for _, curKelas := range curPlan.Kelas {
 			for _, newKelas := range kelas {
 				if curKelas.ID == newKelas.ID {

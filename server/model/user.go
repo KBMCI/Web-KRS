@@ -5,32 +5,31 @@ import (
 	"web-krs/request"
 )
 
-type(
+type (
 	User struct {
-		ID			 uint 		`gorm:"primaryKey"`
-		Email        string 	`json:"email" binding:"email" gorm:"unique;not null"`
-		Nama         string 	`json:"nama" gorm:"type:varchar(100)"`
-		ProgramStudi string 	`json:"program_studi" gorm:"type:varchar(30)"`
-		Nim          string 	`json:"nim" gorm:"type:varchar(20)"`
-		Password     string 	`json:"password" gorm:"type:varchar(100)"`
-		Role         string 	`json:"role" gorm:"type:enum('admin', 'user');not null"`
-		CreatedAt 	 time.Time 	`json:"-"`	
-		UpdatedAt 	 time.Time 	`json:"-"`
-		Matkuls 	   []Matkul 	`json:"matkuls" gorm:"many2many:user_has_matkuls"`
-    Plans        []*Plan `json:"plans" gorm:"many2many:user_plans;"`
+		ID           uint      `gorm:"primaryKey"`
+		Email        string    `json:"email" binding:"email" gorm:"unique;not null"`
+		Nama         string    `json:"nama" gorm:"type:varchar(100)"`
+		ProgramStudi string    `json:"program_studi" gorm:"type:varchar(30)"`
+		Nim          string    `json:"nim" gorm:"type:varchar(20)"`
+		Password     string    `json:"password" gorm:"type:varchar(100)"`
+		Role         string    `json:"role" gorm:"type:enum('admin', 'user');not null"`
+		CreatedAt    time.Time `json:"-"`
+		UpdatedAt    time.Time `json:"-"`
+		Matkuls      []Matkul  `json:"matkuls" gorm:"many2many:user_has_matkuls"`
+		Plans        []*Plan   `json:"plans" gorm:"many2many:user_plans;constraint:OnDelete:CASCADE"`
 	}
 
 	UserHasMatkuls struct {
-		UserId 		uint `gorm:"primaryKey"`
-		MatkulId 	uint `gorm:"primaryKey"`
+		UserId   uint `gorm:"primaryKey"`
+		MatkulId uint `gorm:"primaryKey"`
 	}
 
 	UserHasMatkulReq struct {
-		ID			 uint 		`gorm:"primaryKey"`
-		Matkuls 	 []Matkul 	`json:"matkuls" gorm:"many2many:user_has_matkuls"`
+		ID      uint     `gorm:"primaryKey"`
+		Matkuls []Matkul `json:"matkuls" gorm:"many2many:user_has_matkuls"`
 	}
-	
-) 
+)
 
 type UserRepository interface {
 	Create(user *User) (*User, error)
