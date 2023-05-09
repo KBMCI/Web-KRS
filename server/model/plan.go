@@ -26,6 +26,7 @@ type (
 	PlanService interface {
 		StorePlan(idUser uint, idKelas []uint) ([]*Kelas, error)
 		GetByIdUser(idUser uint) ([]*Plan, error)
+		EditPlan(idUser uint, idPlan uint, idKelas []uint) ([]*Kelas, error)
 		DestroyPlan(idUser uint, idPlan uint) error
 	}
 
