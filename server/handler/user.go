@@ -31,6 +31,7 @@ func NewUserHandler(userService model.UserService) *userHandler  {
 func (h *userHandler) Mount(group *gin.RouterGroup)  {
 	group.POST("/register", h.CreateUser)		// create
 	group.POST("/login", h.UserLogin)		// login
+	group.PUT("/forgot", h.ForgotPassword)
 	group.POST("/matkul", middleware.ValidateToken(), h.HasMatkul)		// hasMatkul
     group.GET("", middleware.ValidateToken(), h.ReadAll)			// ReadAll
     group.GET("/:id", middleware.ValidateToken(), h.ReadByID)		// ReadByID
@@ -43,16 +44,11 @@ func HashPassword(password string) (string, error){
 	return string(bytes),err
 }
 
-func CheckPasswordHash(password, hash string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password) )
-	return err == nil
-}
-
 func (h *userHandler) CreateUser(c *gin.Context)  {
 	
-	var userRequset request.UserRequest
+	var userRequest request.UserRequest
 
-	err := c.ShouldBindJSON(&userRequset)
+	err := c.ShouldBindJSON(&userRequest)
 
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, "Error binding struct", err)
@@ -63,12 +59,12 @@ func (h *userHandler) CreateUser(c *gin.Context)  {
 		numeric, lowerCase, upperCase, specialCharacter bool 
 	)
 
-	numeric = regexp.MustCompile(`\d`).MatchString(userRequset.Password) 
-	lowerCase = regexp.MustCompile(`[a-z]`).MatchString(userRequset.Password)
-	upperCase = regexp.MustCompile(`[A-Z]`).MatchString(userRequset.Password)
-	specialCharacter = strings.ContainsAny(userRequset.Password, "!@#$%^&*()_+-=/.,:;'`?{}[|]")
+	numeric = regexp.MustCompile(`\d`).MatchString(userRequest.Password) 
+	lowerCase = regexp.MustCompile(`[a-z]`).MatchString(userRequest.Password)
+	upperCase = regexp.MustCompile(`[A-Z]`).MatchString(userRequest.Password)
+	specialCharacter = strings.ContainsAny(userRequest.Password, "!@#$%^&*()_+-=/.,:;'`?{}[|]")
 
-	if len(userRequset.Password) <6 {
+	if len(userRequest.Password) <6 {
 		helper.ResponseDetailErrorJson(c, "Too short password", err)
 		return 
 	}
@@ -102,12 +98,12 @@ func (h *userHandler) CreateUser(c *gin.Context)  {
 		return
 	}
 
-	if userRequset.VerifPassword != userRequset.Password {
+	if userRequest.VerifPassword != userRequest.Password {
 		helper.ResponseDetailErrorJson(c, "Password incorrect", err)
 		return
 	}
 
-	createUser, err := h.userService.Register(&userRequset)
+	createUser, err := h.userService.Register(&userRequest)
 
 	if err != nil {
 		helper.ResponseDetailErrorJson(c, "Cannot create user", err)
@@ -212,7 +208,7 @@ func (h *userHandler) Update(c *gin.Context)  {
 		return
 	}
 
-	var UserRequest request.UserRequest
+	var UserRequest request.UserUpdateRequest
 
 	err:= c.ShouldBindJSON(&UserRequest)
 
@@ -227,6 +223,41 @@ func (h *userHandler) Update(c *gin.Context)  {
 	}
 
 	helper.ResponseSuccessJson(c, "Success Update User", update)
+}
+
+func (h *userHandler) ForgotPassword(c *gin.Context)  {
+
+	var UserRequest request.ForgotPasswordRequest
+
+	err:= c.ShouldBindJSON(&UserRequest)
+
+	if err != nil {
+		helper.ResponseValidationErrorJson(c, "Error Binding Struct", err)
+		return 
+	}
+
+	findUser, err := h.userService.GetByEmail(UserRequest.Email)
+
+	if err != nil {
+		helper.ResponseDetailErrorJson(c, "Record not found",err)
+		return 
+	}
+
+	if UserRequest.VerifPassword != UserRequest.Password {
+		helper.ResponseDetailErrorJson(c, "Password incorrect", err)
+		return
+	}
+
+	update, _ := h.userService.ForgotPassword(int(findUser.ID), &UserRequest)
+
+	if err != nil {
+		helper.ResponseDetailErrorJson(c, "Error Update User",err)
+		return 
+	}
+
+	userResponse := ConvertToUserResponse(update)
+
+	helper.ResponseSuccessJson(c, "Success Forgot Password", userResponse)
 }
 
 func (h *userHandler) HasMatkul(c *gin.Context) {
