@@ -9,35 +9,33 @@ import (
 )
 
 type randomKrsService struct {
+	userRepository   model.UserRepository
 	matkulRepository model.MatkulRepository
 	kelasRepository  model.KelasRepository
 }
 
-func NewRandomKrsService(matkul model.MatkulRepository, kelas model.KelasRepository) model.RandomKrsService {
+func NewRandomKrsService(user model.UserRepository, matkul model.MatkulRepository, kelas model.KelasRepository) model.RandomKrsService {
 	return &randomKrsService{
+		userRepository:   user,
 		matkulRepository: matkul,
 		kelasRepository:  kelas,
 	}
 }
 
-func (r *randomKrsService) FetchRandomKrs() ([][]model.RandomKrs, error) {
-	var allIdMatkul []uint
-
-	allMatkul, err := r.matkulRepository.Fetch()
+func (r *randomKrsService) FetchRandomKrs(idUser uint) ([][]model.RandomKrs, error) {
+	user, err := r.userRepository.ReadByID(int(idUser))
 	if err != nil {
 		return nil, err
 	}
 
-	for _, id := range allMatkul {
-		allIdMatkul = append(allIdMatkul, id.ID)
-	}
 
-	matkuls, err := r.matkulRepository.FindBySomeID(allIdMatkul)
-	if err != nil {
-		return nil, err
+	var matkuls []*model.Matkul
+	for i := 0; i < len(user.Matkuls); i++ {
+		matkuls = append(matkuls, &user.Matkuls[i])
 	}
 
 	hasilRandomKrs := r.RandomKrs(matkuls, [][]model.RandomKrs{})
+	fmt.Println(len(hasilRandomKrs))
 	return hasilRandomKrs, nil
 }
 
@@ -85,8 +83,8 @@ func (r *randomKrsService) RandomKrs(matkuls []*model.Matkul, hasil [][]model.Ra
 }
 
 // Filter pada random krs dengan memasukkan jadwal kelas dan kelas yang ingin dihindari
-func (r *randomKrsService) FilterRandomKrs(filterJadwal []model.FilterJadwal, filterKelas []model.FilterKelas) ([][]model.RandomKrs, error) {
-	randomsKrs, err := r.FetchRandomKrs()
+func (r *randomKrsService) FilterRandomKrs(idUser uint, filterJadwal []model.FilterJadwal, filterKelas []model.FilterKelas) ([][]model.RandomKrs, error) {
+	randomsKrs, err := r.FetchRandomKrs(idUser)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +112,6 @@ func (r *randomKrsService) FilterRandomKrs(filterJadwal []model.FilterJadwal, fi
 			jadwalBaru = append(jadwalBaru, randomKrs)
 		}
 	}
-	fmt.Println(len(jadwalBaru))
 	return jadwalBaru, nil
 }
 

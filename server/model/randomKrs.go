@@ -24,8 +24,8 @@ type (
 	}
 
 	RandomKrsService interface {
-		FetchRandomKrs() ([][]RandomKrs, error)
-		FilterRandomKrs(filterJadwal []FilterJadwal, filterKelas []FilterKelas) ([][]RandomKrs, error)
+		FetchRandomKrs(idUser uint) ([][]RandomKrs, error)
+		FilterRandomKrs(idUser uint, filterJadwal []FilterJadwal, filterKelas []FilterKelas) ([][]RandomKrs, error)
 	}
 
 	RandomKrsHandler interface {

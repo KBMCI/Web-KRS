@@ -82,7 +82,7 @@ func(s *server) Run() {
 	myPlanGroup.Use(middleware.ValidateToken())
 	myPlanHandler.Mount(myPlanGroup)
 	
-	randomKrsService := service.NewRandomKrsService(matkulRepo, kelasRepo)
+	randomKrsService := service.NewRandomKrsService(userRepository ,matkulRepo, kelasRepo)
 	randomKrsHandler := handler.NewRandomKrsHandler(randomKrsService, myPlanService)
 	randomKrsGroup := s.httpServer.Group("/random-krs")
 	randomKrsGroup.Use(middleware.ValidateToken())
