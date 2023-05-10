@@ -17,10 +17,12 @@ import DashboardUser from "./page/DashboardUser/DashboardUser";
 import RandomKrs from "./page/RandomKrs/RandomKrs";
 import PlanningKrs from "./page/PlanningKrs/PlanningKrs";
 import MyPlan from "./page/MyPlan/MyPlan";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
     <DataProvider>
+      <AuthProvider>
       <div className="App">
         <Routes>
           {/* Route User */}
@@ -48,6 +50,7 @@ function App() {
           </Route>
         </Routes>
       </div>
+      </AuthProvider>
     </DataProvider>
   );
 }
