@@ -1,5 +1,5 @@
 import "./App.css";
-import { Route, Routes} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import UserPanel from "./page/UserPanel/UserPanel";
 import Kelas from "./page/Kelas/Kelas";
 import MataKuliah from "./page/MataKuliah/MataKuliah";
@@ -23,33 +23,35 @@ function App() {
   return (
     <DataProvider>
       <AuthProvider>
-      <div className="App">
-        <Routes>
-          {/* Route User */}
-          <Route path="/" element={<HomeUser />}>
-            <Route index element={<DashboardUser />} />
-            <Route path="random-krs" element={<RandomKrs />} />
-            <Route path="planning-krs" element={<PlanningKrs />} />
-            <Route path="myplan" element={<MyPlan />} />
-          </Route>
-          {/* Route Admin */}
-          <Route path="/admin" element={<Home />}>
-            <Route index element={<Dashboard />} />
-            <Route path="user-panel" element={<UserPanel />}>
-              <Route path="tambah" element={<UserTambah />} />
-              <Route path=":kode" element={<UserEdit />} />
+        <div className="App">
+          <Routes>
+            {/* Route User */}
+            <Route path="/" element={<HomeUser />}>
+              <Route index element={<DashboardUser />} />
+              <Route path="random-krs" element={<RandomKrs />}>
+                <Route path="filter" />
+              </Route>
+              <Route path="planning-krs" element={<PlanningKrs />} />
+              <Route path="myplan" element={<MyPlan />} />
             </Route>
-            <Route path="mata-kuliah" element={<MataKuliah />}>
-              <Route path="tambah" element={<MatkulTambah />} />
-              <Route path=":kode" element={<MatkulEdit />} />
+            {/* Route Admin */}
+            <Route path="/admin" element={<Home />}>
+              <Route index element={<Dashboard />} />
+              <Route path="user-panel" element={<UserPanel />}>
+                <Route path="tambah" element={<UserTambah />} />
+                <Route path=":kode" element={<UserEdit />} />
+              </Route>
+              <Route path="mata-kuliah" element={<MataKuliah />}>
+                <Route path="tambah" element={<MatkulTambah />} />
+                <Route path=":kode" element={<MatkulEdit />} />
+              </Route>
+              <Route path="kelas" element={<Kelas />}>
+                <Route path="tambah" element={<KelasTambah />} />
+                <Route path=":kode" element={<KelasEdit />} />
+              </Route>
             </Route>
-            <Route path="kelas" element={<Kelas />}>
-              <Route path="tambah" element={<KelasTambah />} />
-              <Route path=":kode" element={<KelasEdit />} />
-            </Route>
-          </Route>
-        </Routes>
-      </div>
+          </Routes>
+        </div>
       </AuthProvider>
     </DataProvider>
   );

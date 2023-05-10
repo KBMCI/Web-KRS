@@ -9,6 +9,7 @@ module.exports = {
       secondary: "#FFFFFF",
       accent: "#FED64B",
       neutral: {
+        10: "#ECF1FD",
         50: "#F4F7FA",
         200: "#DEE4EB",
         400: "#A8B5C2",
@@ -27,5 +28,5 @@ module.exports = {
     },
     extend: {},
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };
