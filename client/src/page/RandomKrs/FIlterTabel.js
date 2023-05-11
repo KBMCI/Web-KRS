@@ -22,21 +22,23 @@ const TabelFilter = ({
   return (
     <div className="flex justify-end align-center fixed top-20 right-0 left-0 bottom-0 z-[12] bg-black/30 backdrop-blur-sm">
       <div className="relative flex justify-end w-9/12 ">
-        <button
-          className="top-5 left-10 absolute z-[9999] bg-accent rounded-full p-2 text-xl"
-          onClick={filterHandler}
-        >
-          <FiX />
-        </button>
-        <div className="relative w-[95%] bg-secondary overflow-y-auto ">
+        <div className="w-[5%] relative top-6 text-end">
+          <button
+            className="bg-accent rounded-l-lg p-2 text-xl"
+            onClick={filterHandler}
+          >
+            <FiX />
+          </button>
+        </div>
+        <div className="relative w-[95%] bg-secondary overflow-scroll ">
           <div className="flex">
-            <div className="w-7/12 pl-[30px] pt-[20px] border-r-2 border-neutral-10 pb-[1rem]">
+            <div className="w-7/12 pl-[30px] mt-[18px] pt-[2px] border-r-2 border-neutral-10 pb-[1rem]">
               <h1 className="text-3xl font-bold">Jadwal</h1>
               <h3 className="text-sm mt-4 font-normal">
                 Pilih Jadwal Kelas yang ingin kamu hindari.
               </h3>
             </div>
-            <div className="w-5/12 pl-[30px] pt-[20px]">
+            <div className="w-5/12 pl-[30px] mt-[18px] pt-[2px] pb-[1rem]">
               <h1 className="text-3xl font-bold">Mata Kuliah</h1>
               <h3 className="mt-4 text-sm font-normal">
                 Pilih Kelas Mata Kuliah yang ingin kamu hindari.
@@ -44,9 +46,9 @@ const TabelFilter = ({
             </div>
           </div>
           {/*tabel jam dan hari*/}
-          <div className="flex py-30 mt-[2rem] min-h-[390px]">
-            <div className="px-[30px] w-7/12">
-              <table className="w-full border-y-4 border-neutral-10 overflow-y-auto">
+          <div className="flex py-30 mt-[2rem] min-h-[390px] bg-neutral-10">
+            <div className="px-[30px] w-7/12 bg-secondary border-y-4 border-neutral-10 ">
+              <table className="w-full ">
                 <thead>
                   <tr className="bg-secondary text-black">
                     <th className="px-4 py-2"></th>
@@ -132,7 +134,7 @@ const TabelFilter = ({
                 </tbody>
               </table>
             </div>
-            <div className="w-5/12 min-h-[633px] overflow-y-auto bg-neutral-10">
+            <div className="w-5/12 h-[43rem] overflow-auto bg-neutral-10">
               <div className="flex flex-col w-full bg-neutral-10">
                 {/* Maping untuk membuat list Dropdown */}
                 {DataKelas.map((matkul) => {
