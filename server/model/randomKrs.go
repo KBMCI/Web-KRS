@@ -6,7 +6,7 @@ import (
 
 type (
 	RandomKrs struct {
-		ID          uint          `json:"id"`
+		ID          uint          `json:"id_kelas"`
 		NamaMatkul  string        `json:"nama_matkul"`
 		NamaKelas   string        `json:"nama_kelas"`
 		JadwalKelas []JadwalKelas `json:"jadwal_kelas"`
