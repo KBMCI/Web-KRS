@@ -18,6 +18,8 @@ import RandomKrs from "./page/RandomKrs/RandomKrs";
 import PlanningKrs from "./page/PlanningKrs/PlanningKrs";
 import MyPlan from "./page/MyPlan/MyPlan";
 import { AuthProvider } from "./context/AuthContext";
+import Login from "./page/LoginRegister/Login";
+import Register from "./page/LoginRegister/Register";
 
 function App() {
   return (
@@ -50,6 +52,8 @@ function App() {
                 <Route path=":kode" element={<KelasEdit />} />
               </Route>
             </Route>
+              <Route path="/login" element={<Login />}/>
+          <Route path="/register" element={<Register />}/>
           </Routes>
         </div>
       </AuthProvider>
