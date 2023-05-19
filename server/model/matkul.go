@@ -17,7 +17,7 @@ type (
 		Sks				int8		`json:"sks"`
 		CreatedAt 		time.Time 	`json:"-"`	
 		UpdatedAt 		time.Time 	`json:"-"`
-		Kelas			[]Kelas 	`json:"-" gorm:"foreignKey:KodeMatkul;references:Kode;constraint:OnDelete:CASCADE"` // Relationship: One-to-Many (One course has many classes)
+		Kelas			[]Kelas 	`json:"kelas" gorm:"foreignKey:KodeMatkul;references:Kode;constraint:OnDelete:CASCADE"` // Relationship: One-to-Many (One course has many classes)
 	}
 
 	MatkulRepository interface {
