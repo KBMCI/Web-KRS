@@ -88,6 +88,12 @@ func(s *server) Run() {
 	randomKrsGroup.Use(middleware.ValidateToken())
 	randomKrsHandler.Mount(randomKrsGroup)
 
+	planningKrsService := service.NewPlanningKrsService(randomKrsService)
+	planningKrsHandler := handler.NewPlanningKrsHandler(planningKrsService)
+	planningKrsGroup := s.httpServer.Group("/planning-krs")
+	planningKrsGroup.Use(middleware.ValidateToken())
+	planningKrsHandler.Mount(planningKrsGroup)
+
 	if err := s.httpServer.Run(); err != nil {
 		log.Fatal(err)
 	}

@@ -64,7 +64,7 @@ func (u *userRepositoty) FindByEmail(email string) (*model.User, error) {
 func (u *userRepositoty) Update(user *model.User) (*model.User, error){
 	
 	// err := u.Cfg.Database().Save(&user).Error
-	err := u.Cfg.Database().Model(&user).Preload("Matkuls").Updates(&user).First(&user).Error
+	err := u.Cfg.Database().Model(&user).Preload("Matkuls.Kelas.JadwalKelas").Updates(&user).First(&user).Error
 
 	if err != nil {
 		return nil, err

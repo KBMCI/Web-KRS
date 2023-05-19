@@ -17,6 +17,7 @@ func SeederRefresh(cfg config.Config) {
 	cfg.Database().Migrator().DropTable(&model.User{})
 	cfg.Database().Migrator().DropTable(&model.Matkul{})
 	cfg.Database().Migrator().DropTable(&model.Kelas{})
+	cfg.Database().Migrator().DropTable(&model.JadwalKelas{})
 
 	hashAdmin, _ := HashPassword("Admin123.")
 	hashUser, _ := HashPassword("User123.")
