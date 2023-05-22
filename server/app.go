@@ -94,6 +94,12 @@ func(s *server) Run() {
 	planningKrsGroup.Use(middleware.ValidateToken())
 	planningKrsHandler.Mount(planningKrsGroup)
 
+	dashboardService := service.NewDashboardService(matkulService, myPlanService)
+	dashboardHandler := handler.NewDashboardHandler(dashboardService)
+	dashboardGroup := s.httpServer.Group("/dashboard")
+	dashboardGroup.Use(middleware.ValidateToken())
+	dashboardHandler.Mount(dashboardGroup)
+
 	if err := s.httpServer.Run(); err != nil {
 		log.Fatal(err)
 	}
