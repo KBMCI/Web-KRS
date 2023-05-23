@@ -43,56 +43,56 @@ func SeederRefresh(cfg config.Config) {
 		{KodeMatkul: "CIT62012", Nama: "A", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Senin",
-				JamMulai:   "09.30",
-				JamSelesai: "11.59",
+				JamMulai:   "09:30",
+				JamSelesai: "11:59",
 				RuangKelas: "F3.9",
 			},
 			{
 				Hari:       "Kamis",
-				JamMulai:   "08.40",
-				JamSelesai: "10.19",
+				JamMulai:   "08:40",
+				JamSelesai: "10:19",
 				RuangKelas: "G1.6",
 			},
 		}},
 		{KodeMatkul: "CIT62012", Nama: "B", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Selasa",
-				JamMulai:   "15.30",
-				JamSelesai: "18.00",
+				JamMulai:   "15:30",
+				JamSelesai: "18:00",
 				RuangKelas: "F3.13",
 			},
 			{
 				Hari:       "Rabu",
-				JamMulai:   "16.20",
-				JamSelesai: "18.00",
+				JamMulai:   "16:20",
+				JamSelesai: "18:00",
 				RuangKelas: "G1.3",
 			},
 		}},
 		{KodeMatkul: "CIT62012", Nama: "C", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Selasa",
-				JamMulai:   "14.30",
-				JamSelesai: "17.09",
+				JamMulai:   "14:30",
+				JamSelesai: "17:09",
 				RuangKelas: "F4.4",
 			},
 			{
 				Hari:       "Jumat",
-				JamMulai:   "07.00",
-				JamSelesai: "08.39",
+				JamMulai:   "07:00",
+				JamSelesai: "08:39",
 				RuangKelas: "G1.2",
 			},
 		}},
 		{KodeMatkul: "CIT62012", Nama: "D", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Selasa",
-				JamMulai:   "08.40",
-				JamSelesai: "10.19",
+				JamMulai:   "08:40",
+				JamSelesai: "10:19",
 				RuangKelas: "G1.2",
 			},
 			{
 				Hari:       "Rabu",
-				JamMulai:   "12.50",
-				JamSelesai: "15.19",
+				JamMulai:   "12:50",
+				JamSelesai: "15:19",
 				RuangKelas: "F3.5",
 			},
 		}},
@@ -101,32 +101,32 @@ func SeederRefresh(cfg config.Config) {
 		{KodeMatkul: "CIT62013", Nama: "A", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Selasa",
-				JamMulai:   "12.50",
-				JamSelesai: "15.19",
+				JamMulai:   "12:50",
+				JamSelesai: "15:19",
 				RuangKelas: "F3.2",
 			},
 		}},
 		{KodeMatkul: "CIT62013", Nama: "B", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Senin",
-				JamMulai:   "12.50",
-				JamSelesai: "15.19",
+				JamMulai:   "12:50",
+				JamSelesai: "15:19",
 				RuangKelas: "F3.13",
 			},
 		}},
 		{KodeMatkul: "CIT62013", Nama: "C", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Kamis",
-				JamMulai:   "12.50",
-				JamSelesai: "15.19",
+				JamMulai:   "12:50",
+				JamSelesai: "15:19",
 				RuangKelas: "F4.6",
 			},
 		}},
 		{KodeMatkul: "CIT62013", Nama: "D", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Senin",
-				JamMulai:   "07.00",
-				JamSelesai: "09.29",
+				JamMulai:   "07:00",
+				JamSelesai: "09:29",
 				RuangKelas: "F2.9",
 			},
 		}},
@@ -135,32 +135,32 @@ func SeederRefresh(cfg config.Config) {
 		{KodeMatkul: "CIT62014", Nama: "A", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Rabu",
-				JamMulai:   "12.50",
-				JamSelesai: "15.19",
+				JamMulai:   "12:50",
+				JamSelesai: "15:19",
 				RuangKelas: "F3.1",
 			},
 		}},
 		{KodeMatkul: "CIT62014", Nama: "B", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Selasa",
-				JamMulai:   "12.50",
-				JamSelesai: "15.19",
+				JamMulai:   "12:50",
+				JamSelesai: "15:19",
 				RuangKelas: "F2.8",
 			},
 		}},
 		{KodeMatkul: "CIT62014", Nama: "C", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Senin",
-				JamMulai:   "12.50",
-				JamSelesai: "15.19",
+				JamMulai:   "12:50",
+				JamSelesai: "15:19",
 				RuangKelas: "F2.1",
 			},
 		}},
 		{KodeMatkul: "CIT62014", Nama: "D", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Kamis",
-				JamMulai:   "09.30",
-				JamSelesai: "11.59",
+				JamMulai:   "09:30",
+				JamSelesai: "11:59",
 				RuangKelas: "F3.6",
 			},
 		}},
@@ -169,56 +169,56 @@ func SeederRefresh(cfg config.Config) {
 		{KodeMatkul: "CIT62015", Nama: "A", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Rabu",
-				JamMulai:   "10.20",
-				JamSelesai: "11.59",
+				JamMulai:   "10:20",
+				JamSelesai: "11:59",
 				RuangKelas: "G1.2",
 			},
 			{
 				Hari:       "Kamis",
-				JamMulai:   "14.30",
-				JamSelesai: "16.19",
+				JamMulai:   "14:30",
+				JamSelesai: "16:19",
 				RuangKelas: "F3.6",
 			},
 		}},
 		{KodeMatkul: "CIT62015", Nama: "B", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Rabu",
-				JamMulai:   "07.00",
-				JamSelesai: "08.39",
+				JamMulai:   "07:00",
+				JamSelesai: "08:39",
 				RuangKelas: "F4.3",
 			},
 			{
 				Hari:       "Jumat",
-				JamMulai:   "07.00",
-				JamSelesai: "08.39",
+				JamMulai:   "07:00",
+				JamSelesai: "08:39",
 				RuangKelas: "G1.6",
 			},
 		}},
 		{KodeMatkul: "CIT62015", Nama: "C", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Selasa",
-				JamMulai:   "07.00",
-				JamSelesai: "08.39",
+				JamMulai:   "07:00",
+				JamSelesai: "08:39",
 				RuangKelas: "G1.5",
 			},
 			{
 				Hari:       "Rabu",
-				JamMulai:   "07.00",
-				JamSelesai: "08.39",
+				JamMulai:   "07:00",
+				JamSelesai: "08:39",
 				RuangKelas: "F3.1",
 			},
 		}},
 		{KodeMatkul: "CIT62015", Nama: "D", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Kamis",
-				JamMulai:   "07.00",
-				JamSelesai: "08.39",
+				JamMulai:   "07:00",
+				JamSelesai: "08:39",
 				RuangKelas: "F4.6",
 			},
 			{
 				Hari:       "Selasa",
-				JamMulai:   "16.20",
-				JamSelesai: "18.00",
+				JamMulai:   "16:20",
+				JamSelesai: "18:00",
 				RuangKelas: "G1.6",
 			},
 		}},
@@ -227,56 +227,56 @@ func SeederRefresh(cfg config.Config) {
 		{KodeMatkul: "CIT62016", Nama: "A", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Kamis",
-				JamMulai:   "12.50",
-				JamSelesai: "14.29",
+				JamMulai:   "12:50",
+				JamSelesai: "14:29",
 				RuangKelas: "F3.15",
 			},
 			{
 				Hari:       "Jumat",
-				JamMulai:   "08.40",
-				JamSelesai: "10.19",
+				JamMulai:   "08:40",
+				JamSelesai: "10:19",
 				RuangKelas: "G1.4",
 			},
 		}},
 		{KodeMatkul: "CIT62016", Nama: "B", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Rabu",
-				JamMulai:   "10.20",
-				JamSelesai: "11.59",
+				JamMulai:   "10:20",
+				JamSelesai: "11:59",
 				RuangKelas: "F3.9",
 			},
 			{
 				Hari:       "Kamis",
-				JamMulai:   "07.00",
-				JamSelesai: "08.39",
+				JamMulai:   "07:00",
+				JamSelesai: "08:39",
 				RuangKelas: "G1.6",
 			},
 		}},
 		{KodeMatkul: "CIT62016", Nama: "C", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Selasa",
-				JamMulai:   "10.20",
-				JamSelesai: "11.59",
+				JamMulai:   "10:20",
+				JamSelesai: "11:59",
 				RuangKelas: "F2.5",
 			},
 			{
 				Hari:       "Kamis",
-				JamMulai:   "08.40",
-				JamSelesai: "10.19",
+				JamMulai:   "08:40",
+				JamSelesai: "10:19",
 				RuangKelas: "G1.5",
 			},
 		}},
 		{KodeMatkul: "CIT62016", Nama: "D", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Senin",
-				JamMulai:   "12.50",
-				JamSelesai: "14.29",
+				JamMulai:   "12:50",
+				JamSelesai: "14:29",
 				RuangKelas: "G1.5",
 			},
 			{
 				Hari:       "Selasa",
-				JamMulai:   "12.50",
-				JamSelesai: "14.29",
+				JamMulai:   "12:50",
+				JamSelesai: "14:29",
 				RuangKelas: "F2.6",
 			},
 		}},
@@ -285,32 +285,32 @@ func SeederRefresh(cfg config.Config) {
 		{KodeMatkul: "CIT62017", Nama: "A", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Kamis",
-				JamMulai:   "10.20",
-				JamSelesai: "11.59",
+				JamMulai:   "10:20",
+				JamSelesai: "11:59",
 				RuangKelas: "F4.11",
 			},
 		}},
 		{KodeMatkul: "CIT62017", Nama: "B", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Kamis",
-				JamMulai:   "08.40",
-				JamSelesai: "10.19",
+				JamMulai:   "08:40",
+				JamSelesai: "10:19",
 				RuangKelas: "F3.13",
 			},
 		}},
 		{KodeMatkul: "CIT62017", Nama: "C", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Senin",
-				JamMulai:   "07.00",
-				JamSelesai: "08.39",
+				JamMulai:   "07:00",
+				JamSelesai: "08:39",
 				RuangKelas: "F4.12",
 			},
 		}},
 		{KodeMatkul: "CIT62017", Nama: "D", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Selasa",
-				JamMulai:   "07.00",
-				JamSelesai: "08.39",
+				JamMulai:   "07:00",
+				JamSelesai: "08:39",
 				RuangKelas: "F3.3",
 			},
 		}},
@@ -319,32 +319,32 @@ func SeederRefresh(cfg config.Config) {
 		{KodeMatkul: "CIT62018", Nama: "A", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Senin",
-				JamMulai:   "12.50",
-				JamSelesai: "15.19",
+				JamMulai:   "12:50",
+				JamSelesai: "15:19",
 				RuangKelas: "F4.14",
 			},
 		}},
 		{KodeMatkul: "CIT62018", Nama: "B", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Rabu",
-				JamMulai:   "12.50",
-				JamSelesai: "15.19",
+				JamMulai:   "12:50",
+				JamSelesai: "15:19",
 				RuangKelas: "F4.6",
 			},
 		}},
 		{KodeMatkul: "CIT62018", Nama: "C", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Rabu",
-				JamMulai:   "12.50",
-				JamSelesai: "15.19",
+				JamMulai:   "12:50",
+				JamSelesai: "15:19",
 				RuangKelas: "F3.14",
 			},
 		}},
 		{KodeMatkul: "CIT62018", Nama: "D", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Rabu",
-				JamMulai:   "09.30",
-				JamSelesai: "11.59",
+				JamMulai:   "09:30",
+				JamSelesai: "11:59",
 				RuangKelas: "F3.5",
 			},
 		}},
@@ -353,16 +353,16 @@ func SeederRefresh(cfg config.Config) {
 		{KodeMatkul: "CIT60031", Nama: "A", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Selasa",
-				JamMulai:   "09.30",
-				JamSelesai: "11.59",
+				JamMulai:   "09:30",
+				JamSelesai: "11:59",
 				RuangKelas: "F2.6",
 			},
 		}},
 		{KodeMatkul: "CIT60031", Nama: "B", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Selasa",
-				JamMulai:   "12.50",
-				JamSelesai: "15.19",
+				JamMulai:   "12:50",
+				JamSelesai: "15:19",
 				RuangKelas: "F4.6",
 			},
 		}},
