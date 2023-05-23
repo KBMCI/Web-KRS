@@ -24,6 +24,7 @@ func (h *kelasHandler) Mount(group *gin.RouterGroup) {
 	group.POST("", h.StoreKelasHandler) // create
 	group.PATCH("/:id_kelas/jadwal/:id_jadwal", h.EditKelasHandler) //update
 	group.GET("/:id", h.DetailKelasHandler) //getById
+	group.GET("/:id/jadwal/:id_jadwal", h.DetailJadwalKelasHandler)
 	group.DELETE("/:id", h.DeleteKelasHandler) //delete
 	group.GET("", h.FetchKelasHandler) //getAll
 }
@@ -105,6 +106,30 @@ func (h *kelasHandler) DetailKelasHandler(c *gin.Context) {
 	kelasResponse := response.ConvertToKelasResponseDetail(*kelas)
 
 	helper.ResponseSuccessJson(c, "", kelasResponse)
+}
+
+func (h *kelasHandler) DetailJadwalKelasHandler(c *gin.Context) {
+	role := c.MustGet("role").(string)
+	if role != "admin" {
+		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
+		return
+	}
+
+	idKelas := c.Param("id")
+	idKelasUint, _ := strconv.ParseUint(idKelas, 10, 32)
+
+	idJadwal := c.Param("id_jadwal")
+	idJadwalUint, _ := strconv.ParseUint(idJadwal, 10, 32)
+
+	jadwal, err := h.kelasService.GetByIDJadwal(uint(idJadwalUint), uint(idKelasUint))
+	if err != nil {
+		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
+		return
+	}
+
+	jadwalResponse := response.ConvertToJadwalResponse(*jadwal)
+
+	helper.ResponseSuccessJson(c, "", jadwalResponse)
 }
 
 func (h *kelasHandler) DeleteKelasHandler(c *gin.Context) {

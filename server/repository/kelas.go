@@ -58,6 +58,17 @@ func (k *kelasRepository) FindByID(id uint) (*model.Kelas, error) {
 	return kelas, err
 }
 
+func (k *kelasRepository) FindByJadwalID(idJadwal uint, idKelas uint) (*model.JadwalKelas, error) {
+	jadwal := new(model.JadwalKelas)
+
+	err := k.cfg.Database().Where("id = ? AND id_kelas = ?", idJadwal, idKelas).Preload("Kelas.Matkul").First(&jadwal).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return jadwal, err
+}
+
 func (k *kelasRepository) FindBySomeID(id []uint) ([]*model.Kelas, error) {
 	var kelas []*model.Kelas
 

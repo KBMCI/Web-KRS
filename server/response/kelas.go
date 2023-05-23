@@ -21,7 +21,51 @@ type (
 		} `json:"matkul"`
 		JadwalKelas []model.JadwalKelas `json:"jadwal_kelas"`
 	}
+
+	JadwalResponseDetail struct {
+		ID uint `json:"id"`
+		Hari       string `json:"hari"`
+		JamMulai   string `json:"jam_mulai"`
+		JamSelesai string `json:"jam_selesai"`
+		RuangKelas string `json:"ruang_kelas"`
+		Kelas 	   struct {
+			ID 			uint   `json:"id_kelas"`
+			Nama        string `json:"nama"`
+			Matkul		struct {
+				Kode			string `json:"kode_matkul"`
+				Nama 			string `json:"nama"`
+			} `json:"matkul"`
+		}`json:"kelas"`
+	}
 )
+
+func ConvertToJadwalResponse(j model.JadwalKelas) JadwalResponseDetail {
+	return JadwalResponseDetail{
+		ID: j.ID,
+		Hari: j.Hari,
+		JamMulai: j.JamMulai,
+		JamSelesai: j.JamSelesai,
+		RuangKelas: j.JamSelesai,
+		Kelas: struct {
+			ID uint `json:"id_kelas"`
+			Nama string `json:"nama"` 
+			Matkul struct {
+				Kode string `json:"kode_matkul"`
+				Nama string `json:"nama"`
+			} `json:"matkul"`
+		}{
+			ID: j.IDKelas,
+			Nama: j.Kelas.Nama,
+			Matkul: struct{
+				Kode string `json:"kode_matkul"`
+				Nama string `json:"nama"`
+			}{
+				Kode: j.Kelas.Matkul.Kode,
+				Nama: j.Kelas.Matkul.Nama,				
+			},
+		},
+	}
+}
 
 func ConvertToKelasResponse(k model.Kelas) KelasResponse {
 	return KelasResponse{

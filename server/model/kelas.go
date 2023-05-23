@@ -34,6 +34,7 @@ type (
 		Create(kelas *Kelas) (*Kelas, error)
 		UpdateByKelasID(kelas *Kelas) (*Kelas, error)
 		FindByID(id uint) (*Kelas, error)
+		FindByJadwalID(idJadwal uint, idKelas uint) (*JadwalKelas, error)
 		FindBySomeID(id []uint) ([]*Kelas, error)
 		UpdateByJadwalID(jadwalKelas *JadwalKelas) (*JadwalKelas, error)
 		Delete(kelas *Kelas) (*Kelas, error)
@@ -44,6 +45,7 @@ type (
 		StoreKelas(req *request.KelasRequest) (*Kelas, error)
 		EditKelas(idKelas uint, idJadwal uint, req *request.KelasRequest) (*Kelas, error)
 		GetByID(id uint) (*Kelas, error)
+		GetByIDJadwal(idJadwal uint, idKelas uint) (*JadwalKelas, error)
 		DestroyKelas(id uint) error
 		FetchKelas() ([]*Kelas, error)
 	}

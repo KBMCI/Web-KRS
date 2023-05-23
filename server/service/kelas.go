@@ -72,6 +72,16 @@ func (s *kelasService) GetByID(id uint) (*model.Kelas, error) {
 	return kelas, err
 }
 
+func (s *kelasService) GetByIDJadwal(idJadwal uint, idKelas uint) (*model.JadwalKelas, error){
+	jadwal, err := s.kelasRepository.FindByJadwalID(idJadwal, idKelas)
+	if err != nil {
+		return nil, err
+	}
+
+	return jadwal, nil
+
+}
+
 func (s *kelasService) DestroyKelas(id uint) error {
 	kelas, _ := s.kelasRepository.FindByID(id)
 
