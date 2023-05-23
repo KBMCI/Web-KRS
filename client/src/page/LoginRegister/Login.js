@@ -50,11 +50,10 @@ const Login = () => {
         setErrMsg("Invalid Email or Password");
         setTimeout(() => {
           setNotSuccess(false);
-        }, 4000);
+        }, 5000);
       }
       console.log(email);
       console.log(err.response.status);
-      errRef.current.focus();
     }
   };
 
@@ -84,7 +83,9 @@ const Login = () => {
   }, [email, password]);
 
   const iconStyle = () => {
-    return "text-neutral-400 absolute top-1 right-4 translate-y-3";
+    return `${
+      notSuccess ? `text-error` : `text-neutral-400 `
+    } absolute top-1 right-4 translate-y-3`;
   };
 
   return (
@@ -131,7 +132,7 @@ const Login = () => {
               <Icon
                 icon="material-symbols:alternate-email"
                 width="24"
-                className={iconStyle()}
+                className={` ${iconStyle()}`}
               />
             </div>
             <div className="relative">

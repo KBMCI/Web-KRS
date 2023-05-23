@@ -5,13 +5,14 @@ import Button from "../../component/Button";
 import Paginations from "./Paginations";
 import TablePlan from "./TablePlan";
 
-import { url } from "../../api/url";
 import qs from "qs";
 import { useNavigate } from "react-router-dom";
+import { url } from "../../api/url";
 import FilterTabel from "./FIlterTabel";
 
 const RandomKrs = () => {
   const [plan, setPlan] = useState([]);
+  const [plan2, setPlan2] = useState([]);
   // Pagination Logic
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(5);
@@ -33,19 +34,24 @@ const RandomKrs = () => {
         // mengambil token di localstorage
         const token = localStorage.getItem("Authorization");
         // membuat header agar bisa akses endpoint dengan token
+
         let config = {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         };
+
         // get data random krs
         const respone = await axios.get(
           "http://localhost:8080/random-krs",
           config
         );
         console.log("load data");
+        console.log("random krs yang 900");
+       
         setPlan(respone.data.data);
         setSuccess(true);
+        console.log(respone.data.data);
       } catch (err) {
         console.log(err);
       }
@@ -122,6 +128,7 @@ const RandomKrs = () => {
       console.log(res);
       setPlan(res.data.data);
       setSuccess(true);
+      console.log("ini yang filter udah ke post");
     } catch (err) {
       console.log(err);
     }
@@ -223,10 +230,10 @@ const RandomKrs = () => {
             plan.slice(firstPostIndex, lastPostIndex).map((plans, i) => (
               <div key={i}>
                 <TablePlan
+                  is_saved={plans.is_saved}
                   data={plans.random_krs}
                   plan={firstPostIndex + i + 1}
-                  currentPage={currentPage}
-                ></TablePlan>
+                  currentPage={currentPage}></TablePlan>
               </div>
             ))}
           <div className=" bg-secondary p-7">
@@ -242,8 +249,7 @@ const RandomKrs = () => {
         <div className="flex justify-center items-center mt-[25%]">
           <img
             src="https://cdn-icons-png.flaticon.com/512/962/962207.png?w=740&t=st=1683589903~exp=1683590503~hmac=4380adf1cbdd075c3cc273144e3d75dff9290e8fe92e3d2f536913c220f59088"
-            className="animate-spin h-16 w-16"
-          ></img>
+            className="animate-spin h-16 w-16"></img>
         </div>
       )}
     </>

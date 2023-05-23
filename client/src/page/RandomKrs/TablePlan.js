@@ -1,19 +1,27 @@
 import { useEffect, useState } from "react";
 import { FiPlus } from "react-icons/fi";
+import { Link } from "react-router-dom";
+import { url } from "../../api/url";
+import success from "../../assets/success.svg";
 import Button from "../../component/Button";
 import { header } from "./TableHeader";
 
-const TablePlan = ({ data, plan, currentPage }) => {
+const TablePlan = ({ data, plan, currentPage, is_saved }) => {
   // menetapkan agar header tidak akan berubah
   Object.freeze(header);
   // menyalin header untuk dimanipulasi
   const newData = [...header];
   const [refresh, setRefresh] = useState();
   const [jadwalKuliah, setJadwalKuliah] = useState(newData);
+  const [isSave, setIsSave] = useState(false);
+  const [id_kelas, setId_kelas] = useState([]);
 
   // membuat plan
   useEffect(() => {
     const setPlan = () => {
+      if (is_saved) {
+        setIsSave(true);
+      }
       Array.isArray(data) &&
         data.map((item, i) => (
           <div key={item.id}>
@@ -29,6 +37,7 @@ const TablePlan = ({ data, plan, currentPage }) => {
             ))}
           </div>
         ));
+      console.log(id_kelas);
     };
 
     // Mengatur posisi data dalam tabel
@@ -64,6 +73,42 @@ const TablePlan = ({ data, plan, currentPage }) => {
     setRefresh(true);
   }, [currentPage]);
 
+  // isSave
+  const handleIsSave = async () => {
+    const token = localStorage.getItem("Authorization");
+    // membuat header agar bisa akses endpoint dengan token
+
+    let config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    setId_kelas([]);
+    data.map((item, i) => {
+      {
+        id_kelas.push(item.id);
+      }
+    });
+
+    console.log(id_kelas);
+    console.log(isSave);
+    console.log("ini baru");
+    console.log(data);
+    try {
+      const response = await url.post("/my-plan", { id_kelas }, config);
+      console.log("Berhasil");
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
+
+    setIsSave(true);
+  };
+
+  useEffect(() => {
+    console.log(isSave);
+  }, [isSave]);
   const barisTabel = () => {
     return "py-2 text-center px-4 font-semibold 2xl:text-sm xl:text-sm lg:text-sm md:text-xs md:px-2 sm:text-xs sm:px-2";
   };
@@ -113,7 +158,28 @@ const TablePlan = ({ data, plan, currentPage }) => {
               </tbody>
             </table>
             <div className="my-6 flex justify-end">
-              <Button icon={<FiPlus />} name='Add to "MyPlans"' />
+              {isSave ? (
+                <>
+                <div className="flex flex-col items-end justify-end gap-2">
+                  <div className="flex justify-center items-center flex-row bg-neutral-200 w-[150px] h-[50px] gap-2 rounded-[10px] font-bold">
+                    <img src={success}></img>
+                    <p className="text-neutral-400">Plan Added</p>
+                  </div>
+                  <div>
+                    To see your saved plan, go to &nbsp;
+                    <span className="text-primary hover:underline hover:duration-500">
+                      <Link to="/myplan">My Plan</Link>
+                    </span>
+                  </div>
+                </div>
+                </>
+              ) : (
+                <Button
+                  icon={<FiPlus />}
+                  name='Add to "MyPlans"'
+                  onClick={(e) => handleIsSave()}
+                />
+              )}
             </div>
           </>
         </div>
