@@ -34,10 +34,8 @@ const TablePlan = ({
       Array.isArray(data) &&
         data.map((item, i) => (
           <div key={item.id}>
-            {console.log(item)}
             {item.jadwal_kelas.map((jadwal, index) => (
               <div key={index}>
-                {console.log(jadwal)}
                 {setTable(
                   `${jadwal.jam_mulai} - ${jadwal.jam_selesai}`,
                   jadwal.hari.toLowerCase(),
@@ -98,7 +96,7 @@ const TablePlan = ({
     setId_kelas([]);
     data.map((item, i) => {
       {
-        id_kelas.push(item.id);
+        id_kelas.push(item.id_kelas);
       }
     });
 
