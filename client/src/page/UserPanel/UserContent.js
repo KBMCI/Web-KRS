@@ -1,13 +1,13 @@
-import UserTabel from "./UserTabel";
-import Button from "../../component/Button";
+import { useContext, useState } from "react";
 import { FiPlus, FiTrello } from "react-icons/fi";
-import { useState, useContext } from "react";
-import { url } from "../../api/url";
-import Paginate from "../../component/Paginate";
-import FilterTable from "../../component/FilterTable";
-import { DataContext } from "../../context/DataContext";
 import { Outlet } from "react-router-dom";
+import { url } from "../../api/url";
+import Button from "../../component/Button";
 import Feedback from "../../component/Feedback";
+import FilterTable from "../../component/FilterTable";
+import Paginate from "../../component/Paginate";
+import { DataContext } from "../../context/DataContext";
+import UserTabel from "./UserTabel";
 
 function UserContent() {
   const { dataUser, TriggerUser } = useContext(DataContext);
@@ -56,7 +56,13 @@ function UserContent() {
     setLoading(true);
     if (showDel.show && showDel.id) {
       try {
-        const res = await url.delete(`/user/${showDel.id}`);
+        const token = localStorage.getItem("Authorization");
+        let config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const res = await url.delete(`/user/${showDel.id}`, config);
         if (res.status === 200) {
           console.log(res);
           feedbackHandler(true, "delete");

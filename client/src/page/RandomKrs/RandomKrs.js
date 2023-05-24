@@ -1,9 +1,8 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FiFilter } from "react-icons/fi";
 import Button from "../../component/Button";
-import Paginations from "./Paginations";
-import TablePlan from "./TablePlan";
+import Paginations from "../../component/Paginations";
+import TablePlan from "../../component/TablePlan";
 
 import qs from "qs";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +11,6 @@ import FilterTabel from "./FIlterTabel";
 
 const RandomKrs = () => {
   const [plan, setPlan] = useState([]);
-  const [plan2, setPlan2] = useState([]);
   // Pagination Logic
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(5);
@@ -42,8 +40,8 @@ const RandomKrs = () => {
         };
 
         // get data random krs
-        const respone = await axios.get(
-          "http://localhost:8080/random-krs",
+        const respone = await url.get(
+          "/random-krs",
           config
         );
         console.log("load data");

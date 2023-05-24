@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useEffect, useState } from "react";
 import { url } from "../api/url";
 
 export const DataContext = createContext();
@@ -14,7 +14,13 @@ export function DataProvider({ children }) {
 
   useEffect(() => {
     const getDataMatkul = async () => {
-      const { data } = await url.get("/matkul");
+      const token = localStorage.getItem("Authorization");
+      let config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await url.get("/matkul", config);
       try {
         setDataMatkul(data.data);
         console.log(data);
@@ -32,7 +38,13 @@ export function DataProvider({ children }) {
   useEffect(() => {
     const getDataKelas = async () => {
       try {
-        const { data } = await url.get("/kelas");
+        const token = localStorage.getItem("Authorization");
+        let config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const { data } = await url.get("/kelas", config);
         console.log(data);
         setDataKelas(data.data);
       } catch (err) {
@@ -49,7 +61,13 @@ export function DataProvider({ children }) {
   useEffect(() => {
     const getDataUser = async () => {
       try {
-        const { data } = await url.get("/user");
+        const token = localStorage.getItem("Authorization");
+        let config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const { data } = await url.get("/user", config);
         console.log(data);
         setDataUser(data.data);
       } catch (err) {
@@ -65,6 +83,11 @@ export function DataProvider({ children }) {
 
   const SetOpen = () => {
     setOpen(!open);
+  };
+
+  const token = localStorage.getItem("Authorization");
+  const config = {
+    headers: `Bearer ${token}`,
   };
 
   const link = {
@@ -91,6 +114,7 @@ export function DataProvider({ children }) {
         open,
         SetOpen,
         link,
+        config,
       }}
     >
       {children}

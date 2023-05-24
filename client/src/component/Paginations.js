@@ -1,10 +1,16 @@
 import React, { useState } from "react";
+import {
+  FiChevronLeft,
+  FiChevronRight,
+  FiChevronsLeft,
+  FiChevronsRight,
+} from "react-icons/fi";
 
 const Paginations = ({ data, itemsPerPage, setCurrentPage, currentPage }) => {
   const [pageNumberLimit] = useState(5);
   const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
   const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
-  const [use, setUse] = useState(false)
+  const [use, setUse] = useState(false);
 
   const handleClick = (event) => {
     setCurrentPage(Number(event.target.id));
@@ -23,9 +29,10 @@ const Paginations = ({ data, itemsPerPage, setCurrentPage, currentPage }) => {
           onClick={handleClick}
           className={
             currentPage === number
-              ? "bg-primary text-secondary w-[29px] h-[29px] text-center rounded-full font-bold "
-              : null
-          }>
+              ? "bg-primary text-secondary w-[29px] h-[29px] font-bold text-center rounded-full leading-[29px]"
+              : "text-center leading-[29px]  "
+          }
+        >
           {number}
         </li>
       );
@@ -80,31 +87,34 @@ const Paginations = ({ data, itemsPerPage, setCurrentPage, currentPage }) => {
   return (
     <>
       <div className="cursor-pointer ">
-        <ul className="py-2 text-primary font-extrabold  border-t border-neutral-400 flex flex justify-center gap-7 items-center">
+        <ul className="py-2 text-primary font-bold text-[12px] border-t border-neutral-400 flex justify-center gap-7 items-center">
           <li className={`flex gap-8`}>
             <button
               onClick={handlePrevUpbtn}
-              disabled={currentPage === pages[0] ? true : false}>
-              &lt;&lt;
+              disabled={currentPage === pages[0] ? true : false}
+            >
+              <FiChevronsLeft />
             </button>
             <button
               onClick={handlePrevbtn}
-              disabled={currentPage === pages[0] ? true : false}>
-              
-              &lt;
+              disabled={currentPage === pages[0] ? true : false}
+            >
+              <FiChevronLeft />
             </button>
           </li>
           {renderPageNumbers}
           <li className="flex gap-8">
             <button
               onClick={handleNextbtn}
-              disabled={currentPage === pages[pages.length - 1] ? true : false}>
-              &gt;
+              disabled={currentPage === pages[pages.length - 1] ? true : false}
+            >
+              <FiChevronRight />
             </button>
             <button
               onClick={handleNextUpbtn}
-              disabled={currentPage === pages[pages.length - 1] ? true : false}>
-              &gt;&gt;
+              disabled={currentPage === pages[pages.length - 1] ? true : false}
+            >
+              <FiChevronsRight />
             </button>
           </li>
         </ul>

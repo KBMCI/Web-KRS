@@ -1,187 +1,100 @@
-import { FiEdit2, FiTrash2 } from "react-icons/fi";
-import Button from "../../component/Button";
-import Paginate from "../../component/Paginate";
+import { useEffect, useState } from "react";
+import { url } from "../../api/url";
+import Paginations from "../../component/Paginations";
+import TablePlan from "../../component/TablePlan";
 
 const MyPlan = () => {
+  const [myPlan, setMyPlan] = useState([]);
+  const [success, setSuccess] = useState(false);
+  const [trigger, setTrigger] = useState(true);
+  // Pagination Logic
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postPerPage] = useState(5);
+  const lastPostIndex = currentPage * postPerPage;
+  const firstPostIndex = lastPostIndex - postPerPage;
 
-  const jadwalKuliah = [
-    {
-      jam: '07.00 - 08.39',
-      senin: 'Manajemen Proyek Teknologi Informasi (A)',
-      selasa: 'Tata Kelola Teknologi Informasi (A)',
-      rabu: 'Jaringan Komputer Dasar (C)',
-      kamis: '',
-      jumat: 'Analisis dan Desain Sistem Informasi (A)',
-    },
-    {
-      jam: '07.50 - 08.39',
-      senin: '',
-      selasa: '',
-      rabu: '',
-      kamis: 'Pemrograman Lanjut (D)',
-      jumat: '',
-    },
-    {
-      jam: '08.45 - 10.24',
-      senin: '',
-      selasa: '',
-      rabu: '',
-      kamis: 'Jaringan Komputer (A)',
-      jumat: '',
-    },
-    {
-      jam: '09.35 - 10.24',
-      senin: '',
-      selasa: '',
-      rabu: '',
-      kamis: '',
-      jumat: '',
-    },
-    {
-      jam: '10.30 - 11.19',
-      senin: '',
-      selasa: '',
-      rabu: '',
-      kamis: '',
-      jumat: '',
-    },
-    {
-      jam: '10.30 - 12.09',
-      senin: '',
-      selasa: '',
-      rabu: '',
-      kamis: '',
-      jumat: '',
-    },
-    {
-      jam: '11.20 - 12.09',
-      senin: '',
-      selasa: '',
-      rabu: '',
-      kamis: '',
-      jumat: '',
-    },
-    {
-      jam: '13.00 - 13.49',
-      senin: '',
-      selasa: '',
-      rabu: '',
-      kamis: '',
-      jumat: '',
-    },
-    {
-      jam: '13.00 - 14.49',
-      senin: 'Matematika Komputasi (E)',
-      selasa: 'Jaringan Komputer Dasar (A)',
-      rabu: '',
-      kamis: '',
-      jumat: 'Algoritma Struktur Data (E)',
-    },
-    {
-      jam: '14.45 - 15.34',
-      senin: '',
-      selasa: '',
-      rabu: '',
-      kamis: '',
-      jumat: '',
-    },
-    {
-      jam: '14.45 - 16.24',
-      senin: '',
-      selasa: '',
-      rabu: '',
-      kamis: '',
-      jumat: 'Pemrograman Basis Data (A)',
-    },
-    {
-      jam: '16.30 - 18.09',
-      senin: '',
-      selasa: 'Kewirausahaan (D)',
-      rabu: 'Pemrograman Aplikasi Mobile (A)',
-      kamis: 'Etika Profesi (A)',
-      jumat: '',
-    },
-    {
-      jam: '17.20 - 18.09',
-      senin: '',
-      selasa: '',
-      rabu: '',
-      kamis: '',
-      jumat: 'Pemrograman Aplikasi Web (B)',
+  // Mencoba get myplan
+  useEffect(() => {
+    const fetchMyPlan = async () => {
+      try {
+        const token = localStorage.getItem("Authorization");
+        let config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        console.log("Get Data My Plan");
+        const res = await url.get("/my-plan", config);
+        console.log(res);
+        setMyPlan(res.data.data);
+        setSuccess(true);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchMyPlan();
+  }, [trigger]);
+
+  // Delete Handler
+  const deleteHandler = async (id) => {
+    console.log(id);
+    try {
+      const token = localStorage.getItem("Authorization");
+      let config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      console.log("Hapus Data");
+      const res = await url.delete(`/my-plan/${id}`, config);
+      console.log(res);
+      if (res.status === 200) {
+        setTrigger(!trigger);
+      }
+    } catch (err) {
+      console.log(err);
     }
-  ];
-
-  const barisTabel = () => {
-    return "h-[52px] min-h-[52px] py-2 text-center px-4 font-semibold 2xl:text-sm xl:text-sm lg:text-sm md:text-xs md:px-2 sm:text-xs sm:px-2";
   };
 
-  const jamTabel = () => {
-    return "h-[52px] min-h-[52px] py-2 px-4 text-center font-bold 2xl:text-sm xl:text-sm lg:text-sm md:text-xs md:px-2 sm:text-xs sm:px-2"
-  }
-
-  const headerTabel = () => {
-    return "px-4 py-2"
-  }
-  
   return (
     <>
-      <div className="min-h-[448px] bg-secondary p-7">
-        <h1 className="text-4xl font-bold">My Plan</h1>
-        <h3 className="text-sm font-semibold mt-4 mb-7">Kumpulan Plan KRS yang telah kamu simpan sebelumnya.</h3>
-        {/* <div className="flex flex-row justify-between items-center">
-          <h3 className="text-sm font-semibold mb-4 pt-4">Kamu dapat menemukan Plan KRS tanpa melakukan perencanaan KRS secara manual.</h3>
-          <Button icon={<FiFilter />} name="Filter"/>
-        </div> */}
-        
-        
-        <div className="mt-5 mb-9"> {/* mbungkus semua plan */}
-          
-          <> {/* isi tiap plan */}
-            <h1 className="text-2xl font-bold mb-4">Plan 1</h1>
-
-            <table className="table-fixed border-collapse border-b border-neutral-400 w-full drop-shadow-xl rounded-2xl overflow-hidden">
-              <thead>
-                <tr className="bg-primary text-secondary"> 
-                  <th className={headerTabel()}></th>
-                  <th className={headerTabel()}>Senin</th>
-                  <th className={headerTabel()}>Selasa</th>
-                  <th className={headerTabel()}>Rabu</th>
-                  <th className={headerTabel()}>Kamis</th>
-                  <th className={headerTabel()}>Jumat</th>
-                </tr>
-              </thead>
-              <tbody>
-                {jadwalKuliah.map((jadwal, index) => (
-                  <tr key={index}
-                      className="bg-secondary text-neutral-900 border-b border-neutral-400">
-                    <td className={jamTabel()}>{jadwal.jam}</td>
-                    <td className={barisTabel()}>{jadwal.senin}</td>
-                    <td className={barisTabel()}>{jadwal.selasa}</td>
-                    <td className={barisTabel()}>{jadwal.rabu}</td>
-                    <td className={barisTabel()}>{jadwal.kamis}</td>
-                    <td className={barisTabel()}>{jadwal.jumat}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
-            <div className="my-6 flex justify-end gap-6">
-              <Button icon={<FiEdit2/>} name="Update" />
-              <button className="bg-error text-secondary text-base font-bold px-4 py-2 rounded-xl flex items-center gap-2">{<FiTrash2/>} Delete</button>
+      {success && (
+        <>
+          <div className=" bg-secondary px-7 pt-7">
+            <div className="flex flex-row justify-between items-center">
+              <h3 className="text-sm font-semibold mb-4 pt-4">
+                Kumpulan Plan KRS yang telah kamu simpan sebelumnya
+              </h3>
             </div>
-          </>
+          </div>
 
-        
+          {myPlan &&
+            myPlan?.slice(firstPostIndex, lastPostIndex).map((plans, i) => {
+              console.log(plans);
+              return (
+                <div key={i}>
+                  <TablePlan
+                    data={plans.plan}
+                    plan={firstPostIndex + i + 1}
+                    currentPage={currentPage}
+                    myPlan={true}
+                    deleteHandler={deleteHandler}
+                    idDelete={plans.id}
+                  />
+                </div>
+              );
+            })}
 
-        </div>
-
-        <Paginate
-        postPerPage={5}
-        totalPost={25}
-        paginate={Paginate}
-        />
-        
-      </div>
+          <div className=" bg-secondary p-7">
+            <Paginations
+              data={myPlan}
+              itemsPerPage={postPerPage}
+              setCurrentPage={setCurrentPage}
+              currentPage={currentPage}
+            />
+          </div>
+        </>
+      )}
     </>
   );
 };

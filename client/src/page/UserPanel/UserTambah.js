@@ -1,8 +1,8 @@
-import { useState, useContext } from "react";
+import { useContext, useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import { url } from "../../api/url";
 import { DataContext } from "../../context/DataContext";
 import UserForm from "./UserForm";
-import { url } from "../../api/url";
-import { useOutletContext } from "react-router-dom";
 
 const UserTambah = () => {
   const { feedbackHandler, validate } = useOutletContext();
@@ -31,17 +31,21 @@ const UserTambah = () => {
     role,
   }) => {
     try {
+      const token = localStorage.getItem("Authorization");
+      let config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
       setLoading(true);
-      const res = await url.post("/user", {
+      const res = await url.post("/user/register", {
         email,
         nama,
         program_studi,
         nim,
         password,
+        confirm_password: "Bagasmahda12.",
         role,
-        updated_at: null,
-        created_at: null,
-        deleted_at: null,
       });
       if (res.status === 200) {
         console.log(res);
@@ -66,8 +70,6 @@ const UserTambah = () => {
       postData(formValue);
     }
   };
-
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;

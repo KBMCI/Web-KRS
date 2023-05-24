@@ -1,25 +1,25 @@
-import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import UserPanel from "./page/UserPanel/UserPanel";
-import Kelas from "./page/Kelas/Kelas";
-import MataKuliah from "./page/MataKuliah/MataKuliah";
-import Home from "./page/Home";
-import Dashboard from "./page/Dashboard/Dashboard";
-import MatkulTambah from "./page/MataKuliah/MatkulTambah";
-import MatkulEdit from "./page/MataKuliah/MatkulEdit";
-import { DataProvider } from "./context/DataContext";
-import { KelasTambah } from "./page/Kelas/KelasTambah";
-import KelasEdit from "./page/Kelas/KelasEdit";
-import UserEdit from "./page/UserPanel/UserEdit";
-import UserTambah from "./page/UserPanel/UserTambah";
-import HomeUser from "./page/HomeUser";
-import DashboardUser from "./page/DashboardUser/DashboardUser";
-import RandomKrs from "./page/RandomKrs/RandomKrs";
-import PlanningKrs from "./page/PlanningKrs/PlanningKrs";
-import MyPlan from "./page/MyPlan/MyPlan";
+import "./App.css";
 import { AuthProvider } from "./context/AuthContext";
+import { DataProvider } from "./context/DataContext";
+import Dashboard from "./page/Dashboard/Dashboard";
+import DashboardUser from "./page/DashboardUser/DashboardUser";
+import Home from "./page/Home";
+import HomeUser from "./page/HomeUser";
+import Kelas from "./page/Kelas/Kelas";
+import KelasEdit from "./page/Kelas/KelasEdit";
+import { KelasTambah } from "./page/Kelas/KelasTambah";
 import Login from "./page/LoginRegister/Login";
 import Register from "./page/LoginRegister/Register";
+import MataKuliah from "./page/MataKuliah/MataKuliah";
+import MatkulEdit from "./page/MataKuliah/MatkulEdit";
+import MatkulTambah from "./page/MataKuliah/MatkulTambah";
+import MyPlan from "./page/MyPlan/MyPlan";
+import PlanningKrs from "./page/PlanningKrs/PlanningKrs";
+import RandomKrs from "./page/RandomKrs/RandomKrs";
+import UserEdit from "./page/UserPanel/UserEdit";
+import UserPanel from "./page/UserPanel/UserPanel";
+import UserTambah from "./page/UserPanel/UserTambah";
 
 function App() {
   return (
@@ -49,11 +49,15 @@ function App() {
               </Route>
               <Route path="kelas" element={<Kelas />}>
                 <Route path="tambah" element={<KelasTambah />} />
-                <Route path=":kode" element={<KelasEdit />} />
+                <Route path=":kode">
+                  <Route path="jadwal">
+                    <Route path=":kode" element={<KelasEdit />} />
+                  </Route>
+                </Route>
               </Route>
             </Route>
-              <Route path="/login" element={<Login />}/>
-          <Route path="/register" element={<Register />}/>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </div>
       </AuthProvider>

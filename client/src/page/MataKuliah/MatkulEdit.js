@@ -1,7 +1,7 @@
-import { useState, useEffect, useContext, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { DataContext } from "../../context/DataContext";
 import { url } from "../../api/url";
+import { DataContext } from "../../context/DataContext";
 import MatkulForm from "./MatkulForm";
 
 export default function MatkulEdit() {
@@ -26,14 +26,24 @@ export default function MatkulEdit() {
   const patchData = async ({ kode_matkul, nama, tahun_kurikulum, sks }) => {
     try {
       setLoading(true);
-      const res = await url.patch(`matkul/${kodeParams.current.kode}`, {
-        kode_matkul,
-        nama,
-        tahun_kurikulum: parseInt(tahun_kurikulum),
-        sks: parseInt(sks),
-        updated_at: null,
-        created_at: null,
-      });
+      const token = localStorage.getItem("Authorization");
+      let config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const res = await url.patch(
+        `matkul/${kodeParams.current.kode}`,
+        {
+          kode_matkul,
+          nama,
+          tahun_kurikulum: parseInt(tahun_kurikulum),
+          sks: parseInt(sks),
+          updated_at: null,
+          created_at: null,
+        },
+        config
+      );
       if (res.status === 200) {
         console.log(res);
         feedbackHandler(true, "patch");
@@ -51,7 +61,16 @@ export default function MatkulEdit() {
   useEffect(() => {
     const getMatkulId = async () => {
       try {
-        const { data } = await url.get(`matkul/${kodeParams.current.kode}`);
+        const token = localStorage.getItem("Authorization");
+        let config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const { data } = await url.get(
+          `matkul/${kodeParams.current.kode}`,
+          config
+        );
         setFormValue({
           kode_matkul: data.data.kode_matkul,
           nama: data.data.nama,

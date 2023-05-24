@@ -1,12 +1,18 @@
-import Form from "./KelasForm";
-import { useState, useEffect, useContext, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import {
+  useLocation,
+  useNavigate,
+  useOutletContext,
+  useParams,
+} from "react-router-dom";
 import { url } from "../../api/url";
-import { useParams, useOutletContext, useNavigate } from "react-router-dom";
 import { DataContext } from "../../context/DataContext";
+import Form from "./KelasForm";
 
 const KelasEdit = () => {
   const { feedbackHandler, validate } = useOutletContext();
   const { dataMatkul, TriggerKelas, link } = useContext(DataContext);
+  const location = useLocation();
   const kodeParams = useRef();
   kodeParams.current = useParams();
   const navigate = useNavigate();
@@ -23,6 +29,17 @@ const KelasEdit = () => {
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
 
+  const idParams = () => {
+    // Mengambil pathname dari url
+    const path = location.pathname.split("/").filter((p) => p !== "");
+    // Memasukan path pada id yang sesuai
+    const id = {
+      idKelas: path[2],
+      idJadwalKElas: path[4],
+    };
+    return id;
+  };
+
   const patchData = async ({
     kode_matkul,
     nama,
@@ -31,17 +48,28 @@ const KelasEdit = () => {
     jam_mulai,
     jam_selesai,
   }) => {
+    const id = idParams();
     try {
-      const res = await url.patch(`/kelas/${kodeParams.current.kode}`, {
-        kode_matkul,
-        nama,
-        ruang_kelas,
-        hari,
-        jam_mulai,
-        jam_selesai,
-        updated_at: null,
-        created_at: null,
-      });
+      const token = localStorage.getItem("Authorization");
+      let config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const res = await url.patch(
+        `/kelas/${id.idKelas}/jadwal/${kodeParams.current.kode}`,
+        {
+          kode_matkul,
+          nama,
+          ruang_kelas,
+          hari,
+          jam_mulai,
+          jam_selesai,
+          updated_at: null,
+          created_at: null,
+        },
+        config
+      );
       if (res.status === 200) {
         console.log(res);
         TriggerKelas();
@@ -55,12 +83,24 @@ const KelasEdit = () => {
   };
 
   useEffect(() => {
+    const id = idParams();
     const getKelasId = async () => {
       try {
-        const { data } = await url.get(`/kelas/${kodeParams.current.kode}`);
+        const token = localStorage.getItem("Authorization");
+        let config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const { data } = await url.get(
+          `/kelas/${id.idKelas}/jadwal/${kodeParams.current.kode}`,
+          config
+        );
+        console.log(data);
+
         setFormValue({
-          kode_matkul: data.data.matkul.kode_matkul,
-          nama: data.data.nama,
+          kode_matkul: data.data.kelas.matkul.kode_matkul,
+          nama: data.data.kelas.nama,
           ruang_kelas: data.data.ruang_kelas,
           hari: data.data.hari,
           jam_mulai: data.data.jam_mulai,

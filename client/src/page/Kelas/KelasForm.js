@@ -11,7 +11,7 @@ const Form = ({
   dataMatkul,
 }) => {
   const { link } = useContext(DataContext);
-  const hari = ["Senin", "Selasa", "Rabu", "Kamis", "Jum'at"];
+  const hari = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"];
   const navigate = useNavigate();
 
   // Style component

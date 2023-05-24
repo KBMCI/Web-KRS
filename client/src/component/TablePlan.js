@@ -1,12 +1,20 @@
 import { useEffect, useState } from "react";
-import { FiPlus } from "react-icons/fi";
-import { Link } from "react-router-dom";
-import { url } from "../../api/url";
-import success from "../../assets/success.svg";
-import Button from "../../component/Button";
+import { FiEdit2, FiPlus, FiTrash } from "react-icons/fi";
+import { Link, useNavigate } from "react-router-dom";
+import { url } from "../api/url";
+import success from "../assets/success.svg";
+import Button from "./Button";
 import { header } from "./TableHeader";
 
-const TablePlan = ({ data, plan, currentPage, is_saved }) => {
+const TablePlan = ({
+  data,
+  plan,
+  currentPage,
+  is_saved,
+  deleteHandler,
+  myPlan,
+  idDelete,
+}) => {
   // menetapkan agar header tidak akan berubah
   Object.freeze(header);
   // menyalin header untuk dimanipulasi
@@ -22,11 +30,14 @@ const TablePlan = ({ data, plan, currentPage, is_saved }) => {
       if (is_saved) {
         setIsSave(true);
       }
+      console.log(jadwalKuliah);
       Array.isArray(data) &&
         data.map((item, i) => (
           <div key={item.id}>
+            {console.log(item)}
             {item.jadwal_kelas.map((jadwal, index) => (
               <div key={index}>
+                {console.log(jadwal)}
                 {setTable(
                   `${jadwal.jam_mulai} - ${jadwal.jam_selesai}`,
                   jadwal.hari.toLowerCase(),
@@ -109,8 +120,11 @@ const TablePlan = ({ data, plan, currentPage, is_saved }) => {
   useEffect(() => {
     console.log(isSave);
   }, [isSave]);
+
+  const navigate = useNavigate();
+
   const barisTabel = () => {
-    return "py-2 text-center px-4 font-semibold 2xl:text-sm xl:text-sm lg:text-sm md:text-xs md:px-2 sm:text-xs sm:px-2";
+    return "text-center px-2 font-semibold text-sm";
   };
 
   const jamTabel = () => {
@@ -146,7 +160,8 @@ const TablePlan = ({ data, plan, currentPage, is_saved }) => {
                 {jadwalKuliah.map((jadwal, index) => (
                   <tr
                     key={index}
-                    className="bg-secondary text-neutral-900 border-b border-neutral-400">
+                    className="bg-secondary text-neutral-900 border-b border-neutral-400"
+                  >
                     <td className={jamTabel()}>{jadwal.jam}</td>
                     <td className={barisTabel()}>{jadwal.senin}</td>
                     <td className={barisTabel()}>{jadwal.selasa}</td>
@@ -158,20 +173,39 @@ const TablePlan = ({ data, plan, currentPage, is_saved }) => {
               </tbody>
             </table>
             <div className="my-6 flex justify-end">
-              {isSave ? (
-                <>
-                <div className="flex flex-col items-end justify-end gap-2">
-                  <div className="flex justify-center items-center flex-row bg-neutral-200 w-[150px] h-[50px] gap-2 rounded-[10px] font-bold">
-                    <img src={success}></img>
-                    <p className="text-neutral-400">Plan Added</p>
-                  </div>
-                  <div>
-                    To see your saved plan, go to &nbsp;
-                    <span className="text-primary hover:underline hover:duration-500">
-                      <Link to="/myplan">My Plan</Link>
-                    </span>
-                  </div>
+              {myPlan ? (
+                <div className="flex gap-6">
+                  <button
+                    onClick={() => {
+                      navigate("/planning-krs");
+                    }}
+                    className="font-bold bg-accent flex items-center py-[11px] px-[16px] gap-2 rounded-[10px]"
+                  >
+                    <FiEdit2 />
+                    Update
+                  </button>
+                  <button
+                    onClick={() => deleteHandler(idDelete)}
+                    className="font-bold bg-error flex items-center py-[11px] px-[16px] gap-2 rounded-[10px] text-secondary"
+                  >
+                    <FiTrash />
+                    Delete
+                  </button>
                 </div>
+              ) : isSave ? (
+                <>
+                  <div className="flex flex-col items-end justify-end gap-2">
+                    <div className="flex justify-center items-center flex-row bg-neutral-200 w-[150px] h-[50px] gap-2 rounded-[10px] font-bold">
+                      <img src={success}></img>
+                      <p className="text-neutral-400">Plan Added</p>
+                    </div>
+                    <div>
+                      To see your saved plan, go to &nbsp;
+                      <span className="text-primary hover:underline hover:duration-500">
+                        <Link to="/myplan">My Plan</Link>
+                      </span>
+                    </div>
+                  </div>
                 </>
               ) : (
                 <Button
