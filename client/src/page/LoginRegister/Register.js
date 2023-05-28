@@ -27,7 +27,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const respone = await axios.post(
+      const response = await axios.post(
         "http://localhost:8080/user/register",
         JSON.stringify({
           nama,
@@ -43,6 +43,7 @@ const Register = () => {
         }
       );
       console.log("BERHASIL");
+     
       setSuccess(true);
       setTimeout(() => {
         setSuccess(false);

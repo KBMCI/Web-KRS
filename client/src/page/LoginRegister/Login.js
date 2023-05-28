@@ -32,16 +32,33 @@ const Login = () => {
       console.log("INI RESPONSENYA");
       console.log(response);
       console.log(response.data.data.token);
+      const dataUser = response.data.data.data
+      const id = dataUser.ID
+      const nama = dataUser.nama
+      const nim = dataUser.nim
+      const program_studi = dataUser.program_studi
+      const role = dataUser.role
+   
+      setAuth( { id, email, nama, nim, program_studi, role})
+    
       // ambil token
       const accessToken = response.data.data.token;
       // Simpan token pada localStorage
       localStorage.setItem("Authorization", accessToken);
+      localStorage.setItem("role", role);
       setSuccess(true);
-
-      setTimeout(() => {
-        setSuccess(false);
-        navigate("/");
-      }, 4000);
+      
+      if ( role === 'admin'){
+        setTimeout(() => {
+          setSuccess(false);
+          navigate("/admin");
+        }, 4000);
+      } else {
+        setTimeout(() => {
+          setSuccess(false);
+          navigate("/");
+        }, 4000);
+      }
     } catch (err) {
       console.log("error dijalankan");
       setErrMsg(err.response.message);
@@ -167,7 +184,7 @@ const Login = () => {
                 <input className="" type="checkbox" name="rememberme" />
                 <label
                   className="text-neutral-400 font-semibold text-[13px] ml-[4px]"
-                  for="rememberme">
+                  htmlFor="rememberme">
                   Remember Me
                 </label>
               </div>
@@ -183,9 +200,9 @@ const Login = () => {
             <p className="text-neutral-400 text-[15px]">
               Belum mempunyai akun?{" "}
             </p>
-            <a className="text-primary text-[15px]" href="">
+            <p className="text-primary text-[15px]" href="">
               <Link to="/register"> &nbsp;Register</Link>
-            </a>
+            </p>
           </div>
         </div>
       </div>

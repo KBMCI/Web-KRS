@@ -20,6 +20,7 @@ import RandomKrs from "./page/RandomKrs/RandomKrs";
 import UserEdit from "./page/UserPanel/UserEdit";
 import UserPanel from "./page/UserPanel/UserPanel";
 import UserTambah from "./page/UserPanel/UserTambah";
+import RequireAuth from "./component/RequireAuth";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <div className="App">
           <Routes>
             {/* Route User */}
+            <Route element={<RequireAuth allowedRole={['user']}/>}>
             <Route path="/" element={<HomeUser />}>
               <Route index element={<DashboardUser />} />
               <Route path="random-krs" element={<RandomKrs />}>
@@ -36,7 +38,10 @@ function App() {
               <Route path="planning-krs" element={<PlanningKrs />} />
               <Route path="myplan" element={<MyPlan />} />
             </Route>
+            </Route>
             {/* Route Admin */}
+
+            <Route element={<RequireAuth allowedRole={['admin']}/>}>
             <Route path="/admin" element={<Home />}>
               <Route index element={<Dashboard />} />
               <Route path="user-panel" element={<UserPanel />}>
@@ -56,6 +61,9 @@ function App() {
                 </Route>
               </Route>
             </Route>
+            </Route>
+
+            {/* Public */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
           </Routes>

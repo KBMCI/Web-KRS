@@ -26,9 +26,12 @@ const TablePlan = ({
 
   // membuat plan
   useEffect(() => {
+    console.log( is_saved , data.id)
     const setPlan = () => {
       if (is_saved) {
         setIsSave(true);
+      } else {
+        setIsSave(false)
       }
       console.log(jadwalKuliah);
       Array.isArray(data) &&
@@ -55,6 +58,7 @@ const TablePlan = ({
       const found = jadwalKuliah.find((obj) => {
         return obj.jam === waktu;
       });
+      
       // merubah object terpilih (found)
       const updateJadwal = {
         ...found,

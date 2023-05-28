@@ -13,7 +13,7 @@ const RandomKrs = () => {
   const [plan, setPlan] = useState([]);
   // Pagination Logic
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(5);
+  const [postsPerPage] = useState(2);
   const lastPostIndex = currentPage * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;
   // Berhasil Ambil data
@@ -40,13 +40,10 @@ const RandomKrs = () => {
         };
 
         // get data random krs
-        const respone = await url.get(
-          "/random-krs",
-          config
-        );
+        const respone = await url.get("/random-krs", config);
         console.log("load data");
         console.log("random krs yang 900");
-       
+
         setPlan(respone.data.data);
         setSuccess(true);
         console.log(respone.data.data);

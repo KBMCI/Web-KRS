@@ -10,14 +10,18 @@ const Paginations = ({ data, itemsPerPage, setCurrentPage, currentPage }) => {
   const [pageNumberLimit] = useState(5);
   const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
   const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
-  const [use, setUse] = useState(false);
+  
 
   const handleClick = (event) => {
     setCurrentPage(Number(event.target.id));
   };
   const pages = [];
-  for (let i = 1; i <= Math.ceil(data.length / itemsPerPage); i++) {
-    pages.push(i);
+  if ( data === null ) {
+    pages.push(1)
+  } else {
+    for (let i = 1; i <= Math.ceil(data.length / itemsPerPage); i++) {
+      pages.push(i);
+    }
   }
 
   const renderPageNumbers = pages.map((number) => {
