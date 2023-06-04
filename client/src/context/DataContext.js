@@ -11,6 +11,8 @@ export function DataProvider({ children }) {
   const [dataUser, setDataUser] = useState([]);
   const [triggerUser, setTriggerUser] = useState(false);
   const [open, setOpen] = useState(true);
+  // SelectedIdMatkul dari dashboard
+  const [selectedIdMatkul, setSelectedIdMatkul] = useState([]);
 
   useEffect(() => {
     const getDataMatkul = async () => {
@@ -115,6 +117,8 @@ export function DataProvider({ children }) {
         SetOpen,
         link,
         config,
+        selectedIdMatkul,
+        setSelectedIdMatkul
       }}
     >
       {children}

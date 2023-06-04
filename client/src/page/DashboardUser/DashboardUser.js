@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { url } from "../../api/url";
 import LogoMyPlans from "../../assets/LogoMyPlans.svg";
 import LogoPlanning from "../../assets/LogoPlanning.svg";
 import LogoRandom from "../../assets/LogoRandom.svg";
+import LogoSearch from "../../assets/LogoSearch.svg";
 import TablePlan from "../../component/TablePlan";
+import { DataContext } from "../../context/DataContext";
 
 const DashboardUser = () => {
   const [isFilled, setIsFilled] = useState(false);
@@ -11,6 +13,8 @@ const DashboardUser = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [electiveMatkul, setElectiveMatkul] = useState([]);
   const [selectedId, setSelectedId] = useState([]);
+  const [query, setQuery] = useState("");
+  const { selectedIdMatkul, setSelectedIdMatkul } = useContext(DataContext);
 
   useEffect(() => {
     const getMataKuliah = async () => {
@@ -85,16 +89,28 @@ const DashboardUser = () => {
         { matkuls: selectedId },
         config
       );
+
+      // INI DIOPER KEDALAM USE CONTEXT DATA
+      setSelectedIdMatkul(selectedId);
       console.log(response);
     } catch (err) {
       console.log(err.message);
     }
   };
 
+  const getFilteredItems = (query, items) => {
+    if (!query) {
+      return items;
+    }
+    return items.filter((matkul) => matkul.nama.toLowerCase().includes(query.toLowerCase()));
+  };
+
   const barisTabel = () => {
     return "h-[51.13px] min-h-[51.13px] py-[10px] px-4 font-semibold text-base";
-};
+  };
 
+  // filter
+  const filteredItems = getFilteredItems(query, electiveMatkul);
 
   return (
     <div className="bg-secondary p-7">
@@ -105,18 +121,36 @@ const DashboardUser = () => {
       <div className="flex flex-row gap-[35px] ml-[12px]">
         <div className="flex-col ">
           <div className="w-full shadow-lg rounded-[10px] mb-[31px] h-[451px] max-h-[451px] overflow-y-scroll scrollbar scrollbar-thumb-neutral-400 scrollbar-w-1 scrollbar-thumb-rounded-lg">
-            <table className="table-auto border-collapse border-b border-neutral-400 w-full drop-shadow-xl overflow-hidden">
-              <thead>
-                <tr className="bg-primary text-secondary">
+            <table className="table-auto border-collapse border-b border-neutral-400 w-full drop-shadow-xl ">
+              <thead className="">
+                <tr className="bg-primary text-secondary sticky top-0">
                   <th className="px-4 py-[10px] w-[47px] h-[42px]"></th>
-                  <th className="pl-[16px] pr-[21px] py-[10px] h-[42px] w-[101px]">Kode MK</th>
-                  <th className="px-[16px] py-[10px] h-[42px] w-[335px] text-left">Nama Mata Kuliah</th>
-                  <th className="h-[42px] w-[235px]">FILTER</th>
+                  <th className="pl-[16px] pr-[21px] py-[10px] h-[42px] w-[101px]">
+                    Kode MK
+                  </th>
+                  <th className="px-[16px] py-[10px] h-[42px] w-[335px] text-left">
+                    Nama Mata Kuliah
+                  </th>
+                  <th className="h-[42px] w-[235px]">
+                    <div className="flex justify-center items-center">
+                      <div>
+                        <img src={LogoSearch} alt="" className="" />
+                      </div>
+                      <div>
+                        <input
+                          type="text"
+                          onChange={(e) => setQuery(e.target.value)}
+                          className="bg-primary border-none rounded-3xl text-[15px] text-secondary  py-[4px] px-3 border-2  focus:border-primary placeholder:text-secondary placeholder:text-[13px]  font-semibold w-[300px] ...  focus:outline-non focus:outline-primary transition duration-300 "
+                          placeholder="Search Mata Kuliah"
+                        />
+                      </div>
+                    </div>
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {electiveMatkul &&
-                  electiveMatkul.map((matkul, index) => (
+                {filteredItems &&
+                  filteredItems.map((matkul, index) => (
                     <tr
                       key={index}
                       className="bg-secondary text-neutral-900 border-b border-neutral-400 ">
@@ -128,19 +162,24 @@ const DashboardUser = () => {
                           onChange={(event) => selectedMatkul(matkul.ID, event)}
                         />
                       </td>
-                      <td className={`${barisTabel()} py-[10px] px-4 font-semibold w-[101px]`}>{matkul.kode_matkul}</td>
-                      <td className={`${barisTabel()} py-[10px] px-4 font-semibold w-[335px]`}>{matkul.nama}</td>
+                      <td
+                        className={`${barisTabel()} py-[10px] px-4 font-semibold w-[101px]`}>
+                        {matkul.kode_matkul}
+                      </td>
+                      <td
+                        className={`${barisTabel()} py-[10px] px-4 font-semibold w-[335px]`}>
+                        {matkul.nama}
+                      </td>
+                      <td
+                        className={`${barisTabel()} py-[10px] px-4 font-semibold w-[335px]`}></td>
                     </tr>
                   ))}
               </tbody>
             </table>
-          
           </div>
-          <button
-              className="bg-primary rounded-xl p-3"
-              onClick={onPostHandle}>
-              Simpan
-            </button>
+          <button className="bg-primary rounded-xl p-3" onClick={onPostHandle}>
+            Simpan
+          </button>
           {/* My Plan */}
           <h1 className="neutral-900 font-semibold text-2xl ml-[22px] mb-[7px]">
             My Plans
