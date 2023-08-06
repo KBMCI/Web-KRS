@@ -222,19 +222,19 @@ const RandomKrs = () => {
           </div>
 
           {plan &&
-            plan.slice(firstPostIndex, lastPostIndex).map((plans, i) => (
+            plan.map((plans, i) => (
               <div key={i}>
                 <TablePlan
                   is_saved={plans.is_saved}
                   data={plans.random_krs}
-                  plan={firstPostIndex + i + 1}
+                  plan={i + 1}
                   currentPage={currentPage}></TablePlan>
               </div>
             ))}
           <div className=" bg-secondary p-7">
             <Paginations
               data={plan}
-              itemsPerPage={postsPerPage}
+              itemsPerPage={plan.length/2}
               setCurrentPage={setCurrentPage}
               currentPage={currentPage}
             />
