@@ -24,8 +24,7 @@ func NewRandomKrsHandler(randomKrsService model.RandomKrsService, planService mo
 
 // Mount implements model.RandomKrsHandler
 func (r *randomKrsHandler) Mount(group *gin.RouterGroup) {
-	group.GET("", r.FetchRandomKrsHandler)         //getAll
-	group.GET("/filter", r.FilterRandomKrsHandler) //getByFilter
+	group.GET("/", r.FilterRandomKrsHandler)
 }
 
 func (r *randomKrsHandler) FetchRandomKrsHandler(c *gin.Context) {
