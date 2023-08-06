@@ -26,7 +26,7 @@ export const DataJadwal = [
     Jumat: "Jumat",
   },
   {
-    Jam: "07:50-08:39",
+    Jam: "07:50-09:39",
     Senin: "Senin",
     Selasa: "Selasa",
     Rabu: "Rabu",
@@ -42,7 +42,7 @@ export const DataJadwal = [
     Jumat: "Jumat",
   },
   {
-    Jam: "09:30-11:59",
+    Jam: "09:30-11:09",
     Senin: "Senin",
     Selasa: "Selasa",
     Rabu: "Rabu",
@@ -58,7 +58,7 @@ export const DataJadwal = [
     Jumat: "Jumat",
   },
   {
-    Jam: "10:30-12:09",
+    Jam: "12:50-14:29",
     Senin: "Senin",
     Selasa: "Selasa",
     Rabu: "Rabu",
@@ -66,31 +66,7 @@ export const DataJadwal = [
     Jumat: "Jumat",
   },
   {
-    Jam: "11:20-12:09",
-    Senin: "Senin",
-    Selasa: "Selasa",
-    Rabu: "Rabu",
-    Kamis: "Kamis",
-    Jumat: "Jumat",
-  },
-  {
-    Jam: "12:50-15:19",
-    Senin: "Senin",
-    Selasa: "Selasa",
-    Rabu: "Rabu",
-    Kamis: "Kamis",
-    Jumat: "Jumat",
-  },
-  {
-    Jam: "13:00-13:49",
-    Senin: "Senin",
-    Selasa: "Selasa",
-    Rabu: "Rabu",
-    Kamis: "Kamis",
-    Jumat: "Jumat",
-  },
-  {
-    Jam: "13:00-14:49",
+    Jam: "13:40-15:19",
     Senin: "Senin",
     Selasa: "Selasa",
     Rabu: "Rabu",
@@ -106,7 +82,7 @@ export const DataJadwal = [
     Jumat: "Jumat",
   },
   {
-    Jam: "14:45-16:24",
+    Jam: "15:30-17:09",
     Senin: "Senin",
     Selasa: "Selasa",
     Rabu: "Rabu",
@@ -114,7 +90,7 @@ export const DataJadwal = [
     Jumat: "Jumat",
   },
   {
-    Jam: "17:20-18:09",
+    Jam: "16:20-18:09",
     Senin: "Senin",
     Selasa: "Selasa",
     Rabu: "Rabu",
