@@ -8,7 +8,7 @@ export const header = [
     jumat: "",
   },
   {
-    jam: "07:00 - 09:20",
+    jam: "07:50 - 09:29",
     senin: "",
     selasa: "",
     rabu: "",
@@ -24,7 +24,7 @@ export const header = [
     jumat: "",
   },
   {
-    jam: "09:30 - 11:59",
+    jam: "09:30 - 11:09",
     senin: "",
     selasa: "",
     rabu: "",
@@ -40,7 +40,7 @@ export const header = [
     jumat: "",
   },
   {
-    jam: "12:50 - 14:19",
+    jam: "12:50 - 14:29",
     senin: "",
     selasa: "",
     rabu: "",
@@ -48,7 +48,7 @@ export const header = [
     jumat: "",
   },
   {
-    jam: "12:50 - 15:19",
+    jam: "13:40 - 15:19",
     senin: "",
     selasa: "",
     rabu: "",
@@ -64,7 +64,7 @@ export const header = [
     jumat: "",
   },
   {
-    jam: "14:30 - 17:09",
+    jam: "15:30 - 17:09",
     senin: "",
     selasa: "",
     rabu: "",
@@ -72,15 +72,7 @@ export const header = [
     jumat: "",
   },
   {
-    jam: "15:30 - 18:00",
-    senin: "",
-    selasa: "",
-    rabu: "",
-    kamis: "",
-    jumat: "",
-  },
-  {
-    jam: "16:20 - 18:00",
+    jam: "16:20 - 18:09",
     senin: "",
     selasa: "",
     rabu: "",
