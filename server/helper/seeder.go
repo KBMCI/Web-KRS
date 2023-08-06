@@ -411,7 +411,7 @@ func SeederRefresh(cfg config.Config) {
 	var userAdmin model.User
 
 	cfg.Database().First(&userAdmin)
-	cfg.Database().Find(&matkulAdmin, []int{1, 2, 3, 4, 5, 6, 7, 8})
+	cfg.Database().Find(&matkulAdmin, []int{1, 2, 3, 4, 5})
 
 	userAdmin.Matkuls = matkulAdmin
 
