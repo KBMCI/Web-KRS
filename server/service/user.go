@@ -15,27 +15,18 @@ func NewUserService(repo model.UserRepository) *userService {
 }
 
 func (s *userService) Register(userRequest *request.UserRequest) (*model.User, error) {
+	hash, _ := handler.HashPassword(userRequest.Password)
+
 	user := &model.User{
 		Email:        userRequest.Email,
 		Nama:         userRequest.Nama,
 		ProgramStudi: userRequest.ProgramStudi,
 		Nim:          userRequest.Nim,
-		Password:     userRequest.Password,
-		Role:         userRequest.Role,
-	}
-
-	hash, _ := handler.HashPassword(user.Password)
-
-	user2 := &model.User{
-		Email:        userRequest.Email,
-		Nama:         userRequest.Nama,
-		ProgramStudi: userRequest.ProgramStudi,
-		Nim:          userRequest.Nim,
 		Password:     hash,
-		Role:         userRequest.Role,
+		Role:         "user",
 	}
 
-	user, err := s.userRepository.Create(user2)
+	user, err := s.userRepository.Create(user)
 	if err != nil {
 		return nil, err
 	}
@@ -101,7 +92,6 @@ func (s *userService) Update(ID int, userRequest *request.UserUpdateRequest) (*m
 	user.Nama = userRequest.Nama
 	user.ProgramStudi = userRequest.ProgramStudi
 	user.Nim = userRequest.Nim
-	user.Role = userRequest.Role
 
 	user, err = s.userRepository.Update(user)
 	if err != nil {

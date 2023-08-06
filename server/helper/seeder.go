@@ -7,9 +7,9 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func HashPassword(password string) (string, error){
+func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
-	return string(bytes),err
+	return string(bytes), err
 }
 
 func SeederRefresh(cfg config.Config) {
@@ -28,346 +28,372 @@ func SeederRefresh(cfg config.Config) {
 	}
 
 	matkuls := []model.Matkul{
-		{Kode: "CIT62012", Nama: "Pengembangan Aplikasi Mobile", TahunKurikulum: 2022, Sks: 4},
-		{Kode: "CIT62013", Nama: "Tata Kelola Teknologi Informasi", TahunKurikulum: 2022, Sks: 3},
-		{Kode: "CIT62014", Nama: "Implementasi dan Evaluasi Sistem Informasi", TahunKurikulum: 2022, Sks: 3},
-		{Kode: "CIT62015", Nama: "Administrasi Sistem", TahunKurikulum: 2022, Sks: 3},
-		{Kode: "CIT62016", Nama: "Arsitektur dan Protokol Internet", TahunKurikulum: 2022, Sks: 3},
-		{Kode: "CIT62017", Nama: "Teknologi Integrasi Sistem", TahunKurikulum: 2022, Sks: 2},
-		{Kode: "CIT62018", Nama: "Keamanan Informasi", TahunKurikulum: 2022, Sks: 3},
-		{Kode: "CIT60031", Nama: "Manajemen Proyek Teknologi Informasi", TahunKurikulum: 2022, Sks: 3},
+		// wajib
+		{Kode: "COM60051", Nama: "Metodologi Penelitian dan Penulisan Ilmiah", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CSD60004", Nama: "Keamanan Jaringan", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CIT61020", Nama: "Administrasi Basis Data", TahunKurikulum: 2020, Sks: 4},
+		{Kode: "CIT61021", Nama: "Data Warehouse", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CIT61022", Nama: "Pemrograman Integratif", TahunKurikulum: 2020, Sks: 4},
+		// pilihan
+		{Kode: "CIT60024", Nama: "Basis Data Terdistribusi", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CSD60013", Nama: "Pengantar Big Data", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CIT60028", Nama: "High Availability System", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CIT60029", Nama: "Internet of Things", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CIT60031", Nama: "Manajemen Proyek Teknologi Informasi", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CSD60001", Nama: "Sistem Informasi Geografi", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CIT60035", Nama: "Sistem Terdistribusi", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CIT60036", Nama: "Teknologi Berbasis Cloud", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CIT60037", Nama: "Microservice Architecture", TahunKurikulum: 2020, Sks: 2},
+		{Kode: "CSD60007", Nama: "Digital Financial Platform", TahunKurikulum: 2020, Sks: 2},
+		{Kode: "CIT60039", Nama: "Pemrograman Web Lanjut", TahunKurikulum: 2020, Sks: 3},
 	}
 
 	classes := []model.Kelas{
-		// PAM
-		{KodeMatkul: "CIT62012", Nama: "A", JadwalKelas: []model.JadwalKelas{
-			{
-				Hari:       "Senin",
-				JamMulai:   "09:30",
-				JamSelesai: "11:59",
-				RuangKelas: "F3.9",
-			},
+		// Metodologi Penelitian dan Penulisan Ilmiah
+		{KodeMatkul: "COM60051", Nama: "A", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Kamis",
-				JamMulai:   "08:40",
-				JamSelesai: "10:19",
-				RuangKelas: "G1.6",
-			},
-		}},
-		{KodeMatkul: "CIT62012", Nama: "B", JadwalKelas: []model.JadwalKelas{
-			{
-				Hari:       "Selasa",
-				JamMulai:   "15:30",
-				JamSelesai: "18:00",
-				RuangKelas: "F3.13",
-			},
-			{
-				Hari:       "Rabu",
-				JamMulai:   "16:20",
-				JamSelesai: "18:00",
-				RuangKelas: "G1.3",
-			},
-		}},
-		{KodeMatkul: "CIT62012", Nama: "C", JadwalKelas: []model.JadwalKelas{
-			{
-				Hari:       "Selasa",
-				JamMulai:   "14:30",
-				JamSelesai: "17:09",
-				RuangKelas: "F4.4",
-			},
-			{
-				Hari:       "Jumat",
-				JamMulai:   "07:00",
-				JamSelesai: "08:39",
-				RuangKelas: "G1.2",
-			},
-		}},
-		{KodeMatkul: "CIT62012", Nama: "D", JadwalKelas: []model.JadwalKelas{
-			{
-				Hari:       "Selasa",
-				JamMulai:   "08:40",
-				JamSelesai: "10:19",
-				RuangKelas: "G1.2",
-			},
-			{
-				Hari:       "Rabu",
-				JamMulai:   "12:50",
-				JamSelesai: "15:19",
+				JamMulai:   "09:30",
+				JamSelesai: "11:09",
 				RuangKelas: "F3.5",
 			},
 		}},
-		
-		// TKTI
-		{KodeMatkul: "CIT62013", Nama: "A", JadwalKelas: []model.JadwalKelas{
-			{
-				Hari:       "Selasa",
-				JamMulai:   "12:50",
-				JamSelesai: "15:19",
-				RuangKelas: "F3.2",
-			},
-		}},
-		{KodeMatkul: "CIT62013", Nama: "B", JadwalKelas: []model.JadwalKelas{
-			{
-				Hari:       "Senin",
-				JamMulai:   "12:50",
-				JamSelesai: "15:19",
-				RuangKelas: "F3.13",
-			},
-		}},
-		{KodeMatkul: "CIT62013", Nama: "C", JadwalKelas: []model.JadwalKelas{
-			{
-				Hari:       "Kamis",
-				JamMulai:   "12:50",
-				JamSelesai: "15:19",
-				RuangKelas: "F4.6",
-			},
-		}},
-		{KodeMatkul: "CIT62013", Nama: "D", JadwalKelas: []model.JadwalKelas{
-			{
-				Hari:       "Senin",
-				JamMulai:   "07:00",
-				JamSelesai: "09:29",
-				RuangKelas: "F2.9",
-			},
-		}},
-
-		// IDESI
-		{KodeMatkul: "CIT62014", Nama: "A", JadwalKelas: []model.JadwalKelas{
+		{KodeMatkul: "COM60051", Nama: "B", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Rabu",
-				JamMulai:   "12:50",
-				JamSelesai: "15:19",
-				RuangKelas: "F3.1",
+				JamMulai:   "07:50",
+				JamSelesai: "09:29",
+				RuangKelas: "F3.4",
 			},
 		}},
-		{KodeMatkul: "CIT62014", Nama: "B", JadwalKelas: []model.JadwalKelas{
+		{KodeMatkul: "COM60051", Nama: "C", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Senin",
+				JamMulai:   "09:30",
+				JamSelesai: "11:09",
+				RuangKelas: "F3.15",
+			},
+		}},
+		{KodeMatkul: "COM60051", Nama: "D", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Selasa",
-				JamMulai:   "12:50",
+				JamMulai:   "13:40",
 				JamSelesai: "15:19",
 				RuangKelas: "F2.8",
 			},
 		}},
-		{KodeMatkul: "CIT62014", Nama: "C", JadwalKelas: []model.JadwalKelas{
+
+		// Keamanan Jaringan
+		{KodeMatkul: "CSD60004", Nama: "A", JadwalKelas: []model.JadwalKelas{
 			{
-				Hari:       "Senin",
-				JamMulai:   "12:50",
-				JamSelesai: "15:19",
-				RuangKelas: "F2.1",
+				Hari:       "Selasa",
+				JamMulai:   "07:00",
+				JamSelesai: "08:39",
+				RuangKelas: "F3.1",
 			},
 		}},
-		{KodeMatkul: "CIT62014", Nama: "D", JadwalKelas: []model.JadwalKelas{
+		{KodeMatkul: "CSD60004", Nama: "B", JadwalKelas: []model.JadwalKelas{
 			{
-				Hari:       "Kamis",
+				Hari:       "Selasa",
+				JamMulai:   "12:50",
+				JamSelesai: "14:29",
+				RuangKelas: "F3.17",
+			},
+		}},
+		{KodeMatkul: "CSD60004", Nama: "C", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Selasa",
 				JamMulai:   "09:30",
-				JamSelesai: "11:59",
-				RuangKelas: "F3.6",
+				JamSelesai: "11:09",
+				RuangKelas: "F4.12",
+			},
+		}},
+		{KodeMatkul: "CSD60004", Nama: "D", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Selasa",
+				JamMulai:   "09:30",
+				JamSelesai: "11:09",
+				RuangKelas: "F2.9",
 			},
 		}},
 
-		// AS
-		{KodeMatkul: "CIT62015", Nama: "A", JadwalKelas: []model.JadwalKelas{
+		// Administrasi Basis Data
+		{KodeMatkul: "CIT61020", Nama: "A", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Rabu",
+				JamMulai:   "16:20",
+				JamSelesai: "18:09",
+				RuangKelas: "G1.2",
+			},
+			{
+				Hari:       "Selasa",
+				JamMulai:   "13:40",
+				JamSelesai: "15:19",
+				RuangKelas: "F4.13",
+			},
+		}},
+		{KodeMatkul: "CIT61020", Nama: "B", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Senin",
+				JamMulai:   "07:00",
+				JamSelesai: "08:39",
+				RuangKelas: "G1.5",
+			},
+			{
+				Hari:       "Rabu",
+				JamMulai:   "12:50",
+				JamSelesai: "14:29",
+				RuangKelas: "F4.11",
+			},
+		}},
+		{KodeMatkul: "CIT61020", Nama: "C", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Kamis",
+				JamMulai:   "15:30",
+				JamSelesai: "17:09",
+				RuangKelas: "F2.9",
+			},
+			{
+				Hari:       "Jumat",
+				JamMulai:   "09:30",
+				JamSelesai: "11:09",
+				RuangKelas: "G1.4",
+			},
+		}},
+		{KodeMatkul: "CIT61020", Nama: "D", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Kamis",
+				JamMulai:   "08:40",
+				JamSelesai: "10:19",
+				RuangKelas: "F4.14",
+			},
+			{
+				Hari:       "Rabu",
+				JamMulai:   "16:20",
+				JamSelesai: "18:09",
+				RuangKelas: "G1.5",
+			},
+		}},
+
+		// Data Warehouse
+		{KodeMatkul: "CIT61021", Nama: "A", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Rabu",
+				JamMulai:   "08:40",
+				JamSelesai: "10:19",
+				RuangKelas: "F4.2",
+			},
+		}},
+		{KodeMatkul: "CIT61021", Nama: "B", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Kamis",
+				JamMulai:   "07:00",
+				JamSelesai: "08:39",
+				RuangKelas: "F3.8",
+			},
+		}},
+		{KodeMatkul: "CIT61021", Nama: "C", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Senin",
+				JamMulai:   "15:30",
+				JamSelesai: "17:09",
+				RuangKelas: "F4.6",
+			},
+		}},
+		{KodeMatkul: "CIT61021", Nama: "D", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Senin",
+				JamMulai:   "15:30",
+				JamSelesai: "17:09",
+				RuangKelas: "F3.1",
+			},
+		}},
+
+		// Pemrograman Integratif
+		{KodeMatkul: "CIT61022", Nama: "A", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Senin",
+				JamMulai:   "09:30",
+				JamSelesai: "11:09",
+				RuangKelas: "F3.10",
+			},
+			{
+				Hari:       "Rabu",
+				JamMulai:   "12:50",
+				JamSelesai: "14:29",
+				RuangKelas: "G1.4",
+			},
+		}},
+		{KodeMatkul: "CIT61022", Nama: "B", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Rabu",
+				JamMulai:   "15:30",
+				JamSelesai: "17:09",
+				RuangKelas: "F3.5",
+			},
+			{
+				Hari:       "Selasa",
+				JamMulai:   "16:20",
+				JamSelesai: "18:09",
+				RuangKelas: "G1.6",
+			},
+		}},
+		{KodeMatkul: "CIT61022", Nama: "C", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Kamis",
+				JamMulai:   "12:50",
+				JamSelesai: "14:29",
+				RuangKelas: "F3.10",
+			},
 			{
 				Hari:       "Rabu",
 				JamMulai:   "10:20",
 				JamSelesai: "11:59",
 				RuangKelas: "G1.2",
 			},
+		}},
+		{KodeMatkul: "CIT61022", Nama: "D", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Kamis",
-				JamMulai:   "14:30",
-				JamSelesai: "16:19",
-				RuangKelas: "F3.6",
-			},
-		}},
-		{KodeMatkul: "CIT62015", Nama: "B", JadwalKelas: []model.JadwalKelas{
-			{
-				Hari:       "Rabu",
-				JamMulai:   "07:00",
-				JamSelesai: "08:39",
-				RuangKelas: "F4.3",
-			},
-			{
-				Hari:       "Jumat",
-				JamMulai:   "07:00",
-				JamSelesai: "08:39",
-				RuangKelas: "G1.6",
-			},
-		}},
-		{KodeMatkul: "CIT62015", Nama: "C", JadwalKelas: []model.JadwalKelas{
-			{
-				Hari:       "Selasa",
-				JamMulai:   "07:00",
-				JamSelesai: "08:39",
-				RuangKelas: "G1.5",
-			},
-			{
-				Hari:       "Rabu",
-				JamMulai:   "07:00",
-				JamSelesai: "08:39",
-				RuangKelas: "F3.1",
-			},
-		}},
-		{KodeMatkul: "CIT62015", Nama: "D", JadwalKelas: []model.JadwalKelas{
-			{
-				Hari:       "Kamis",
-				JamMulai:   "07:00",
-				JamSelesai: "08:39",
-				RuangKelas: "F4.6",
-			},
-			{
-				Hari:       "Selasa",
-				JamMulai:   "16:20",
-				JamSelesai: "18:00",
-				RuangKelas: "G1.6",
-			},
-		}},
-
-		// ARPI
-		{KodeMatkul: "CIT62016", Nama: "A", JadwalKelas: []model.JadwalKelas{
-			{
-				Hari:       "Kamis",
-				JamMulai:   "12:50",
-				JamSelesai: "14:29",
-				RuangKelas: "F3.15",
-			},
-			{
-				Hari:       "Jumat",
-				JamMulai:   "08:40",
-				JamSelesai: "10:19",
-				RuangKelas: "G1.4",
-			},
-		}},
-		{KodeMatkul: "CIT62016", Nama: "B", JadwalKelas: []model.JadwalKelas{
-			{
-				Hari:       "Rabu",
-				JamMulai:   "10:20",
-				JamSelesai: "11:59",
-				RuangKelas: "F3.9",
-			},
-			{
-				Hari:       "Kamis",
-				JamMulai:   "07:00",
-				JamSelesai: "08:39",
-				RuangKelas: "G1.6",
-			},
-		}},
-		{KodeMatkul: "CIT62016", Nama: "C", JadwalKelas: []model.JadwalKelas{
-			{
-				Hari:       "Selasa",
-				JamMulai:   "10:20",
-				JamSelesai: "11:59",
-				RuangKelas: "F2.5",
-			},
-			{
-				Hari:       "Kamis",
-				JamMulai:   "08:40",
-				JamSelesai: "10:19",
-				RuangKelas: "G1.5",
-			},
-		}},
-		{KodeMatkul: "CIT62016", Nama: "D", JadwalKelas: []model.JadwalKelas{
-			{
-				Hari:       "Senin",
-				JamMulai:   "12:50",
-				JamSelesai: "14:29",
-				RuangKelas: "G1.5",
-			},
-			{
-				Hari:       "Selasa",
-				JamMulai:   "12:50",
-				JamSelesai: "14:29",
-				RuangKelas: "F2.6",
-			},
-		}},
-
-		// TIS
-		{KodeMatkul: "CIT62017", Nama: "A", JadwalKelas: []model.JadwalKelas{
-			{
-				Hari:       "Kamis",
-				JamMulai:   "10:20",
-				JamSelesai: "11:59",
-				RuangKelas: "F4.11",
-			},
-		}},
-		{KodeMatkul: "CIT62017", Nama: "B", JadwalKelas: []model.JadwalKelas{
-			{
-				Hari:       "Kamis",
-				JamMulai:   "08:40",
-				JamSelesai: "10:19",
-				RuangKelas: "F3.13",
-			},
-		}},
-		{KodeMatkul: "CIT62017", Nama: "C", JadwalKelas: []model.JadwalKelas{
-			{
-				Hari:       "Senin",
-				JamMulai:   "07:00",
-				JamSelesai: "08:39",
-				RuangKelas: "F4.12",
-			},
-		}},
-		{KodeMatkul: "CIT62017", Nama: "D", JadwalKelas: []model.JadwalKelas{
-			{
-				Hari:       "Selasa",
-				JamMulai:   "07:00",
-				JamSelesai: "08:39",
+				JamMulai:   "15:30",
+				JamSelesai: "17:09",
 				RuangKelas: "F3.3",
 			},
+			{
+				Hari:       "Rabu",
+				JamMulai:   "08:40",
+				JamSelesai: "10:19",
+				RuangKelas: "G1.5",
+			},
 		}},
 
-		// KI
-		{KodeMatkul: "CIT62018", Nama: "A", JadwalKelas: []model.JadwalKelas{
+		// Basis Data Terdistribusi
+		{KodeMatkul: "CIT60024", Nama: "A", JadwalKelas: []model.JadwalKelas{
 			{
-				Hari:       "Senin",
-				JamMulai:   "12:50",
-				JamSelesai: "15:19",
+				Hari:       "Jumat",
+				JamMulai:   "08:40",
+				JamSelesai: "10:19",
 				RuangKelas: "F4.14",
 			},
 		}},
-		{KodeMatkul: "CIT62018", Nama: "B", JadwalKelas: []model.JadwalKelas{
+
+		// Pengantar Big Data
+		{KodeMatkul: "CSD60013", Nama: "A", JadwalKelas: []model.JadwalKelas{
 			{
-				Hari:       "Rabu",
+				Hari:       "Senin",
 				JamMulai:   "12:50",
-				JamSelesai: "15:19",
-				RuangKelas: "F4.6",
+				JamSelesai: "14:29",
+				RuangKelas: "F3.16",
 			},
 		}},
-		{KodeMatkul: "CIT62018", Nama: "C", JadwalKelas: []model.JadwalKelas{
+		{KodeMatkul: "CSD60013", Nama: "B", JadwalKelas: []model.JadwalKelas{
 			{
-				Hari:       "Rabu",
-				JamMulai:   "12:50",
-				JamSelesai: "15:19",
-				RuangKelas: "F3.14",
-			},
-		}},
-		{KodeMatkul: "CIT62018", Nama: "D", JadwalKelas: []model.JadwalKelas{
-			{
-				Hari:       "Rabu",
+				Hari:       "Selasa",
 				JamMulai:   "09:30",
-				JamSelesai: "11:59",
-				RuangKelas: "F3.5",
+				JamSelesai: "11:09",
+				RuangKelas: "F3.16",
+			},
+		}},
+
+		// High Availability System
+		{KodeMatkul: "CIT60028", Nama: "A", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Kamis",
+				JamMulai:   "12:50",
+				JamSelesai: "14:29",
+				RuangKelas: "F3.6",
+			},
+		}},
+
+		// IoT
+		{KodeMatkul: "CIT60029", Nama: "A", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Rabu",
+				JamMulai:   "15:30",
+				JamSelesai: "17:09",
+				RuangKelas: "F3.2",
+			},
+		}},
+		{KodeMatkul: "CIT60029", Nama: "B", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Senin",
+				JamMulai:   "12:50",
+				JamSelesai: "14:29",
+				RuangKelas: "F4.6",
 			},
 		}},
 
 		// MPTI
 		{KodeMatkul: "CIT60031", Nama: "A", JadwalKelas: []model.JadwalKelas{
 			{
-				Hari:       "Selasa",
-				JamMulai:   "09:30",
-				JamSelesai: "11:59",
-				RuangKelas: "F2.6",
+				Hari:       "Rabu",
+				JamMulai:   "12:50",
+				JamSelesai: "14:29",
+				RuangKelas: "F3.14",
 			},
 		}},
-		{KodeMatkul: "CIT60031", Nama: "B", JadwalKelas: []model.JadwalKelas{
+
+		// Sistem Informasi Geografi
+		{KodeMatkul: "CSD60001", Nama: "A", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Selasa",
-				JamMulai:   "12:50",
-				JamSelesai: "15:19",
-				RuangKelas: "F4.6",
+				JamMulai:   "07:00",
+				JamSelesai: "08:39",
+				RuangKelas: "F3.14",
+			},
+		}},
+
+		// Sistem Terdistribusi
+		{KodeMatkul: "CIT60035", Nama: "A", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Kamis",
+				JamMulai:   "07:00",
+				JamSelesai: "08:39",
+				RuangKelas: "F4.5",
+			},
+		}},
+
+		// Teknologi Berbasis Cloud
+		{KodeMatkul: "CIT60036", Nama: "A", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Selasa",
+				JamMulai:   "14:30",
+				JamSelesai: "16:19",
+				RuangKelas: "F3.10",
+			},
+		}},
+
+		// Microservice Architecture
+		{KodeMatkul: "CIT60037", Nama: "A", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Senin",
+				JamMulai:   "16:20",
+				JamSelesai: "18:09",
+				RuangKelas: "F2.4",
+			},
+		}},
+
+		// Digital Financial Platform
+		{KodeMatkul: "CSD60007", Nama: "A", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Kamis",
+				JamMulai:   "09:30",
+				JamSelesai: "11:09",
+				RuangKelas: "F2.9",
+			},
+		}},
+
+		// Pemweb Lanjut
+		{KodeMatkul: "CIT60039", Nama: "A", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Selasa",
+				JamMulai:   "09:30",
+				JamSelesai: "11:09",
+				RuangKelas: "F4.7",
 			},
 		}},
 	}
-	
+
 	for _, user := range users {
 		cfg.Database().Create(&user)
 	}
@@ -379,15 +405,15 @@ func SeederRefresh(cfg config.Config) {
 	for _, kelas := range classes {
 		cfg.Database().Create(&kelas)
 	}
-	
+
 	// User add matkuls
 	var matkulAdmin []model.Matkul
 	var userAdmin model.User
 
 	cfg.Database().First(&userAdmin)
-	cfg.Database().Find(&matkulAdmin, []int{1,2,3,4,5,6,7,8})
+	cfg.Database().Find(&matkulAdmin, []int{1, 2, 3, 4, 5, 6, 7, 8})
 
 	userAdmin.Matkuls = matkulAdmin
-	
+
 	cfg.Database().Model(&userAdmin).Updates(&userAdmin)
 }
