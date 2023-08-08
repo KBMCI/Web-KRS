@@ -54,7 +54,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Kamis",
 				JamMulai:   "09:30",
-				JamSelesai: "11:09",
+				JamSelesai: "11:59",
 				RuangKelas: "F3.5",
 			},
 		}},
@@ -62,7 +62,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Rabu",
 				JamMulai:   "07:50",
-				JamSelesai: "09:29",
+				JamSelesai: "10:19",
 				RuangKelas: "F3.4",
 			},
 		}},
@@ -70,7 +70,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Senin",
 				JamMulai:   "09:30",
-				JamSelesai: "11:09",
+				JamSelesai: "11:59",
 				RuangKelas: "F3.15",
 			},
 		}},
@@ -78,7 +78,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Selasa",
 				JamMulai:   "13:40",
-				JamSelesai: "15:19",
+				JamSelesai: "16:19",
 				RuangKelas: "F2.8",
 			},
 		}},
@@ -88,7 +88,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Selasa",
 				JamMulai:   "07:00",
-				JamSelesai: "08:39",
+				JamSelesai: "09:29",
 				RuangKelas: "F3.1",
 			},
 		}},
@@ -96,7 +96,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Selasa",
 				JamMulai:   "12:50",
-				JamSelesai: "14:29",
+				JamSelesai: "15:19",
 				RuangKelas: "F3.17",
 			},
 		}},
@@ -104,7 +104,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Selasa",
 				JamMulai:   "09:30",
-				JamSelesai: "11:09",
+				JamSelesai: "11:59",
 				RuangKelas: "F4.12",
 			},
 		}},
@@ -112,7 +112,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Selasa",
 				JamMulai:   "09:30",
-				JamSelesai: "11:09",
+				JamSelesai: "11:59",
 				RuangKelas: "F2.9",
 			},
 		}},
@@ -128,7 +128,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Selasa",
 				JamMulai:   "13:40",
-				JamSelesai: "15:19",
+				JamSelesai: "16:19",
 				RuangKelas: "F4.13",
 			},
 		}},
@@ -142,7 +142,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Rabu",
 				JamMulai:   "12:50",
-				JamSelesai: "14:29",
+				JamSelesai: "15:19",
 				RuangKelas: "F4.11",
 			},
 		}},
@@ -150,7 +150,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Kamis",
 				JamMulai:   "15:30",
-				JamSelesai: "17:09",
+				JamSelesai: "18:09",
 				RuangKelas: "F2.9",
 			},
 			{
@@ -164,7 +164,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Kamis",
 				JamMulai:   "08:40",
-				JamSelesai: "10:19",
+				JamSelesai: "11:09",
 				RuangKelas: "F4.14",
 			},
 			{
@@ -180,7 +180,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Rabu",
 				JamMulai:   "08:40",
-				JamSelesai: "10:19",
+				JamSelesai: "11:09",
 				RuangKelas: "F4.2",
 			},
 		}},
@@ -188,7 +188,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Kamis",
 				JamMulai:   "07:00",
-				JamSelesai: "08:39",
+				JamSelesai: "09:29",
 				RuangKelas: "F3.8",
 			},
 		}},
@@ -196,7 +196,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Senin",
 				JamMulai:   "15:30",
-				JamSelesai: "17:09",
+				JamSelesai: "18:09",
 				RuangKelas: "F4.6",
 			},
 		}},
@@ -204,7 +204,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Senin",
 				JamMulai:   "15:30",
-				JamSelesai: "17:09",
+				JamSelesai: "18:09",
 				RuangKelas: "F3.1",
 			},
 		}},
@@ -214,7 +214,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Senin",
 				JamMulai:   "09:30",
-				JamSelesai: "11:09",
+				JamSelesai: "11:59",
 				RuangKelas: "F3.10",
 			},
 			{
@@ -228,7 +228,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Rabu",
 				JamMulai:   "15:30",
-				JamSelesai: "17:09",
+				JamSelesai: "18:09",
 				RuangKelas: "F3.5",
 			},
 			{
@@ -242,7 +242,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Kamis",
 				JamMulai:   "12:50",
-				JamSelesai: "14:29",
+				JamSelesai: "15:19",
 				RuangKelas: "F3.10",
 			},
 			{
@@ -256,7 +256,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Kamis",
 				JamMulai:   "15:30",
-				JamSelesai: "17:09",
+				JamSelesai: "18:09",
 				RuangKelas: "F3.3",
 			},
 			{
@@ -272,7 +272,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Jumat",
 				JamMulai:   "08:40",
-				JamSelesai: "10:19",
+				JamSelesai: "11:09",
 				RuangKelas: "F4.14",
 			},
 		}},
@@ -282,7 +282,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Senin",
 				JamMulai:   "12:50",
-				JamSelesai: "14:29",
+				JamSelesai: "15:19",
 				RuangKelas: "F3.16",
 			},
 		}},
@@ -290,7 +290,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Selasa",
 				JamMulai:   "09:30",
-				JamSelesai: "11:09",
+				JamSelesai: "11:59",
 				RuangKelas: "F3.16",
 			},
 		}},
@@ -300,7 +300,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Kamis",
 				JamMulai:   "12:50",
-				JamSelesai: "14:29",
+				JamSelesai: "15:19",
 				RuangKelas: "F3.6",
 			},
 		}},
@@ -310,7 +310,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Rabu",
 				JamMulai:   "15:30",
-				JamSelesai: "17:09",
+				JamSelesai: "18:09",
 				RuangKelas: "F3.2",
 			},
 		}},
@@ -318,7 +318,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Senin",
 				JamMulai:   "12:50",
-				JamSelesai: "14:29",
+				JamSelesai: "15:19",
 				RuangKelas: "F4.6",
 			},
 		}},
@@ -328,17 +328,17 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Rabu",
 				JamMulai:   "12:50",
-				JamSelesai: "14:29",
+				JamSelesai: "15:19",
 				RuangKelas: "F3.14",
 			},
 		}},
 
 		// Sistem Informasi Geografi
-		{KodeMatkul: "CSD60001", Nama: "A", JadwalKelas: []model.JadwalKelas{
+		{KodeMatkul: "CIT60034", Nama: "A", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Selasa",
 				JamMulai:   "07:00",
-				JamSelesai: "08:39",
+				JamSelesai: "09:29",
 				RuangKelas: "F3.14",
 			},
 		}},
@@ -348,7 +348,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Kamis",
 				JamMulai:   "07:00",
-				JamSelesai: "08:39",
+				JamSelesai: "09:29",
 				RuangKelas: "F4.5",
 			},
 		}},
@@ -358,7 +358,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Selasa",
 				JamMulai:   "14:30",
-				JamSelesai: "16:19",
+				JamSelesai: "17:09",
 				RuangKelas: "F3.10",
 			},
 		}},
@@ -378,7 +378,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Kamis",
 				JamMulai:   "09:30",
-				JamSelesai: "11:09",
+				JamSelesai: "11:59",
 				RuangKelas: "F2.9",
 			},
 		}},
@@ -388,7 +388,7 @@ func SeederRefresh(cfg config.Config) {
 			{
 				Hari:       "Selasa",
 				JamMulai:   "09:30",
-				JamSelesai: "11:09",
+				JamSelesai: "11:59",
 				RuangKelas: "F4.7",
 			},
 		}},

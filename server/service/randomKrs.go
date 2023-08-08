@@ -28,7 +28,6 @@ func (r *randomKrsService) FetchRandomKrs(idUser uint) ([][]model.RandomKrs, err
 		return nil, err
 	}
 
-
 	var matkuls []*model.Matkul
 	for i := 0; i < len(user.Matkuls); i++ {
 		matkuls = append(matkuls, &user.Matkuls[i])
@@ -90,16 +89,40 @@ func (r *randomKrsService) FilterRandomKrs(idUser uint, filterJadwal []model.Fil
 	}
 
 	jadwalBaru := [][]model.RandomKrs{}
+	uniqueKelasFromJadwal := [][]string{}
 
-	for _, randomKrs := range randomsKrs {
+	removeDuplicateValues := func(slice []string) []string {
+		keys := make(map[string]bool)
+		list := []string{}
+
+		for _, entry := range slice {
+			if _, value := keys[entry]; !value {
+				keys[entry] = true
+				list = append(list, entry)
+			}
+		}
+		return list
+	}
+
+	newFilters := []string{}
+	for _, filter := range filterKelas {
+		newFilters = append(newFilters, filter.NamaMatkul)
+	}
+	newFilters = removeDuplicateValues(newFilters)
+
+	for i, randomKrs := range randomsKrs {
 		isLibur := false
+		uniqueKelas := []string{}
+		count := 0
 
 		for _, kelas := range randomKrs {
-			for _, filterK := range filterKelas {
-				if kelas.NamaMatkul == filterK.NamaMatkul && kelas.NamaKelas == filterK.NamaKelas {
-					isLibur = true
-				}
-			}
+			// for _, filterK := range filterKelas {
+			// 	if kelas.NamaMatkul == filterK.NamaMatkul && kelas.NamaKelas == filterK.NamaKelas {
+			// 		isLibur = true
+			// 	}
+			// }
+			uniqueKelas = append(uniqueKelas, kelas.NamaMatkul + " " + kelas.NamaKelas)
+
 			for _, jadwal := range kelas.JadwalKelas {
 				for _, filterJ := range filterJadwal {
 					if jadwal.Hari == filterJ.Hari && jadwal.JamMulai == filterJ.JamMulai && jadwal.JamSelesai == filterJ.JamSelesai {
@@ -108,7 +131,18 @@ func (r *randomKrsService) FilterRandomKrs(idUser uint, filterJadwal []model.Fil
 				}
 			}
 		}
-		if !isLibur {
+
+		uniqueKelasFromJadwal = append(uniqueKelasFromJadwal, removeDuplicateValues(uniqueKelas))
+
+		for _, kelasJadwal := range uniqueKelasFromJadwal[i] {
+			for _, filter := range  filterKelas{
+				if kelasJadwal == (filter.NamaMatkul + " " + filter.NamaKelas) {
+					count++
+				}
+			}
+		}
+
+		if !isLibur && count == len(newFilters) {
 			jadwalBaru = append(jadwalBaru, randomKrs)
 		}
 	}
