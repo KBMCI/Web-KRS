@@ -2,16 +2,19 @@ package repository
 
 import (
 	"errors"
-	"web-krs/config"
 	"web-krs/model"
+
+	"gorm.io/gorm"
 )
 
 type planRepository struct {
-	cfg config.Config
+	database *gorm.DB
 }
 
-func NewPlanRepository(cfg config.Config) model.PlanRepository {
-	return &planRepository{cfg: cfg}
+func NewPlanRepository(database *gorm.DB) model.PlanRepository {
+	return &planRepository{
+		database: database,
+	}
 }
 
 func (p *planRepository) Create(user *model.User, plan *model.Plan) (*model.Plan, error) {
@@ -21,7 +24,7 @@ func (p *planRepository) Create(user *model.User, plan *model.Plan) (*model.Plan
 	}
 	duplicatePlan := CheckDuplicatePlan(plans, plan.Kelas)
 	if duplicatePlan == nil {
-		if err := p.cfg.Database().Create(&plan).Error; err != nil {
+		if err := p.database.Create(&plan).Error; err != nil {
 			return nil, err
 		}
 		return plan, nil
@@ -32,7 +35,7 @@ func (p *planRepository) Create(user *model.User, plan *model.Plan) (*model.Plan
 			return nil, errors.New("user has added the plan")
 		}
 	}
-	p.cfg.Database().Model(&duplicatePlan).Association("Users").Append(user)
+	p.database.Model(&duplicatePlan).Association("Users").Append(user)
 
 	return plan, nil
 }
@@ -40,7 +43,7 @@ func (p *planRepository) Create(user *model.User, plan *model.Plan) (*model.Plan
 func (p *planRepository) Fetch() ([]*model.Plan, error) {
 	var planList []*model.Plan
 
-	err := p.cfg.Database().Preload("Users").Preload("Kelas").Find(&planList).Error
+	err := p.database.Preload("Users").Preload("Kelas").Find(&planList).Error
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +54,7 @@ func (p *planRepository) Fetch() ([]*model.Plan, error) {
 func (p *planRepository) FindByIdPlan(idPlan uint) (*model.Plan, error) {
 	var plan *model.Plan
 
-	err := p.cfg.Database().Find(&plan, idPlan).Error
+	err := p.database.Find(&plan, idPlan).Error
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +65,7 @@ func (p *planRepository) FindByIdPlan(idPlan uint) (*model.Plan, error) {
 func (p *planRepository) FindByIdUser(idUser uint) ([]*model.Plan, error) {
 	var user model.User
 
-	err := p.cfg.Database().Model(&model.User{}).Preload("Plans.Kelas.JadwalKelas").Preload("Plans.Kelas.Matkul").Find(&user, idUser).Error
+	err := p.database.Model(&model.User{}).Preload("Plans.Kelas.JadwalKelas").Preload("Plans.Kelas.Matkul").Find(&user, idUser).Error
 	if err != nil {
 		return nil, err
 	}
@@ -73,14 +76,14 @@ func (p *planRepository) FindByIdUser(idUser uint) ([]*model.Plan, error) {
 func (p *planRepository) DeletePlan(user *model.User, plan *model.Plan) error {
 	var currentPlan *model.Plan
 
-	err := p.cfg.Database().Model(&user).Association("Plans").Delete(plan)
+	err := p.database.Model(&user).Association("Plans").Delete(plan)
 	if err != nil {
 		return err
 	}
 
-	p.cfg.Database().Model(&model.Plan{}).Preload("Users").Find(&currentPlan, plan.ID)
+	p.database.Model(&model.Plan{}).Preload("Users").Find(&currentPlan, plan.ID)
 	if len(currentPlan.Users) == 0 {
-		err := p.cfg.Database().Delete(&plan).Error
+		err := p.database.Delete(&plan).Error
 		if err != nil {
 			return err
 		}

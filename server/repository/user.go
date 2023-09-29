@@ -1,21 +1,24 @@
 package repository
 
 import (
-	"web-krs/config"
 	"web-krs/model"
+
+	"gorm.io/gorm"
 )
 
 type userRepositoty struct {
-	Cfg config.Config
+	database *gorm.DB
 }
 
-func NewUserRepositoty(cfg config.Config) model.UserRepository{
-	return &userRepositoty{Cfg: cfg}
+func NewUserRepositoty(database *gorm.DB) model.UserRepository{
+	return &userRepositoty{
+		database: database,
+	}
 }
 
 func (u *userRepositoty) Create(user *model.User) (*model.User, error){
 
-	err:= u.Cfg.Database().Create(&user).Error
+	err:= u.database.Create(&user).Error
 
 	if err != nil {
 		return nil, err
@@ -27,7 +30,7 @@ func (u *userRepositoty) ReadAll() ([]*model.User, error){
 	
 	var user []*model.User
 
-	err := u.Cfg.Database().Preload("Matkuls").Find(&user).Error
+	err := u.database.Preload("Matkuls").Find(&user).Error
 
 	if err != nil {
 		return nil, err
@@ -40,7 +43,7 @@ func (u *userRepositoty) ReadByID(ID int) (*model.User, error){
 	
 	var user *model.User
 
-	err := u.Cfg.Database().Preload("Matkuls.Kelas.JadwalKelas").First(&user, ID).Error
+	err := u.database.Preload("Matkuls.Kelas.JadwalKelas").First(&user, ID).Error
 
 	if err != nil {
 		return nil, err
@@ -52,7 +55,7 @@ func (u *userRepositoty) ReadByID(ID int) (*model.User, error){
 func (u *userRepositoty) FindByEmail(email string) (*model.User, error) {
 	var user *model.User
 
-	err := u.Cfg.Database().First(&user, "email = ?", email).Error
+	err := u.database.First(&user, "email = ?", email).Error
 
 	if err != nil {
 		return nil, err
@@ -63,8 +66,7 @@ func (u *userRepositoty) FindByEmail(email string) (*model.User, error) {
 
 func (u *userRepositoty) Update(user *model.User) (*model.User, error){
 	
-	// err := u.Cfg.Database().Save(&user).Error
-	err := u.Cfg.Database().Model(&user).Preload("Matkuls.Kelas.JadwalKelas").Updates(&user).First(&user).Error
+	err := u.database.Model(&user).Preload("Matkuls.Kelas.JadwalKelas").Updates(&user).First(&user).Error
 
 	if err != nil {
 		return nil, err
@@ -76,7 +78,7 @@ func (u *userRepositoty) Update(user *model.User) (*model.User, error){
 
 func (u *userRepositoty) Delete(user *model.User) (*model.User, error)  {
 	
-	err := u.Cfg.Database().Delete(&user).Error
+	err := u.database.Delete(&user).Error
 
 	if err != nil {
 		return nil, err
@@ -87,7 +89,7 @@ func (u *userRepositoty) Delete(user *model.User) (*model.User, error)  {
 
 func (u *userRepositoty) DeleteMatkul(userHasMatkuls *model.UserHasMatkuls, id uint) error  {
 	
-	err := u.Cfg.Database().Delete(&userHasMatkuls, id).Error
+	err := u.database.Delete(&userHasMatkuls, id).Error
 
 	if err != nil {
 		return err

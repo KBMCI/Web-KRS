@@ -1,10 +1,10 @@
 package helper
 
 import (
-	"web-krs/config"
 	"web-krs/model"
 
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 func HashPassword(password string) (string, error) {
@@ -12,12 +12,12 @@ func HashPassword(password string) (string, error) {
 	return string(bytes), err
 }
 
-func SeederRefresh(cfg config.Config) {
+func SeederRefresh(database *gorm.DB) {
 
-	cfg.Database().Migrator().DropTable(&model.User{})
-	cfg.Database().Migrator().DropTable(&model.Matkul{})
-	cfg.Database().Migrator().DropTable(&model.Kelas{})
-	cfg.Database().Migrator().DropTable(&model.JadwalKelas{})
+	database.Migrator().DropTable(&model.User{})
+	database.Migrator().DropTable(&model.Matkul{})
+	database.Migrator().DropTable(&model.Kelas{})
+	database.Migrator().DropTable(&model.JadwalKelas{})
 
 	hashAdmin, _ := HashPassword("Admin123.")
 	hashUser, _ := HashPassword("User123.")
@@ -395,25 +395,25 @@ func SeederRefresh(cfg config.Config) {
 	}
 
 	for _, user := range users {
-		cfg.Database().Create(&user)
+		database.Create(&user)
 	}
 
 	for _, matkul := range matkuls {
-		cfg.Database().Create(&matkul)
+		database.Create(&matkul)
 	}
 
 	for _, kelas := range classes {
-		cfg.Database().Create(&kelas)
+		database.Create(&kelas)
 	}
 
 	// User add matkuls
 	var matkulAdmin []model.Matkul
 	var userAdmin model.User
 
-	cfg.Database().First(&userAdmin)
-	cfg.Database().Find(&matkulAdmin, []int{1, 2, 3, 4, 5})
+	database.First(&userAdmin)
+	database.Find(&matkulAdmin, []int{1, 2, 3, 4, 5})
 
 	userAdmin.Matkuls = matkulAdmin
 
-	cfg.Database().Model(&userAdmin).Updates(&userAdmin)
+	database.Model(&userAdmin).Updates(&userAdmin)
 }

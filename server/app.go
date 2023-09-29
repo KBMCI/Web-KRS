@@ -12,12 +12,13 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type (
 	server struct {
 		httpServer *gin.Engine
-		cfg			config.Config
+		database   *gorm.DB
 	}
 
 	Server interface {
@@ -27,7 +28,7 @@ type (
 
 func InitServer(cfg config.Config) Server {
 	r := gin.Default()
-	
+
 	r.Use(cors.New(cors.Config{
 		AllowAllOrigins:  true,
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE"},
@@ -37,52 +38,52 @@ func InitServer(cfg config.Config) Server {
 
 	return &server{
 		httpServer: r,
-		cfg:		cfg,
+		database:   cfg.Database(),
 	}
 }
 
-func(s *server) Run() {
+func (s *server) Run() {
 
 	s.httpServer.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
-		  "message": "test success",
+			"message": "test success",
 		})
 	})
 
 	s.httpServer.GET("/seeder", func(ctx *gin.Context) {
-		helper.SeederRefresh(s.cfg)
-		
+		helper.SeederRefresh(s.database)
+
 		helper.ResponseSuccessJson(ctx, "seeder success", "")
 	})
 
-	matkulRepo := repository.NewMatkulRepository(s.cfg)
+	matkulRepo := repository.NewMatkulRepository(s.database)
 	matkulService := service.NewMatkulService(matkulRepo)
 	matkulHandler := handler.NewMatkulHandler(matkulService)
 	matkulGroup := s.httpServer.Group("/matkul")
 	matkulGroup.Use(middleware.ValidateToken())
 	matkulHandler.Mount(matkulGroup)
 
-	kelasRepo := repository.NewKelasRepository(s.cfg)
+	kelasRepo := repository.NewKelasRepository(s.database)
 	kelasService := service.NewKelasService(kelasRepo)
 	kelasHandler := handler.NewKelasHandler(kelasService)
 	kelasGroup := s.httpServer.Group("/kelas")
 	kelasGroup.Use(middleware.ValidateToken())
 	kelasHandler.Mount(kelasGroup)
 
-	userRepository := repository.NewUserRepositoty(s.cfg)
+	userRepository := repository.NewUserRepositoty(s.database)
 	userService := service.NewUserService(userRepository)
 	userHandler := handler.NewUserHandler(userService)
 	userGroup := s.httpServer.Group("/user")
 	userHandler.Mount(userGroup)
 
-	myPlanRepository := repository.NewPlanRepository(s.cfg)
+	myPlanRepository := repository.NewPlanRepository(s.database)
 	myPlanService := service.NewPlanService(myPlanRepository, kelasRepo, userRepository)
 	myPlanHandler := handler.NewPlandHandler(myPlanService)
 	myPlanGroup := s.httpServer.Group("/my-plan")
 	myPlanGroup.Use(middleware.ValidateToken())
 	myPlanHandler.Mount(myPlanGroup)
-	
-	randomKrsService := service.NewRandomKrsService(userRepository ,matkulRepo, kelasRepo)
+
+	randomKrsService := service.NewRandomKrsService(userRepository, matkulRepo, kelasRepo)
 	randomKrsHandler := handler.NewRandomKrsHandler(randomKrsService, myPlanService)
 	randomKrsGroup := s.httpServer.Group("/random-krs")
 	randomKrsGroup.Use(middleware.ValidateToken())
