@@ -18,6 +18,9 @@ func SeederRefresh(database *gorm.DB) {
 	database.Migrator().DropTable(&model.Matkul{})
 	database.Migrator().DropTable(&model.Kelas{})
 	database.Migrator().DropTable(&model.JadwalKelas{})
+	database.Migrator().DropTable(&model.JamKelas{})
+
+	database.AutoMigrate(&model.User{}, &model.Matkul{}, &model.Kelas{}, &model.JadwalKelas{}, &model.JamKelas{}, &model.Plan{})
 
 	hashAdmin, _ := HashPassword("Admin123.")
 	hashUser, _ := HashPassword("User123.")
@@ -46,6 +49,65 @@ func SeederRefresh(database *gorm.DB) {
 		{Kode: "CIT60037", Nama: "Microservice Architecture", TahunKurikulum: 2020, Sks: 2},
 		{Kode: "CSD60007", Nama: "Digital Financial Platform", TahunKurikulum: 2020, Sks: 2},
 		{Kode: "CIT60039", Nama: "Pemrograman Web Lanjut", TahunKurikulum: 2020, Sks: 3},
+	}
+
+	jamKelas := []model.JamKelas{
+		{
+			JamMulai:   "07:00",
+			JamSelesai: "08:39",
+		},
+		{
+			JamMulai:   "07:00",
+			JamSelesai: "09:29",
+		},
+		{
+			JamMulai:   "07:50",
+			JamSelesai: "10:19",
+		},
+		{
+			JamMulai:   "08:40",
+			JamSelesai: "10:19",
+		},
+		{
+			JamMulai:   "08:40",
+			JamSelesai: "11:09",
+		},
+		{
+			JamMulai:   "09:30",
+			JamSelesai: "11:09",
+		},
+		{
+			JamMulai:   "09:30",
+			JamSelesai: "11:59",
+		},
+		{
+			JamMulai:   "10:20",
+			JamSelesai: "11:59",
+		},
+		{
+			JamMulai:   "12:50",
+			JamSelesai: "14:29",
+		},
+		{
+			JamMulai:   "12:50",
+			JamSelesai: "15:19",
+		},
+		{
+			JamMulai:   "13:40",
+			JamSelesai: "16:19",
+		},
+		{
+			JamMulai:   "14:30",
+			JamSelesai: "17:09",
+		},
+		{
+			JamMulai:   "15:30",
+			JamSelesai: "18:09",
+		},
+		{
+			JamMulai:   "16:20",
+			JamSelesai: "18:09",
+		},
 	}
 
 	classes := []model.Kelas{
@@ -400,6 +462,10 @@ func SeederRefresh(database *gorm.DB) {
 
 	for _, matkul := range matkuls {
 		database.Create(&matkul)
+	}
+
+	for _, jk := range jamKelas {
+		database.Create(&jk)
 	}
 
 	for _, kelas := range classes {

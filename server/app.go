@@ -70,6 +70,13 @@ func (s *server) Run() {
 	kelasGroup.Use(middleware.ValidateToken())
 	kelasHandler.Mount(kelasGroup)
 
+	jamkelasRepo := repository.NewJamKelasRepository(s.database)
+	jamkelasService := service.NewJamKelasService(jamkelasRepo)
+	jamkelasHandler := handler.NewJamKelasHandler(jamkelasService)
+	jamkelasGroup := s.httpServer.Group("/jam-kelas")
+	// jamkelasGroup.Use(middleware.ValidateToken())
+	jamkelasHandler.Mount(jamkelasGroup)
+
 	userRepository := repository.NewUserRepositoty(s.database)
 	userService := service.NewUserService(userRepository)
 	userHandler := handler.NewUserHandler(userService)
