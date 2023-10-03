@@ -16,11 +16,10 @@ type UserLoginRequest struct {
 }
 
 type UserUpdateRequest struct {
-	ID            int     `json:"id"`
-	Email         string  `json:"email" binding:"email" gorm:"unique;notnull"`
-	Nama          string  `json:"nama" gorm:"type:varchar(100)" binding:"required"`
-	ProgramStudi  string  `json:"program_studi" gorm:"type:varchar(30)" binding:"required"`
-	Nim           string  `json:"nim" gorm:"type:varchar(20)" binding:"required"`
+	Nama          string  `form:"nama" binding:"required"`
+	ProgramStudi  string  `form:"program_studi" binding:"required"`
+	Nim           string  `form:"nim" binding:"required"`
+	Image		  string
 }
 
 type ForgotPasswordRequest struct {

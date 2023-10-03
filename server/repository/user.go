@@ -73,7 +73,6 @@ func (u *userRepositoty) Update(user *model.User) (*model.User, error){
 	}
 
 	return user,err
-
 }
 
 func (u *userRepositoty) Delete(user *model.User) (*model.User, error)  {

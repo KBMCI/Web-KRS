@@ -110,7 +110,7 @@ func (h *userHandler) CreateUser(c *gin.Context)  {
 		return
 	}
 
-	create := ConvertToUserResponse(createUser)
+	create := response.ConvertToUserResponse(createUser)
 
 	helper.ResponseSuccessJson(c, "Create user success", create)
 }
@@ -168,7 +168,7 @@ func (h *userHandler) ReadAll(c *gin.Context)  {
 	var usersResponse []response.UserResponse
 
 	for _, v := range users {
-		userResponse := ConvertToUserResponse(v)
+		userResponse := response.ConvertToUserResponse(v)
 
 		usersResponse = append(usersResponse, userResponse)
 	}
@@ -187,18 +187,14 @@ func (h *userHandler) ReadByID(c *gin.Context)  {
 	id, _ := strconv.Atoi(idString)
 
 	readByID, err := h.userService.ReadByID(id)
-
 	if err != nil {
 		helper.ResponseDetailErrorJson(c, "Error fetch user", err)
 		return 
 	}
 
-	userResponse := ConvertToUserResponse(readByID)
+	userResponse := response.ConvertToUserResponse(readByID)
 
-	// helper.ResponseSuccessJson(c, "Success fetch user", userResponse)
-	helper.ResponseSuccessJson(c, "Success fetch user", gin.H{
-		"data": userResponse,
-	})
+	helper.ResponseSuccessJson(c, "Success fetch user", userResponse)
 }
 
 func (h *userHandler) Update(c *gin.Context)  {
@@ -209,14 +205,44 @@ func (h *userHandler) Update(c *gin.Context)  {
 	}
 
 	var UserRequest request.UserUpdateRequest
-
-	err:= c.ShouldBindJSON(&UserRequest)
+	
+	err:= c.ShouldBind(&UserRequest)
+	if err != nil {
+		helper.ResponseValidationErrorJson(c, "Error binding struct", err.Error())
+		return 
+	}
 
 	idString := c.Param("id")
 	id, _ := strconv.Atoi(idString)
 
-	update, _ := h.userService.Update(id, &UserRequest)
+	user, err := h.userService.ReadByID(id)
+	if err != nil {
+		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
+		return 
+	}
 
+	if user.Image == "" {
+		link, err := h.userService.UploadImage(c)
+		if err != nil {
+			helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
+			return
+		}
+		UserRequest.Image = link
+	} else {
+		link, err := h.userService.UploadImage(c)
+		if err == http.ErrMissingFile {
+			user.Image = link
+		}else {
+			err := h.userService.DeleteImage(c, uint(id))
+			if err != nil {
+				helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
+				return
+			}
+		}
+		UserRequest.Image = link
+	}
+
+	update, err := h.userService.Update(id, &UserRequest)
 	if err != nil {
 		helper.ResponseDetailErrorJson(c, "Error Update User",err)
 		return 
@@ -255,7 +281,7 @@ func (h *userHandler) ForgotPassword(c *gin.Context)  {
 		return 
 	}
 
-	userResponse := ConvertToUserResponse(update)
+	userResponse := response.ConvertToUserResponse(update)
 
 	helper.ResponseSuccessJson(c, "Success Forgot Password", userResponse)
 }
@@ -290,34 +316,17 @@ func (h *userHandler) Delete(c *gin.Context)  {
 	id := c.Param("id")
 	idInt, _ := strconv.Atoi(id)
 
-	delete, err := h.userService.Delete(idInt)
+	err := h.userService.DeleteImage(c, uint(idInt))
+	if err != nil {
+		helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
+		return
+	}
 
+	delete, err := h.userService.Delete(idInt)
 	if err != nil {
 		helper.ResponseDetailErrorJson(c, "Error, cannot delete", err)
 	}
 
 	helper.ResponseSuccessJson(c, "", delete)
 
-}
-
-func ConvertToUserResponse(u *model.User) response.UserResponse {
-
-	user := &model.User{
-		Password: u.Password,
-	}
-
-	hash,_ := HashPassword(user.Password)
-
-	return response.UserResponse{
-		ID: u.ID,
-		Nim: u.Nim,
-		Nama: u.Nama,
-		Email: u.Email,
-		Password: hash,
-		VerifPassword: "verified",
-		ProgramStudi: u.ProgramStudi,
-		Role: u.Role,
-		Matkuls: u.Matkuls,
-	}
-	
 }

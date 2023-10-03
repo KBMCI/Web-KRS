@@ -9,7 +9,22 @@ type UserResponse struct {
 	ProgramStudi  string `json:"program_studi"`
 	Nim           string `json:"nim"`
 	Password      string `json:"password"`
-	VerifPassword string `json:"confirm_password"`
 	Role          string `json:"role"`
+	Image		  string `json:"image"`
 	Matkuls       []model.Matkul `json:"matkuls"`
+}
+
+func ConvertToUserResponse(u *model.User) UserResponse {
+	return UserResponse{
+		ID: u.ID,
+		Nim: u.Nim,
+		Nama: u.Nama,
+		Email: u.Email,
+		Password: u.Password,
+		ProgramStudi: u.ProgramStudi,
+		Role: u.Role,
+		Image: u.Image,
+		Matkuls: u.Matkuls,
+	}
+	
 }
