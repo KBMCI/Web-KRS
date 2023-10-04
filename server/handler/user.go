@@ -3,9 +3,7 @@ package handler
 import (
 	"errors"
 	"net/http"
-	"regexp"
 	"strconv"
-	"strings"
 	"web-krs/helper"
 	"web-krs/middleware"
 	"web-krs/model"
@@ -30,18 +28,15 @@ func NewUserHandler(userService model.UserService) *userHandler  {
 
 func (h *userHandler) Mount(group *gin.RouterGroup)  {
 	group.POST("/register", h.CreateUser)		// create
+	group.POST("/register/admin", h.CreateAdmin)		// create
 	group.POST("/login", h.UserLogin)		// login
 	group.PUT("/forgot", h.ForgotPassword)
 	group.POST("/matkul", middleware.ValidateToken(), h.HasMatkul)		// hasMatkul
     group.GET("", middleware.ValidateToken(), h.ReadAll)			// ReadAll
     group.GET("/:id", middleware.ValidateToken(), h.ReadByID)		// ReadByID
     group.PUT("/:id", middleware.ValidateToken(), h.Update)		// Update 
+    group.PUT("/profile", middleware.ValidateToken(), h.UpdateProfile)		// Update 
     group.DELETE("/:id", middleware.ValidateToken(), h.Delete)		// Delete
-}
-
-func HashPassword(password string) (string, error){
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
-	return string(bytes),err
 }
 
 func (h *userHandler) CreateUser(c *gin.Context)  {
@@ -49,77 +44,51 @@ func (h *userHandler) CreateUser(c *gin.Context)  {
 	var userRequest request.UserRequest
 
 	err := c.ShouldBindJSON(&userRequest)
-
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, "Error binding struct", err)
 		return 
 	}
-	
-	var (
-		numeric, lowerCase, upperCase, specialCharacter bool 
-	)
 
-	numeric = regexp.MustCompile(`\d`).MatchString(userRequest.Password) 
-	lowerCase = regexp.MustCompile(`[a-z]`).MatchString(userRequest.Password)
-	upperCase = regexp.MustCompile(`[A-Z]`).MatchString(userRequest.Password)
-	specialCharacter = strings.ContainsAny(userRequest.Password, "!@#$%^&*()_+-=/.,:;'`?{}[|]")
-
-	if len(userRequest.Password) <6 {
-		helper.ResponseDetailErrorJson(c, "Too short password", err)
-		return 
-	}
-
-	if !numeric {
-		helper.ResponseDetailErrorJson(c, "password need numeric character", err)
-		return 
-	}
- 
-	if !lowerCase {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "password need lower case character",
-			"data": err,
-		})
-		return
-	}
- 
-	if !upperCase {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "password need upper case character",
-			"data": err,
-		})
-		return
-	}
- 
-	if !specialCharacter {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "password need spesial character",
-			"data": err,
-		})
-		return
-	}
-
-	if userRequest.VerifPassword != userRequest.Password {
-		helper.ResponseDetailErrorJson(c, "Password incorrect", err)
-		return
-	}
+	userRequest.Role = "user"
 
 	createUser, err := h.userService.Register(&userRequest)
-
 	if err != nil {
-		helper.ResponseDetailErrorJson(c, "Cannot create user", err)
+		helper.ResponseValidationErrorJson(c, "Cannot create user", err.Error())
 		return
 	}
 
-	create := response.ConvertToUserResponse(createUser)
+	userResponse := response.ConvertToUserResponse(createUser)
 
-	helper.ResponseSuccessJson(c, "Create user success", create)
+	helper.ResponseSuccessJson(c, "Create user success", userResponse)
+}
+
+func (h *userHandler) CreateAdmin(c *gin.Context)  {
+	
+	var userRequest request.UserRequest
+
+	err := c.ShouldBindJSON(&userRequest)
+	if err != nil {
+		helper.ResponseValidationErrorJson(c, "Error binding struct", err)
+		return 
+	}
+
+	userRequest.Role = "admin"
+
+	createUser, err := h.userService.Register(&userRequest)
+	if err != nil {
+		helper.ResponseValidationErrorJson(c, "Cannot create user", err.Error())
+		return
+	}
+
+	userResponse := response.ConvertToUserResponse(createUser)
+
+	helper.ResponseSuccessJson(c, "Create admin success", userResponse)
 }
 
 func (h *userHandler) UserLogin(c *gin.Context) {
 	var userLoginRequset request.UserLoginRequest
 
 	err := c.ShouldBindJSON(&userLoginRequset)
-
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, "Error binding struct", err)
 		return 
@@ -161,7 +130,7 @@ func (h *userHandler) ReadAll(c *gin.Context)  {
 	users, err := h.userService.ReadAll()
 	
 	if err != nil {
-		helper.ResponseDetailErrorJson(c, "Error Fetch Users", err)
+		helper.ResponseValidationErrorJson(c, "Error Fetch Users", err.Error())
 		return 
 	}
 
@@ -188,8 +157,8 @@ func (h *userHandler) ReadByID(c *gin.Context)  {
 
 	readByID, err := h.userService.ReadByID(id)
 	if err != nil {
-		helper.ResponseDetailErrorJson(c, "Error fetch user", err)
-		return 
+		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
+		return
 	}
 
 	userResponse := response.ConvertToUserResponse(readByID)
@@ -215,7 +184,27 @@ func (h *userHandler) Update(c *gin.Context)  {
 	idString := c.Param("id")
 	id, _ := strconv.Atoi(idString)
 
-	user, err := h.userService.ReadByID(id)
+	update, err := h.userService.Update(id, &UserRequest)
+	if err != nil {
+		helper.ResponseValidationErrorJson(c, "Error Update User",err.Error())
+		return 
+	}
+
+	helper.ResponseSuccessJson(c, "Success Update User", update)
+}
+
+func (h *userHandler) UpdateProfile(c *gin.Context)  {
+	idUserLogin := c.MustGet("id").(float64)
+
+	var UserRequest request.UserUpdateRequest
+	
+	err:= c.ShouldBind(&UserRequest)
+	if err != nil {
+		helper.ResponseValidationErrorJson(c, "Error binding struct", err.Error())
+		return 
+	}
+
+	user, err := h.userService.ReadByID(int(idUserLogin))
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
 		return 
@@ -233,7 +222,7 @@ func (h *userHandler) Update(c *gin.Context)  {
 		if err == http.ErrMissingFile {
 			user.Image = link
 		}else {
-			err := h.userService.DeleteImage(c, uint(id))
+			err := h.userService.DeleteImage(c, uint(idUserLogin))
 			if err != nil {
 				helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
 				return
@@ -242,9 +231,9 @@ func (h *userHandler) Update(c *gin.Context)  {
 		UserRequest.Image = link
 	}
 
-	update, err := h.userService.Update(id, &UserRequest)
+	update, err := h.userService.Update(int(idUserLogin), &UserRequest)
 	if err != nil {
-		helper.ResponseDetailErrorJson(c, "Error Update User",err)
+		helper.ResponseValidationErrorJson(c, "Error Update User",err.Error())
 		return 
 	}
 
@@ -265,19 +254,19 @@ func (h *userHandler) ForgotPassword(c *gin.Context)  {
 	findUser, err := h.userService.GetByEmail(UserRequest.Email)
 
 	if err != nil {
-		helper.ResponseDetailErrorJson(c, "Record not found",err)
+		helper.ResponseValidationErrorJson(c, "Record not found",err.Error())
 		return 
 	}
 
 	if UserRequest.VerifPassword != UserRequest.Password {
-		helper.ResponseDetailErrorJson(c, "Password incorrect", err)
+		helper.ResponseValidationErrorJson(c, "Password incorrect", err)
 		return
 	}
 
 	update, _ := h.userService.ForgotPassword(int(findUser.ID), &UserRequest)
 
 	if err != nil {
-		helper.ResponseDetailErrorJson(c, "Error Update User",err)
+		helper.ResponseValidationErrorJson(c, "Error Update User",err)
 		return 
 	}
 
@@ -316,17 +305,24 @@ func (h *userHandler) Delete(c *gin.Context)  {
 	id := c.Param("id")
 	idInt, _ := strconv.Atoi(id)
 
-	err := h.userService.DeleteImage(c, uint(idInt))
+	user, err := h.userService.ReadByID(idInt)
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
+		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
 		return
+	}
+
+	if user.Image != "" {
+		err = h.userService.DeleteImage(c, uint(idInt))
+		if err != nil {
+			helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
+			return
+		}
 	}
 
 	delete, err := h.userService.Delete(idInt)
 	if err != nil {
-		helper.ResponseDetailErrorJson(c, "Error, cannot delete", err)
+		helper.ResponseValidationErrorJson(c, "Error, cannot delete", err.Error())
 	}
 
-	helper.ResponseSuccessJson(c, "", delete)
-
+	helper.ResponseSuccessJson(c, "delete success", delete)
 }

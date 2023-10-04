@@ -43,12 +43,6 @@ func (h *jamKelasHandler) StoreJamKelasHandler(c *gin.Context) {
 		return 
 	}
 
-	// error tidak terdeteksi
-	if err != nil {
-		helper.ResponseValidatorErrorJson(c, err)
-		return
-	}
-
 	jamKelas, err := h.jamKelasService.StoreJamKelas(&req)
 	if err !=nil {
 		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
@@ -112,11 +106,6 @@ func (j *jamKelasHandler) EditJamKelasHandler(c *gin.Context) {
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, "Error binding struct", err.Error())
 		return 
-	}
-
-	if err != nil {
-		helper.ResponseValidatorErrorJson(c, err)
-		return
 	}
 
 	id := c.Param("id")

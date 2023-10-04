@@ -43,12 +43,6 @@ func (h *matkulHandler) StoreMatkulHandler(c *gin.Context) {
 		return 
 	}
 
-	// error tidak terdeteksi
-	if err != nil {
-		helper.ResponseValidatorErrorJson(c, err)
-		return
-	}
-
 	matkul, err := h.matkulService.StoreMatkul(&req)
 	if err !=nil {
 		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
@@ -73,11 +67,6 @@ func (h *matkulHandler) EditMatkulHandler(c *gin.Context) {
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, "Error binding struct", err.Error())
 		return 
-	}
-
-	if err != nil {
-		helper.ResponseValidatorErrorJson(c, err)
-		return
 	}
 
 	id := c.Param("id")

@@ -1,16 +1,18 @@
 package service
 
 import (
+	"errors"
 	"math/rand"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"time"
-	"web-krs/handler"
 	"web-krs/model"
 	"web-krs/request"
 
 	supabasestorageuploader "github.com/adityarizkyramadhan/supabase-storage-uploader"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type userService struct {
@@ -21,8 +23,46 @@ func NewUserService(repo model.UserRepository) *userService {
 	return &userService{userRepository: repo}
 }
 
+func HashPassword(password string) (string, error){
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+	return string(bytes),err
+}
+
 func (s *userService) Register(userRequest *request.UserRequest) (*model.User, error) {
-	hash, _ := handler.HashPassword(userRequest.Password)
+	var (
+		numeric, lowerCase, upperCase, specialCharacter bool 
+	)
+
+	numeric = regexp.MustCompile(`\d`).MatchString(userRequest.Password) 
+	lowerCase = regexp.MustCompile(`[a-z]`).MatchString(userRequest.Password)
+	upperCase = regexp.MustCompile(`[A-Z]`).MatchString(userRequest.Password)
+	specialCharacter = strings.ContainsAny(userRequest.Password, "!@#$%^&*()_+-=/.,:;'`?{}[|]")
+
+	if len(userRequest.Password) <6 {
+		return nil, errors.New("Too short password")
+	}
+
+	if !numeric {
+		return nil, errors.New("password need numeric character")
+	}
+ 
+	if !lowerCase {
+		return nil, errors.New("password need lower case character")
+	}
+ 
+	if !upperCase {
+		return nil, errors.New("password need upper case character")
+	}
+ 
+	if !specialCharacter {
+		return nil, errors.New("password need spesial character ex !@#$%^&*()_+-=/.,:;'`?{}[|]")
+	}
+
+	if userRequest.VerifPassword != userRequest.Password {
+		return nil, errors.New("Password incorrect")
+	}
+	
+	hash, _ := HashPassword(userRequest.Password)
 
 	user := &model.User{
 		Email:        userRequest.Email,
@@ -30,7 +70,7 @@ func (s *userService) Register(userRequest *request.UserRequest) (*model.User, e
 		ProgramStudi: userRequest.ProgramStudi,
 		Nim:          userRequest.Nim,
 		Password:     hash,
-		Role:         "user",
+		Role:         userRequest.Role,
 	}
 
 	user, err := s.userRepository.Create(user)
@@ -42,7 +82,6 @@ func (s *userService) Register(userRequest *request.UserRequest) (*model.User, e
 }
 
 func (s *userService) UserHasMatkul(id uint, userHasMatkuls *model.UserHasMatkulReq) (*model.User, error)  {
-	
 	err := s.userRepository.DeleteMatkul(&model.UserHasMatkuls{}, id)
 	if err != nil {
 		return nil, err
@@ -71,7 +110,6 @@ func (s *userService) ReadAll() ([]*model.User, error) {
 
 func (s *userService) ReadByID(ID int) (*model.User, error) {
 	user, err := s.userRepository.ReadByID(ID)
-
 	if err != nil {
 		return nil, err
 	}
@@ -81,7 +119,6 @@ func (s *userService) ReadByID(ID int) (*model.User, error) {
 
 func (s *userService) GetByEmail(email string) (*model.User, error) {
 	user, err := s.userRepository.FindByEmail(email)
-
 	if err != nil {
 		return nil, err
 	}
@@ -106,14 +143,13 @@ func (s *userService) Update(ID int, userRequest *request.UserUpdateRequest) (*m
 }
 
 func (s *userService) ForgotPassword(ID int, userRequest *request.ForgotPasswordRequest) (*model.User, error) {
-
 	user, err := s.userRepository.ReadByID(ID)
 
 	if err != nil {
 		return nil, err
 	}
 
-	user.Password, _ = handler.HashPassword(userRequest.Password)
+	user.Password, _ = HashPassword(userRequest.Password)
 
 	user, err = s.userRepository.Update(user)
 	if err != nil {
