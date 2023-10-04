@@ -27,16 +27,18 @@ func NewUserHandler(userService model.UserService) *userHandler  {
 }
 
 func (h *userHandler) Mount(group *gin.RouterGroup)  {
-	group.POST("/register", h.CreateUser)		// create
+	// role admin
 	group.POST("/register/admin", h.CreateAdmin)		// create
-	group.POST("/login", h.UserLogin)		// login
-	group.PUT("/forgot", h.ForgotPassword)
-	group.POST("/matkul", middleware.ValidateToken(), h.HasMatkul)		// hasMatkul
     group.GET("", middleware.ValidateToken(), h.ReadAll)			// ReadAll
     group.GET("/:id", middleware.ValidateToken(), h.ReadByID)		// ReadByID
     group.PUT("/:id", middleware.ValidateToken(), h.Update)		// Update 
-    group.PUT("/profile", middleware.ValidateToken(), h.UpdateProfile)		// Update 
     group.DELETE("/:id", middleware.ValidateToken(), h.Delete)		// Delete
+	// role user
+	group.POST("/register", h.CreateUser)		// create
+	group.POST("/login", h.UserLogin)		// login
+	group.POST("/matkul", middleware.ValidateToken(), h.HasMatkul)		// hasMatkul
+    group.PUT("/profile", middleware.ValidateToken(), h.UpdateProfile)		// Update 
+	group.PUT("/forgot", h.ForgotPassword)
 }
 
 func (h *userHandler) CreateUser(c *gin.Context)  {
