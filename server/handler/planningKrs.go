@@ -3,26 +3,13 @@ package handler
 import (
 	"net/http"
 	"web-krs/helper"
-	"web-krs/model"
 	"web-krs/request"
 
 	"github.com/gin-gonic/gin"
 )
 
-type planningKrsHandler struct {
-	planningKrsService model.PlanningKrsService
-}
-
-func NewPlanningKrsHandler(planningKrsService model.PlanningKrsService) model.PlanningKrsHandler {
-	return &planningKrsHandler{planningKrsService: planningKrsService}
-}
-
-func (h *planningKrsHandler) Mount(group *gin.RouterGroup) {
-	group.POST("", h.SuggestionKrs)
-}
-
-func (h *planningKrsHandler) SuggestionKrs(c *gin.Context) {
-	idUser  := c.MustGet("id").(float64)
+func (r *rest) SuggestionKrs(c *gin.Context) {
+	idUser := c.MustGet("id").(float64)
 
 	var req request.SuggestionRequest
 
@@ -32,7 +19,7 @@ func (h *planningKrsHandler) SuggestionKrs(c *gin.Context) {
 		return
 	}
 
-	Random, err := h.planningKrsService.Suggestion(uint(idUser), req.IdKelas)
+	Random, err := r.service.PlanningKrs.Suggestion(uint(idUser), req.IdKelas)
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
 		return

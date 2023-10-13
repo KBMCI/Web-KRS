@@ -5,37 +5,19 @@ import (
 	"net/http"
 	"strconv"
 	"web-krs/helper"
-	"web-krs/model"
 	"web-krs/request"
 	"web-krs/response"
 
 	"github.com/gin-gonic/gin"
 )
 
-type kelasHandler struct {
-	kelasService model.KelasService
-}
-
-func NewKelasHandler(kelasService model.KelasService) model.KelasHandler {
-	return &kelasHandler{kelasService: kelasService}
-}
-
-func (h *kelasHandler) Mount(group *gin.RouterGroup) {
-	group.POST("", h.StoreKelasHandler) // create
-	group.PATCH("/:id_kelas/jadwal/:id_jadwal", h.EditKelasHandler) //update
-	group.GET("/:id", h.DetailKelasHandler) //getById
-	group.GET("/:id/jadwal/:id_jadwal", h.DetailJadwalKelasHandler)
-	group.DELETE("/:id", h.DeleteKelasHandler) //delete
-	group.GET("", h.FetchKelasHandler) //getAll
-}
-
-func (h *kelasHandler) StoreKelasHandler(c *gin.Context) {
+func (r *rest) StoreKelasHandler(c *gin.Context) {
 	role := c.MustGet("role").(string)
 	if role != "admin" {
 		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
 		return
 	}
-	
+
 	var req request.KelasRequest
 
 	err := c.ShouldBindJSON(&req)
@@ -44,7 +26,7 @@ func (h *kelasHandler) StoreKelasHandler(c *gin.Context) {
 		return
 	}
 
-	kelas, err := h.kelasService.StoreKelas(&req)
+	kelas, err := r.service.Kelas.StoreKelas(&req)
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
 		return
@@ -55,7 +37,7 @@ func (h *kelasHandler) StoreKelasHandler(c *gin.Context) {
 	helper.ResponseSuccessJson(c, "success", kelasResponse)
 }
 
-func (h *kelasHandler) EditKelasHandler(c *gin.Context) {
+func (r *rest) EditKelasHandler(c *gin.Context) {
 	role := c.MustGet("role").(string)
 	if role != "admin" {
 		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
@@ -75,8 +57,8 @@ func (h *kelasHandler) EditKelasHandler(c *gin.Context) {
 
 	idJadwal := c.Param("id_jadwal")
 	idJadwalUint, _ := strconv.ParseUint(idJadwal, 10, 32)
-	
-	kelas, err := h.kelasService.EditKelas(uint(idKelasUint), uint(idJadwalUint), &req)
+
+	kelas, err := r.service.Kelas.EditKelas(uint(idKelasUint), uint(idJadwalUint), &req)
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusUnprocessableEntity, err)
 		return
@@ -87,7 +69,7 @@ func (h *kelasHandler) EditKelasHandler(c *gin.Context) {
 	helper.ResponseSuccessJson(c, "success", kelasResponse)
 }
 
-func (h *kelasHandler) DetailKelasHandler(c *gin.Context) {
+func (r *rest) DetailKelasHandler(c *gin.Context) {
 	role := c.MustGet("role").(string)
 	if role != "admin" {
 		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
@@ -97,7 +79,7 @@ func (h *kelasHandler) DetailKelasHandler(c *gin.Context) {
 	id := c.Param("id")
 	idUint, _ := strconv.ParseUint(id, 10, 32)
 
-	kelas, err := h.kelasService.GetByID(uint(idUint))
+	kelas, err := r.service.Kelas.GetByID(uint(idUint))
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
 		return
@@ -108,7 +90,7 @@ func (h *kelasHandler) DetailKelasHandler(c *gin.Context) {
 	helper.ResponseSuccessJson(c, "", kelasResponse)
 }
 
-func (h *kelasHandler) DetailJadwalKelasHandler(c *gin.Context) {
+func (r *rest) DetailJadwalKelasHandler(c *gin.Context) {
 	role := c.MustGet("role").(string)
 	if role != "admin" {
 		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
@@ -121,7 +103,7 @@ func (h *kelasHandler) DetailJadwalKelasHandler(c *gin.Context) {
 	idJadwal := c.Param("id_jadwal")
 	idJadwalUint, _ := strconv.ParseUint(idJadwal, 10, 32)
 
-	jadwal, err := h.kelasService.GetByIDJadwal(uint(idJadwalUint), uint(idKelasUint))
+	jadwal, err := r.service.Kelas.GetByIDJadwal(uint(idJadwalUint), uint(idKelasUint))
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
 		return
@@ -132,7 +114,7 @@ func (h *kelasHandler) DetailJadwalKelasHandler(c *gin.Context) {
 	helper.ResponseSuccessJson(c, "", jadwalResponse)
 }
 
-func (h *kelasHandler) DeleteKelasHandler(c *gin.Context) {
+func (r *rest) DeleteKelasHandler(c *gin.Context) {
 	role := c.MustGet("role").(string)
 	if role != "admin" {
 		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
@@ -142,7 +124,7 @@ func (h *kelasHandler) DeleteKelasHandler(c *gin.Context) {
 	id := c.Param("id")
 	idUint, _ := strconv.ParseUint(id, 10, 32)
 
-	err := h.kelasService.DestroyKelas(uint(idUint))
+	err := r.service.Kelas.DestroyKelas(uint(idUint))
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusUnprocessableEntity, err)
 		return
@@ -151,14 +133,14 @@ func (h *kelasHandler) DeleteKelasHandler(c *gin.Context) {
 	helper.ResponseSuccessJson(c, "success", "")
 }
 
-func (h *kelasHandler) FetchKelasHandler(c *gin.Context) {
+func (r *rest) FetchKelasHandler(c *gin.Context) {
 	role := c.MustGet("role").(string)
 	if role != "admin" {
 		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
 		return
 	}
-	
-	kelasList, err := h.kelasService.FetchKelas()
+
+	kelasList, err := r.service.Kelas.FetchKelas()
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
 		return

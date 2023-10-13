@@ -13,9 +13,9 @@ import (
 
 func GenerateToken(id uint, role string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"id": int(id),
+		"id":   int(id),
 		"role": role,
-		"exp": time.Now().Add(time.Hour * 6).Unix(),
+		"exp":  time.Now().Add(time.Hour * 6).Unix(),
 	})
 
 	signedToken, err := token.SignedString([]byte(os.Getenv("SECRET_KEY")))
@@ -26,7 +26,7 @@ func GenerateToken(id uint, role string) (string, error) {
 }
 
 func ValidateToken() gin.HandlerFunc {
-	return func (c *gin.Context)  {
+	return func(c *gin.Context) {
 		bearerToken := c.Request.Header.Get("Authorization")
 		if bearerToken == "" {
 			helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("token not found"))
@@ -35,12 +35,12 @@ func ValidateToken() gin.HandlerFunc {
 		}
 
 		bearerToken = bearerToken[7:] // menghilangkan Bearer
-		tokenExtract, err := jwt.Parse(bearerToken, func (token *jwt.Token) (interface{}, error) {
+		tokenExtract, err := jwt.Parse(bearerToken, func(token *jwt.Token) (interface{}, error) {
 			_, ok := token.Method.(*jwt.SigningMethodHMAC)
 			if !ok {
 				return nil, jwt.ErrSignatureInvalid
 			}
-		
+
 			return []byte(os.Getenv("SECRET_KEY")), nil
 		})
 		if err != nil {

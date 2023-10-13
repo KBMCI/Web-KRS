@@ -5,30 +5,13 @@ import (
 	"net/http"
 	"strconv"
 	"web-krs/helper"
-	"web-krs/model"
 	"web-krs/request"
 	"web-krs/response"
 
 	"github.com/gin-gonic/gin"
 )
 
-type matkulHandler struct {
-	matkulService model.MatkulService
-}
-
-func NewMatkulHandler(matkulService model.MatkulService) model.MatkulHandler {
-	return &matkulHandler{matkulService: matkulService}
-}
-
-func (h *matkulHandler) Mount(group *gin.RouterGroup) {
-	group.POST("", h.StoreMatkulHandler) // create
-	group.PATCH("/:id", h.EditMatkulHandler) //update
-	group.GET("/:id", h.DetailMatkulHandler) //getById
-	group.DELETE("/:id", h.DeleteMatkulHandler) //delete
-	group.GET("", h.FetchMatkulHandler) //getAll
-}
-
-func (h *matkulHandler) StoreMatkulHandler(c *gin.Context) {
+func (r *rest) StoreMatkulHandler(c *gin.Context) {
 	role := c.MustGet("role").(string)
 	if role != "admin" {
 		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
@@ -40,11 +23,11 @@ func (h *matkulHandler) StoreMatkulHandler(c *gin.Context) {
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, "Error binding struct", err.Error())
-		return 
+		return
 	}
 
-	matkul, err := h.matkulService.StoreMatkul(&req)
-	if err !=nil {
+	matkul, err := r.service.Matkul.StoreMatkul(&req)
+	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
 		return
 	}
@@ -54,25 +37,25 @@ func (h *matkulHandler) StoreMatkulHandler(c *gin.Context) {
 	helper.ResponseSuccessJson(c, "success", MatkulResponse)
 }
 
-func (h *matkulHandler) EditMatkulHandler(c *gin.Context) {
+func (r *rest) EditMatkulHandler(c *gin.Context) {
 	role := c.MustGet("role").(string)
 	if role != "admin" {
 		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
 		return
 	}
-	
+
 	var req request.MatkulRequest
 
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, "Error binding struct", err.Error())
-		return 
+		return
 	}
 
 	id := c.Param("id")
 	idUint, _ := strconv.ParseUint(id, 10, 32)
 
-	matkul, err := h.matkulService.EditMatkul(uint(idUint), &req)
+	matkul, err := r.service.Matkul.EditMatkul(uint(idUint), &req)
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusUnprocessableEntity, err)
 		return
@@ -83,17 +66,17 @@ func (h *matkulHandler) EditMatkulHandler(c *gin.Context) {
 	helper.ResponseSuccessJson(c, "success", MatkulResponse)
 }
 
-func (h *matkulHandler) DetailMatkulHandler(c *gin.Context) {
+func (r *rest) DetailMatkulHandler(c *gin.Context) {
 	role := c.MustGet("role").(string)
 	if role != "admin" {
 		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
 		return
 	}
-	
+
 	id := c.Param("id")
 	idUint, _ := strconv.ParseUint(id, 10, 32)
 
-	matkul, err := h.matkulService.GetByID(uint(idUint))
+	matkul, err := r.service.Matkul.GetByID(uint(idUint))
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
 		return
@@ -102,17 +85,17 @@ func (h *matkulHandler) DetailMatkulHandler(c *gin.Context) {
 	helper.ResponseSuccessJson(c, "", matkul)
 }
 
-func (h *matkulHandler) DeleteMatkulHandler(c *gin.Context) {
+func (r *rest) DeleteMatkulHandler(c *gin.Context) {
 	role := c.MustGet("role").(string)
 	if role != "admin" {
 		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
 		return
 	}
-	
+
 	id := c.Param("id")
 	idUint, _ := strconv.ParseUint(id, 10, 32)
 
-	err := h.matkulService.DestroyMatkul(uint(idUint))
+	err := r.service.Matkul.DestroyMatkul(uint(idUint))
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusUnprocessableEntity, err)
 		return
@@ -121,14 +104,14 @@ func (h *matkulHandler) DeleteMatkulHandler(c *gin.Context) {
 	helper.ResponseSuccessJson(c, "delete success", "")
 }
 
-func (h *matkulHandler) FetchMatkulHandler(c *gin.Context) {
+func (r *rest) FetchMatkulHandler(c *gin.Context) {
 	role := c.MustGet("role").(string)
 	if role != "admin" {
 		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
 		return
 	}
-	
-	matkulList, err := h.matkulService.FetchMatkul()
+
+	matkulList, err := r.service.Matkul.FetchMatkul()
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
 		return

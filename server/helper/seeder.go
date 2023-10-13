@@ -1,10 +1,10 @@
 package helper
 
 import (
+	"web-krs/config"
 	"web-krs/model"
 
 	"golang.org/x/crypto/bcrypt"
-	"gorm.io/gorm"
 )
 
 func HashPassword(password string) (string, error) {
@@ -12,7 +12,8 @@ func HashPassword(password string) (string, error) {
 	return string(bytes), err
 }
 
-func SeederRefresh(database *gorm.DB) {
+func SeederRefresh() {
+	database := config.NewConfig().Database()
 
 	database.Migrator().DropTable(&model.User{})
 	database.Migrator().DropTable(&model.Matkul{})

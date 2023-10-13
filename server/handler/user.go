@@ -14,46 +14,19 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type userHandler struct {
-	userService model.UserService
-}
+func (r *rest) CreateUser(c *gin.Context) {
 
-type UserHandler interface {
-	Mount(group gin.RouterGroup)
-}
-
-func NewUserHandler(userService model.UserService) *userHandler  {
-	return &userHandler{userService}
-}
-
-func (h *userHandler) Mount(group *gin.RouterGroup)  {
-	// role admin
-	group.POST("/register/admin", h.CreateAdmin)		// create
-    group.GET("", middleware.ValidateToken(), h.ReadAll)			// ReadAll
-    group.GET("/:id", middleware.ValidateToken(), h.ReadByID)		// ReadByID
-    group.PUT("/:id", middleware.ValidateToken(), h.Update)		// Update 
-    group.DELETE("/:id", middleware.ValidateToken(), h.Delete)		// Delete
-	// role user
-	group.POST("/register", h.CreateUser)		// create
-	group.POST("/login", h.UserLogin)		// login
-	group.POST("/matkul", middleware.ValidateToken(), h.HasMatkul)		// hasMatkul
-    group.PUT("/profile", middleware.ValidateToken(), h.UpdateProfile)		// Update 
-	group.PUT("/forgot", h.ForgotPassword)
-}
-
-func (h *userHandler) CreateUser(c *gin.Context)  {
-	
 	var userRequest request.UserRequest
 
 	err := c.ShouldBindJSON(&userRequest)
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, "Error binding struct", err)
-		return 
+		return
 	}
 
 	userRequest.Role = "user"
 
-	createUser, err := h.userService.Register(&userRequest)
+	createUser, err := r.service.User.Register(&userRequest)
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, "Cannot create user", err.Error())
 		return
@@ -64,19 +37,19 @@ func (h *userHandler) CreateUser(c *gin.Context)  {
 	helper.ResponseSuccessJson(c, "Create user success", userResponse)
 }
 
-func (h *userHandler) CreateAdmin(c *gin.Context)  {
-	
+func (r *rest) CreateAdmin(c *gin.Context) {
+
 	var userRequest request.UserRequest
 
 	err := c.ShouldBindJSON(&userRequest)
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, "Error binding struct", err)
-		return 
+		return
 	}
 
 	userRequest.Role = "admin"
 
-	createUser, err := h.userService.Register(&userRequest)
+	createUser, err := r.service.User.Register(&userRequest)
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, "Cannot create user", err.Error())
 		return
@@ -87,17 +60,17 @@ func (h *userHandler) CreateAdmin(c *gin.Context)  {
 	helper.ResponseSuccessJson(c, "Create admin success", userResponse)
 }
 
-func (h *userHandler) UserLogin(c *gin.Context) {
+func (r *rest) UserLogin(c *gin.Context) {
 	var userLoginRequset request.UserLoginRequest
 
 	err := c.ShouldBindJSON(&userLoginRequset)
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, "Error binding struct", err)
-		return 
+		return
 	}
-	
+
 	// cek email
-	user, err := h.userService.GetByEmail(userLoginRequset.Email)
+	user, err := r.service.User.GetByEmail(userLoginRequset.Email)
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusBadRequest, errors.New("invalid email or password"))
 		return
@@ -116,24 +89,24 @@ func (h *userHandler) UserLogin(c *gin.Context) {
 	}
 
 	helper.ResponseSuccessJson(c, "User logged in", gin.H{
-		"data": user,
+		"data":  user,
 		"token": tokenJwt,
 	})
 
 }
 
-func (h *userHandler) ReadAll(c *gin.Context)  {
+func (r *rest) ReadAll(c *gin.Context) {
 	role := c.MustGet("role").(string)
 	if role != "admin" {
 		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
 		return
 	}
-	
-	users, err := h.userService.ReadAll()
-	
+
+	users, err := r.service.User.ReadAll()
+
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, "Error Fetch Users", err.Error())
-		return 
+		return
 	}
 
 	var usersResponse []response.UserResponse
@@ -143,21 +116,21 @@ func (h *userHandler) ReadAll(c *gin.Context)  {
 
 		usersResponse = append(usersResponse, userResponse)
 	}
-	
+
 	helper.ResponseSuccessJson(c, "Success Fetch Users", usersResponse)
 }
 
-func (h *userHandler) ReadByID(c *gin.Context)  {
+func (r *rest) ReadByID(c *gin.Context) {
 	role := c.MustGet("role").(string)
 	if role != "admin" {
 		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
 		return
 	}
-	
+
 	idString := c.Param("id")
 	id, _ := strconv.Atoi(idString)
 
-	readByID, err := h.userService.ReadByID(id)
+	readByID, err := r.service.User.ReadByID(id)
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
 		return
@@ -168,7 +141,7 @@ func (h *userHandler) ReadByID(c *gin.Context)  {
 	helper.ResponseSuccessJson(c, "Success fetch user", userResponse)
 }
 
-func (h *userHandler) Update(c *gin.Context)  {
+func (r *rest) Update(c *gin.Context) {
 	role := c.MustGet("role").(string)
 	if role != "admin" {
 		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
@@ -176,55 +149,55 @@ func (h *userHandler) Update(c *gin.Context)  {
 	}
 
 	var UserRequest request.UserUpdateRequest
-	
-	err:= c.ShouldBind(&UserRequest)
+
+	err := c.ShouldBind(&UserRequest)
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, "Error binding struct", err.Error())
-		return 
+		return
 	}
 
 	idString := c.Param("id")
 	id, _ := strconv.Atoi(idString)
 
-	update, err := h.userService.Update(id, &UserRequest)
+	update, err := r.service.User.Update(id, &UserRequest)
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Error Update User",err.Error())
-		return 
+		helper.ResponseValidationErrorJson(c, "Error Update User", err.Error())
+		return
 	}
 
 	helper.ResponseSuccessJson(c, "Success Update User", update)
 }
 
-func (h *userHandler) UpdateProfile(c *gin.Context)  {
+func (r *rest) UpdateProfile(c *gin.Context) {
 	idUserLogin := c.MustGet("id").(float64)
 
 	var UserRequest request.UserUpdateRequest
-	
-	err:= c.ShouldBind(&UserRequest)
+
+	err := c.ShouldBind(&UserRequest)
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, "Error binding struct", err.Error())
-		return 
+		return
 	}
 
-	user, err := h.userService.ReadByID(int(idUserLogin))
+	user, err := r.service.User.ReadByID(int(idUserLogin))
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
-		return 
+		return
 	}
 
 	if user.Image == "" {
-		link, err := h.userService.UploadImage(c)
+		link, err := r.service.User.UploadImage(c)
 		if err != nil {
 			helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
 			return
 		}
 		UserRequest.Image = link
 	} else {
-		link, err := h.userService.UploadImage(c)
+		link, err := r.service.User.UploadImage(c)
 		if err == http.ErrMissingFile {
 			user.Image = link
-		}else {
-			err := h.userService.DeleteImage(c, uint(idUserLogin))
+		} else {
+			err := r.service.User.DeleteImage(c, uint(idUserLogin))
 			if err != nil {
 				helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
 				return
@@ -233,31 +206,31 @@ func (h *userHandler) UpdateProfile(c *gin.Context)  {
 		UserRequest.Image = link
 	}
 
-	update, err := h.userService.Update(int(idUserLogin), &UserRequest)
+	update, err := r.service.User.Update(int(idUserLogin), &UserRequest)
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Error Update User",err.Error())
-		return 
+		helper.ResponseValidationErrorJson(c, "Error Update User", err.Error())
+		return
 	}
 
 	helper.ResponseSuccessJson(c, "Success Update User", update)
 }
 
-func (h *userHandler) ForgotPassword(c *gin.Context)  {
+func (r *rest) ForgotPassword(c *gin.Context) {
 
 	var UserRequest request.ForgotPasswordRequest
 
-	err:= c.ShouldBindJSON(&UserRequest)
+	err := c.ShouldBindJSON(&UserRequest)
 
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, "Error Binding Struct", err)
-		return 
+		return
 	}
 
-	findUser, err := h.userService.GetByEmail(UserRequest.Email)
+	findUser, err := r.service.User.GetByEmail(UserRequest.Email)
 
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Record not found",err.Error())
-		return 
+		helper.ResponseValidationErrorJson(c, "Record not found", err.Error())
+		return
 	}
 
 	if UserRequest.VerifPassword != UserRequest.Password {
@@ -265,11 +238,11 @@ func (h *userHandler) ForgotPassword(c *gin.Context)  {
 		return
 	}
 
-	update, _ := h.userService.ForgotPassword(int(findUser.ID), &UserRequest)
+	update, _ := r.service.User.ForgotPassword(int(findUser.ID), &UserRequest)
 
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Error Update User",err)
-		return 
+		helper.ResponseValidationErrorJson(c, "Error Update User", err)
+		return
 	}
 
 	userResponse := response.ConvertToUserResponse(update)
@@ -277,18 +250,18 @@ func (h *userHandler) ForgotPassword(c *gin.Context)  {
 	helper.ResponseSuccessJson(c, "Success Forgot Password", userResponse)
 }
 
-func (h *userHandler) HasMatkul(c *gin.Context) {
+func (r *rest) HasMatkul(c *gin.Context) {
 	userId := c.MustGet("id").(float64)
 
 	var user model.UserHasMatkulReq
 
-	err:= c.ShouldBindJSON(&user)
+	err := c.ShouldBindJSON(&user)
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, "Error binding struct", err.Error())
-		return 
+		return
 	}
 
-	update, err := h.userService.UserHasMatkul(uint(userId), &user)
+	update, err := r.service.User.UserHasMatkul(uint(userId), &user)
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusUnprocessableEntity, err)
 		return
@@ -297,7 +270,7 @@ func (h *userHandler) HasMatkul(c *gin.Context) {
 	helper.ResponseSuccessJson(c, "success", update)
 }
 
-func (h *userHandler) Delete(c *gin.Context)  {
+func (r *rest) Delete(c *gin.Context) {
 	role := c.MustGet("role").(string)
 	if role != "admin" {
 		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
@@ -307,21 +280,21 @@ func (h *userHandler) Delete(c *gin.Context)  {
 	id := c.Param("id")
 	idInt, _ := strconv.Atoi(id)
 
-	user, err := h.userService.ReadByID(idInt)
+	user, err := r.service.User.ReadByID(idInt)
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
 		return
 	}
 
 	if user.Image != "" {
-		err = h.userService.DeleteImage(c, uint(idInt))
+		err = r.service.User.DeleteImage(c, uint(idInt))
 		if err != nil {
 			helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
 			return
 		}
 	}
 
-	delete, err := h.userService.Delete(idInt)
+	delete, err := r.service.User.Delete(idInt)
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, "Error, cannot delete", err.Error())
 	}

@@ -10,40 +10,28 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type randomKrsHandler struct {
-	randomKrsService model.RandomKrsService
-	planService      model.PlanService
-}
-
-func NewRandomKrsHandler(randomKrsService model.RandomKrsService, planService model.PlanService) model.RandomKrsHandler {
-	return &randomKrsHandler{
-		randomKrsService: randomKrsService,
-		planService:      planService,
-	}
-}
-
 // Mount implements model.RandomKrsHandler
-func (r *randomKrsHandler) Mount(group *gin.RouterGroup) {
+func (r *rest) Mount(group *gin.RouterGroup) {
 	group.GET("", r.FilterRandomKrsHandler)
 }
 
-func (r *randomKrsHandler) FetchRandomKrsHandler(c *gin.Context) {
+func (r *rest) FetchRandomKrsHandler(c *gin.Context) {
 	idUser := c.MustGet("id").(float64)
-	
-	randomKrsList, err := r.randomKrsService.FetchRandomKrs(uint(idUser))
+
+	randomKrsList, err := r.service.RandomKrs.FetchRandomKrs(uint(idUser))
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
 		return
 	}
 
-	randomKrsResponse := response.ConvertFormatRandomKrsToReponseRandomKrs(r.planService, uint(idUser), randomKrsList)
+	randomKrsResponse := response.ConvertFormatRandomKrsToReponseRandomKrs(r.service.Plan, uint(idUser), randomKrsList)
 
 	helper.ResponseSuccessJson(c, "success", randomKrsResponse)
 }
 
-func (r *randomKrsHandler) FilterRandomKrsHandler(c *gin.Context) {
+func (r *rest) FilterRandomKrsHandler(c *gin.Context) {
 	idUser := c.MustGet("id").(float64)
-	
+
 	kelasQueries := c.QueryArray("kelas[]")
 	jadwalQueries := c.QueryArray("jadwal[]")
 
@@ -65,13 +53,13 @@ func (r *randomKrsHandler) FilterRandomKrsHandler(c *gin.Context) {
 		})
 	}
 
-	filterKrsList, err := r.randomKrsService.FilterRandomKrs(uint(idUser), filterJadwals, filterKelas)
+	filterKrsList, err := r.service.RandomKrs.FilterRandomKrs(uint(idUser), filterJadwals, filterKelas)
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
 		return
 	}
 
-	randomKrsResponse := response.ConvertFormatRandomKrsToReponseRandomKrs(r.planService, uint(idUser), filterKrsList)
+	randomKrsResponse := response.ConvertFormatRandomKrsToReponseRandomKrs(r.service.Plan, uint(idUser), filterKrsList)
 
 	helper.ResponseSuccessJson(c, "success", randomKrsResponse)
 }
