@@ -96,12 +96,6 @@ func (r *rest) UserLogin(c *gin.Context) {
 }
 
 func (r *rest) ReadAll(c *gin.Context) {
-	role := c.MustGet("role").(string)
-	if role != "admin" {
-		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
-		return
-	}
-
 	users, err := r.service.User.ReadAll()
 
 	if err != nil {
@@ -121,12 +115,6 @@ func (r *rest) ReadAll(c *gin.Context) {
 }
 
 func (r *rest) ReadByID(c *gin.Context) {
-	role := c.MustGet("role").(string)
-	if role != "admin" {
-		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
-		return
-	}
-
 	idString := c.Param("id")
 	id, _ := strconv.Atoi(idString)
 
@@ -142,12 +130,6 @@ func (r *rest) ReadByID(c *gin.Context) {
 }
 
 func (r *rest) Update(c *gin.Context) {
-	role := c.MustGet("role").(string)
-	if role != "admin" {
-		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
-		return
-	}
-
 	var UserRequest request.UserUpdateRequest
 
 	err := c.ShouldBind(&UserRequest)
@@ -244,12 +226,6 @@ func (r *rest) HasMatkul(c *gin.Context) {
 }
 
 func (r *rest) Delete(c *gin.Context) {
-	role := c.MustGet("role").(string)
-	if role != "admin" {
-		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
-		return
-	}
-
 	id := c.Param("id")
 	idInt, _ := strconv.Atoi(id)
 

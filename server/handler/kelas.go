@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"errors"
 	"net/http"
 	"strconv"
 	"web-krs/helper"
@@ -12,12 +11,6 @@ import (
 )
 
 func (r *rest) StoreKelasHandler(c *gin.Context) {
-	role := c.MustGet("role").(string)
-	if role != "admin" {
-		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
-		return
-	}
-
 	var req request.KelasRequest
 
 	err := c.ShouldBindJSON(&req)
@@ -38,12 +31,6 @@ func (r *rest) StoreKelasHandler(c *gin.Context) {
 }
 
 func (r *rest) EditKelasHandler(c *gin.Context) {
-	role := c.MustGet("role").(string)
-	if role != "admin" {
-		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
-		return
-	}
-
 	var req request.KelasRequest
 
 	err := c.ShouldBindJSON(&req)
@@ -70,12 +57,6 @@ func (r *rest) EditKelasHandler(c *gin.Context) {
 }
 
 func (r *rest) DetailKelasHandler(c *gin.Context) {
-	role := c.MustGet("role").(string)
-	if role != "admin" {
-		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
-		return
-	}
-
 	id := c.Param("id")
 	idUint, _ := strconv.ParseUint(id, 10, 32)
 
@@ -91,12 +72,6 @@ func (r *rest) DetailKelasHandler(c *gin.Context) {
 }
 
 func (r *rest) DetailJadwalKelasHandler(c *gin.Context) {
-	role := c.MustGet("role").(string)
-	if role != "admin" {
-		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
-		return
-	}
-
 	idKelas := c.Param("id")
 	idKelasUint, _ := strconv.ParseUint(idKelas, 10, 32)
 
@@ -115,12 +90,6 @@ func (r *rest) DetailJadwalKelasHandler(c *gin.Context) {
 }
 
 func (r *rest) DeleteKelasHandler(c *gin.Context) {
-	role := c.MustGet("role").(string)
-	if role != "admin" {
-		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
-		return
-	}
-
 	id := c.Param("id")
 	idUint, _ := strconv.ParseUint(id, 10, 32)
 
@@ -134,12 +103,6 @@ func (r *rest) DeleteKelasHandler(c *gin.Context) {
 }
 
 func (r *rest) FetchKelasHandler(c *gin.Context) {
-	role := c.MustGet("role").(string)
-	if role != "admin" {
-		helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("your role is not admin"))
-		return
-	}
-
 	kelasList, err := r.service.Kelas.FetchKelas()
 	if err != nil {
 		helper.ResponseErrorJson(c, http.StatusInternalServerError, err)

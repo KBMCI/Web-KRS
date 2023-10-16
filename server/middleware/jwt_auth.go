@@ -35,14 +35,34 @@ func ValidateToken() gin.HandlerFunc {
 		}
 
 		bearerToken = bearerToken[7:] // menghilangkan Bearer
-		tokenExtract, err := jwt.Parse(bearerToken, func(token *jwt.Token) (interface{}, error) {
-			_, ok := token.Method.(*jwt.SigningMethodHMAC)
-			if !ok {
-				return nil, jwt.ErrSignatureInvalid
-			}
+		tokenExtract, err := jwt.Parse(bearerToken, tokenExtract)
+		if err != nil {
+			helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, err)
+			c.Abort()
+			return
+		}
+		if claims, ok := tokenExtract.Claims.(jwt.MapClaims); ok && tokenExtract.Valid {
+			userId := claims["id"]
+			c.Set("id", userId)
+			c.Next()
+			return
+		}
+		helper.ResponseWhenFailOrError(c, http.StatusForbidden, errors.New("invalid token"))
+		c.Abort()
+	}
+}
 
-			return []byte(os.Getenv("SECRET_KEY")), nil
-		})
+func ValidateTokenAdmin() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		bearerToken := c.Request.Header.Get("Authorization")
+		if bearerToken == "" {
+			helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("token not found"))
+			c.Abort()
+			return
+		}
+
+		bearerToken = bearerToken[7:] // menghilangkan Bearer
+		tokenExtract, err := jwt.Parse(bearerToken, tokenExtract)
 		if err != nil {
 			helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, err)
 			c.Abort()
@@ -51,12 +71,26 @@ func ValidateToken() gin.HandlerFunc {
 		if claims, ok := tokenExtract.Claims.(jwt.MapClaims); ok && tokenExtract.Valid {
 			userId := claims["id"]
 			userRole := claims["role"]
-			c.Set("id", userId)
-			c.Set("role", userRole)
-			c.Next()
-			return
+
+			if userRole == "admin" {
+				c.Set("id", userId)
+				c.Next()
+				return
+			} else {
+				helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("user is not an admin"))
+				c.Abort()
+				return
+			}
 		}
 		helper.ResponseWhenFailOrError(c, http.StatusForbidden, errors.New("invalid token"))
 		c.Abort()
 	}
+}
+
+func tokenExtract(token *jwt.Token) (interface{}, error) {
+	if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+		return nil, jwt.ErrSignatureInvalid
+	}
+
+	return []byte(os.Getenv("SECRET_KEY")), nil
 }

@@ -51,9 +51,6 @@ func (r *rest) RegisterMiddlewareAndRoutes() {
 		helper.ResponseSuccessJson(ctx, "seeder success", "")
 	})
 
-	// middlewareUser := r.httpServer.Group("")
-	// middlewareUser.Use(middleware.ValidateToken())
-
 	// user routes
 	user := r.httpServer.Group("/user")
 	{
@@ -65,14 +62,14 @@ func (r *rest) RegisterMiddlewareAndRoutes() {
 		user.PUT("/profile", middleware.ValidateToken(), r.UpdateProfile)
 		// role admin
 		user.POST("/register/admin", r.CreateAdmin)
-		user.GET("", middleware.ValidateToken(), r.ReadAll)
-		user.GET("/:id", middleware.ValidateToken(), r.ReadByID)
-		user.PUT("/:id", middleware.ValidateToken(), r.Update)
-		user.DELETE("/:id", middleware.ValidateToken(), r.Delete)
+		user.GET("", middleware.ValidateTokenAdmin(), r.ReadAll)
+		user.GET("/:id", middleware.ValidateTokenAdmin(), r.ReadByID)
+		user.PUT("/:id", middleware.ValidateTokenAdmin(), r.Update)
+		user.DELETE("/:id", middleware.ValidateTokenAdmin(), r.Delete)
 	}
 
 	// matkul routes
-	matkul := r.httpServer.Group("/matkul", middleware.ValidateToken())
+	matkul := r.httpServer.Group("/matkul", middleware.ValidateTokenAdmin())
 	{
 		matkul.POST("", r.StoreMatkulHandler)
 		matkul.PATCH("/:id", r.EditMatkulHandler)
@@ -82,7 +79,7 @@ func (r *rest) RegisterMiddlewareAndRoutes() {
 	}
 
 	// kelas routes
-	kelas := r.httpServer.Group("/kelas", middleware.ValidateToken())
+	kelas := r.httpServer.Group("/kelas", middleware.ValidateTokenAdmin())
 	{
 		kelas.POST("", r.StoreKelasHandler)
 		kelas.PATCH("/:id_kelas/jadwal/:id_jadwal", r.EditKelasHandler)
