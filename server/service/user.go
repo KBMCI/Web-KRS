@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"math/rand"
+	"net/http"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -23,37 +24,37 @@ func NewUserService(repo model.UserRepository) *userService {
 	return &userService{userRepository: repo}
 }
 
-func HashPassword(password string) (string, error){
+func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
-	return string(bytes),err
+	return string(bytes), err
 }
 
 func (s *userService) Register(userRequest *request.UserRequest) (*model.User, error) {
 	var (
-		numeric, lowerCase, upperCase, specialCharacter bool 
+		numeric, lowerCase, upperCase, specialCharacter bool
 	)
 
-	numeric = regexp.MustCompile(`\d`).MatchString(userRequest.Password) 
+	numeric = regexp.MustCompile(`\d`).MatchString(userRequest.Password)
 	lowerCase = regexp.MustCompile(`[a-z]`).MatchString(userRequest.Password)
 	upperCase = regexp.MustCompile(`[A-Z]`).MatchString(userRequest.Password)
 	specialCharacter = strings.ContainsAny(userRequest.Password, "!@#$%^&*()_+-=/.,:;'`?{}[|]")
 
-	if len(userRequest.Password) <6 {
+	if len(userRequest.Password) < 6 {
 		return nil, errors.New("Too short password")
 	}
 
 	if !numeric {
 		return nil, errors.New("password need numeric character")
 	}
- 
+
 	if !lowerCase {
 		return nil, errors.New("password need lower case character")
 	}
- 
+
 	if !upperCase {
 		return nil, errors.New("password need upper case character")
 	}
- 
+
 	if !specialCharacter {
 		return nil, errors.New("password need spesial character ex !@#$%^&*()_+-=/.,:;'`?{}[|]")
 	}
@@ -61,7 +62,7 @@ func (s *userService) Register(userRequest *request.UserRequest) (*model.User, e
 	if userRequest.VerifPassword != userRequest.Password {
 		return nil, errors.New("Password incorrect")
 	}
-	
+
 	hash, _ := HashPassword(userRequest.Password)
 
 	user := &model.User{
@@ -81,14 +82,14 @@ func (s *userService) Register(userRequest *request.UserRequest) (*model.User, e
 	return user, nil
 }
 
-func (s *userService) UserHasMatkul(id uint, userHasMatkuls *model.UserHasMatkulReq) (*model.User, error)  {
+func (s *userService) UserHasMatkul(id uint, userHasMatkuls *model.UserHasMatkulReq) (*model.User, error) {
 	err := s.userRepository.DeleteMatkul(&model.UserHasMatkuls{}, id)
 	if err != nil {
 		return nil, err
 	}
 
 	addMatkul, err := s.userRepository.Update(&model.User{
-		ID: id,
+		ID:      id,
 		Matkuls: userHasMatkuls.Matkuls,
 	})
 
@@ -126,13 +127,52 @@ func (s *userService) GetByEmail(email string) (*model.User, error) {
 	return user, nil
 }
 
+func (s *userService) UpdateProfile(c *gin.Context, ID int, userRequest *request.UserUpdateRequest) (*model.User, error) {
+	user, err := s.userRepository.ReadByID(ID)
+	if err != nil {
+		return nil, err
+	}
+
+	if user.Image == "" {
+		link, err := s.UploadImage(c)
+		if err != nil {
+			return nil, err
+		}
+		userRequest.Image = link
+	} else {
+		link, err := s.UploadImage(c)
+		if err == http.ErrMissingFile {
+			user.Image = link
+		} else {
+			err := s.DeleteImage(user.ID)
+			if err != nil {
+				return nil, err
+			}
+		}
+		userRequest.Image = link
+	}
+
+	newUser, err := s.userRepository.Update(&model.User{
+		ID:           uint(ID),
+		Nama:         userRequest.Nama,
+		Nim:          userRequest.Nim,
+		ProgramStudi: userRequest.ProgramStudi,
+		Image:        userRequest.Image,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return newUser, nil
+}
+
 func (s *userService) Update(ID int, userRequest *request.UserUpdateRequest) (*model.User, error) {
 	newUser, err := s.userRepository.Update(&model.User{
-		ID: uint(ID),
-		Nama: userRequest.Nama,
-		Nim: userRequest.Nim,
+		ID:           uint(ID),
+		Nama:         userRequest.Nama,
+		Nim:          userRequest.Nim,
 		ProgramStudi: userRequest.ProgramStudi,
-		Image: userRequest.Image,
 	})
 
 	if err != nil {
@@ -186,16 +226,16 @@ func (s *userService) UploadImage(c *gin.Context) (string, error) {
 	}
 
 	// generate randomString
-    randomString := RandomString(5)
+	randomString := RandomString(5)
 
 	// untuk mendapatkan ekstensi file
-    ext := filepath.Ext(file.Filename)
+	ext := filepath.Ext(file.Filename)
 
 	// menghasilkan nama baru dari penggabungan nama file(tanpa ekstensi) + randomString + ekstensi file
-    newFilename := strings.TrimSuffix(file.Filename, ext) + randomString + ext
+	newFilename := strings.TrimSuffix(file.Filename, ext) + randomString + ext
 
 	// inisialisasi Filename dengan fileName baru
-    file.Filename = newFilename
+	file.Filename = newFilename
 
 	link, err := supClient.Upload(file)
 	if err != nil {
@@ -204,7 +244,7 @@ func (s *userService) UploadImage(c *gin.Context) (string, error) {
 	return link, nil
 }
 
-func (s *userService) DeleteImage(c *gin.Context, id uint) error {
+func (s *userService) DeleteImage(id uint) error {
 	user, errFind := s.ReadByID(int(id))
 	if errFind != nil {
 		return errFind
@@ -213,7 +253,7 @@ func (s *userService) DeleteImage(c *gin.Context, id uint) error {
 	err := supClient.Delete(user.Image)
 	if err != nil {
 		return err
-	} 
+	}
 
 	return nil
 }
@@ -221,10 +261,10 @@ func (s *userService) DeleteImage(c *gin.Context, id uint) error {
 func RandomString(length int) string {
 	var randomizer = rand.New(rand.NewSource(time.Now().UTC().UnixNano()))
 	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-    
+
 	b := make([]rune, length)
-    for i := range b {
-        b[i] = letters[randomizer.Intn(len(letters))]
-    }
-    return string(b)
+	for i := range b {
+		b[i] = letters[randomizer.Intn(len(letters))]
+	}
+	return string(b)
 }

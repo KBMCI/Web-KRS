@@ -61,14 +61,14 @@ func (r *rest) RegisterMiddlewareAndRoutes() {
 		user.POST("/register", r.CreateUser)
 		user.POST("/login", r.UserLogin)
 		user.PUT("/forgot", r.ForgotPassword)
-		user.POST("/matkul", r.HasMatkul, middleware.ValidateToken())
-		user.PUT("/profile", r.UpdateProfile, middleware.ValidateToken())
+		user.POST("/matkul", middleware.ValidateToken(), r.HasMatkul)
+		user.PUT("/profile", middleware.ValidateToken(), r.UpdateProfile)
 		// role admin
 		user.POST("/register/admin", r.CreateAdmin)
-		user.GET("", r.ReadAll, middleware.ValidateToken())
-		user.GET("/:id", r.ReadByID, middleware.ValidateToken())
-		user.PUT("/:id", r.Update, middleware.ValidateToken())
-		user.DELETE("/:id", r.Delete, middleware.ValidateToken())
+		user.GET("", middleware.ValidateToken(), r.ReadAll)
+		user.GET("/:id", middleware.ValidateToken(), r.ReadByID)
+		user.PUT("/:id", middleware.ValidateToken(), r.Update)
+		user.DELETE("/:id", middleware.ValidateToken(), r.Delete)
 	}
 
 	// matkul routes

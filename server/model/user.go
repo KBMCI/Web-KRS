@@ -49,10 +49,11 @@ type (
 		ReadAll() ([]*User, error)
 		ReadByID(ID int) (*User, error)
 		GetByEmail(email string) (*User, error)
+		UpdateProfile(c *gin.Context, ID int, user *request.UserUpdateRequest) (*User, error)
 		Update(ID int, user *request.UserUpdateRequest) (*User, error)
 		ForgotPassword(ID int, user *request.ForgotPasswordRequest) (*User, error)
 		Delete(ID int) (*User, error)
 		UploadImage(c *gin.Context) (string, error)
-		DeleteImage(c *gin.Context, id uint) error
+		DeleteImage(id uint) error
 	}
 )

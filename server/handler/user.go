@@ -179,34 +179,7 @@ func (r *rest) UpdateProfile(c *gin.Context) {
 		return
 	}
 
-	user, err := r.service.User.ReadByID(int(idUserLogin))
-	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
-		return
-	}
-
-	if user.Image == "" {
-		link, err := r.service.User.UploadImage(c)
-		if err != nil {
-			helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
-			return
-		}
-		UserRequest.Image = link
-	} else {
-		link, err := r.service.User.UploadImage(c)
-		if err == http.ErrMissingFile {
-			user.Image = link
-		} else {
-			err := r.service.User.DeleteImage(c, uint(idUserLogin))
-			if err != nil {
-				helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
-				return
-			}
-		}
-		UserRequest.Image = link
-	}
-
-	update, err := r.service.User.Update(int(idUserLogin), &UserRequest)
+	update, err := r.service.User.UpdateProfile(c, int(idUserLogin), &UserRequest)
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, "Error Update User", err.Error())
 		return
@@ -287,7 +260,7 @@ func (r *rest) Delete(c *gin.Context) {
 	}
 
 	if user.Image != "" {
-		err = r.service.User.DeleteImage(c, uint(idInt))
+		err = r.service.User.DeleteImage(uint(idInt))
 		if err != nil {
 			helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
 			return
