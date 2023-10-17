@@ -153,6 +153,8 @@ func (r *rest) Update(c *gin.Context) {
 func (r *rest) UpdateProfile(c *gin.Context) {
 	idUserLogin := c.MustGet("id").(float64)
 
+	file, _ := c.FormFile("image")
+
 	var UserRequest request.UserUpdateRequest
 
 	err := c.ShouldBind(&UserRequest)
@@ -161,7 +163,7 @@ func (r *rest) UpdateProfile(c *gin.Context) {
 		return
 	}
 
-	update, err := r.service.User.UpdateProfile(c, int(idUserLogin), &UserRequest)
+	update, err := r.service.User.UpdateProfile(file, int(idUserLogin), &UserRequest)
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, "Error Update User", err.Error())
 		return

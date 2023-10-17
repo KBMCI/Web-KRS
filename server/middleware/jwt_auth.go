@@ -25,7 +25,7 @@ func GenerateToken(id uint, role string) (string, error) {
 	return signedToken, nil
 }
 
-func ValidateToken() gin.HandlerFunc {
+func ValidateToken(roleParam string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		bearerToken := c.Request.Header.Get("Authorization")
 		if bearerToken == "" {
@@ -43,44 +43,24 @@ func ValidateToken() gin.HandlerFunc {
 		}
 		if claims, ok := tokenExtract.Claims.(jwt.MapClaims); ok && tokenExtract.Valid {
 			userId := claims["id"]
-			c.Set("id", userId)
-			c.Next()
-			return
-		}
-		helper.ResponseWhenFailOrError(c, http.StatusForbidden, errors.New("invalid token"))
-		c.Abort()
-	}
-}
+			roleClaim := claims["role"]
 
-func ValidateTokenAdmin() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		bearerToken := c.Request.Header.Get("Authorization")
-		if bearerToken == "" {
-			helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("token not found"))
-			c.Abort()
-			return
-		}
-
-		bearerToken = bearerToken[7:] // menghilangkan Bearer
-		tokenExtract, err := jwt.Parse(bearerToken, tokenExtract)
-		if err != nil {
-			helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, err)
-			c.Abort()
-			return
-		}
-		if claims, ok := tokenExtract.Claims.(jwt.MapClaims); ok && tokenExtract.Valid {
-			userId := claims["id"]
-			userRole := claims["role"]
-
-			if userRole == "admin" {
+			if roleParam == "admin" {
+				if roleClaim == "admin" {
+					c.Set("id", userId)
+					c.Next()
+					return
+				} else {
+					helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("user is not an admin"))
+					c.Abort()
+					return
+				}
+			} else if roleParam == "user" {
 				c.Set("id", userId)
 				c.Next()
-				return
-			} else {
-				helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("user is not an admin"))
-				c.Abort()
-				return
-			}
+			}	
+
+			return
 		}
 		helper.ResponseWhenFailOrError(c, http.StatusForbidden, errors.New("invalid token"))
 		c.Abort()

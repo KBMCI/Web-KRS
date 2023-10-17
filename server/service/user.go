@@ -3,7 +3,7 @@ package service
 import (
 	"errors"
 	"math/rand"
-	"net/http"
+	"mime/multipart"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -12,7 +12,6 @@ import (
 	"web-krs/request"
 
 	supabasestorageuploader "github.com/adityarizkyramadhan/supabase-storage-uploader"
-	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -127,22 +126,22 @@ func (s *userService) GetByEmail(email string) (*model.User, error) {
 	return user, nil
 }
 
-func (s *userService) UpdateProfile(c *gin.Context, ID int, userRequest *request.UserUpdateRequest) (*model.User, error) {
+func (s *userService) UpdateProfile(file *multipart.FileHeader, ID int, userRequest *request.UserUpdateRequest) (*model.User, error) {
 	user, err := s.userRepository.ReadByID(ID)
 	if err != nil {
 		return nil, err
 	}
 
 	if user.Image == "" {
-		link, err := s.UploadImage(c)
+		link, err := s.UploadImage(file)
 		if err != nil {
 			return nil, err
 		}
 		userRequest.Image = link
 	} else {
-		link, err := s.UploadImage(c)
-		if err == http.ErrMissingFile {
-			user.Image = link
+		link, err := s.UploadImage(file)
+		if err != nil {
+			link = user.Image
 		} else {
 			err := s.DeleteImage(user.ID)
 			if err != nil {
@@ -219,10 +218,9 @@ var supClient = supabasestorageuploader.New(
 	"sobat-krs-image",
 )
 
-func (s *userService) UploadImage(c *gin.Context) (string, error) {
-	file, err := c.FormFile("image")
-	if err != nil {
-		return "", err
+func (s *userService) UploadImage(file *multipart.FileHeader) (string, error) {
+	if file == nil {
+		return "", errors.New("file not found")
 	}
 
 	// generate randomString
@@ -238,6 +236,7 @@ func (s *userService) UploadImage(c *gin.Context) (string, error) {
 	file.Filename = newFilename
 
 	link, err := supClient.Upload(file)
+	// fmt.Println(err)
 	if err != nil {
 		return "", err
 	}

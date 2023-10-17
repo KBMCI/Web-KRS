@@ -57,19 +57,19 @@ func (r *rest) RegisterMiddlewareAndRoutes() {
 		// role user
 		user.POST("/register", r.CreateUser)
 		user.POST("/login", r.UserLogin)
-		user.PUT("/forgot", r.ForgotPassword)
-		user.POST("/matkul", middleware.ValidateToken(), r.HasMatkul)
-		user.PUT("/profile", middleware.ValidateToken(), r.UpdateProfile)
+		user.PATCH("/forgot", r.ForgotPassword)
+		user.POST("/matkul", middleware.ValidateToken("user"), r.HasMatkul)
+		user.PATCH("/profile", middleware.ValidateToken("user"), r.UpdateProfile)
 		// role admin
 		user.POST("/register/admin", r.CreateAdmin)
-		user.GET("", middleware.ValidateTokenAdmin(), r.ReadAll)
-		user.GET("/:id", middleware.ValidateTokenAdmin(), r.ReadByID)
-		user.PUT("/:id", middleware.ValidateTokenAdmin(), r.Update)
-		user.DELETE("/:id", middleware.ValidateTokenAdmin(), r.Delete)
+		user.GET("", middleware.ValidateToken("admin"), r.ReadAll)
+		user.GET("/:id", middleware.ValidateToken("admin"), r.ReadByID)
+		user.PATCH("/:id", middleware.ValidateToken("admin"), r.Update)
+		user.DELETE("/:id", middleware.ValidateToken("admin"), r.Delete)
 	}
 
 	// matkul routes
-	matkul := r.httpServer.Group("/matkul", middleware.ValidateTokenAdmin())
+	matkul := r.httpServer.Group("/matkul", middleware.ValidateToken("admin"))
 	{
 		matkul.POST("", r.StoreMatkulHandler)
 		matkul.PATCH("/:id", r.EditMatkulHandler)
@@ -79,7 +79,7 @@ func (r *rest) RegisterMiddlewareAndRoutes() {
 	}
 
 	// kelas routes
-	kelas := r.httpServer.Group("/kelas", middleware.ValidateTokenAdmin())
+	kelas := r.httpServer.Group("/kelas", middleware.ValidateToken("admin"))
 	{
 		kelas.POST("", r.StoreKelasHandler)
 		kelas.PATCH("/:id_kelas/jadwal/:id_jadwal", r.EditKelasHandler)
@@ -100,7 +100,7 @@ func (r *rest) RegisterMiddlewareAndRoutes() {
 	}
 
 	// my plan routes
-	myPlan := r.httpServer.Group("/my-plan").Use(middleware.ValidateToken())
+	myPlan := r.httpServer.Group("/my-plan").Use(middleware.ValidateToken("user"))
 	{
 		myPlan.POST("", r.StorePlanHandler)
 		myPlan.GET("", r.FetchPlanHandler)
@@ -109,19 +109,19 @@ func (r *rest) RegisterMiddlewareAndRoutes() {
 	}
 
 	// random krs routes
-	randomKrs := r.httpServer.Group("/random-krs").Use(middleware.ValidateToken())
+	randomKrs := r.httpServer.Group("/random-krs").Use(middleware.ValidateToken("user"))
 	{
 		randomKrs.GET("", r.FilterRandomKrsHandler)
 	}
 
 	// planning krs routes
-	planningKrs := r.httpServer.Group("/planning-krs").Use(middleware.ValidateToken())
+	planningKrs := r.httpServer.Group("/planning-krs").Use(middleware.ValidateToken("user"))
 	{
 		planningKrs.POST("", r.SuggestionKrs)
 	}
 
 	// dashboard routes
-	dashboard := r.httpServer.Group("/dashboard").Use(middleware.ValidateToken())
+	dashboard := r.httpServer.Group("/dashboard").Use(middleware.ValidateToken("user"))
 	{
 		dashboard.GET("", r.DashboardHandler)
 	}

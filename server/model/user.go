@@ -1,10 +1,9 @@
 package model
 
 import (
+	"mime/multipart"
 	"time"
 	"web-krs/request"
-
-	"github.com/gin-gonic/gin"
 )
 
 type (
@@ -16,7 +15,7 @@ type (
 		Nim          string    `json:"nim" gorm:"type:varchar(20)"`
 		Password     string    `json:"password" gorm:"type:varchar(100)"`
 		Role         string    `json:"role" gorm:"type:enum('admin', 'user')"`
-		Image		 string	   `json:"gambar" gorm:"type:varchar(200)"`
+		Image        string    `json:"gambar" gorm:"type:varchar(200)"`
 		CreatedAt    time.Time `json:"-"`
 		UpdatedAt    time.Time `json:"-"`
 		Matkuls      []Matkul  `json:"matkuls" gorm:"many2many:user_has_matkuls"`
@@ -49,11 +48,11 @@ type (
 		ReadAll() ([]*User, error)
 		ReadByID(ID int) (*User, error)
 		GetByEmail(email string) (*User, error)
-		UpdateProfile(c *gin.Context, ID int, user *request.UserUpdateRequest) (*User, error)
+		UpdateProfile(file *multipart.FileHeader, ID int, user *request.UserUpdateRequest) (*User, error)
 		Update(ID int, user *request.UserUpdateRequest) (*User, error)
 		ForgotPassword(ID int, user *request.ForgotPasswordRequest) (*User, error)
 		Delete(ID int) (*User, error)
-		UploadImage(c *gin.Context) (string, error)
+		UploadImage(file *multipart.FileHeader) (string, error)
 		DeleteImage(id uint) error
 	}
 )
