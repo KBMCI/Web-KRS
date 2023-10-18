@@ -57,8 +57,9 @@ func (r *rest) RegisterMiddlewareAndRoutes() {
 		// role user
 		user.POST("/register", r.CreateUser)
 		user.POST("/login", r.UserLogin)
-		user.PATCH("/forgot", r.ForgotPassword)
 		user.POST("/matkul", middleware.ValidateToken("user"), r.HasMatkul)
+		user.GET("/matkul", middleware.ValidateToken("user"), r.MatkulUser)
+		user.PATCH("/forgot", r.ForgotPassword)
 		user.PATCH("/profile", middleware.ValidateToken("user"), r.UpdateProfile)
 		// role admin
 		user.POST("/register/admin", r.CreateAdmin)

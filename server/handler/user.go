@@ -227,6 +227,20 @@ func (r *rest) HasMatkul(c *gin.Context) {
 	helper.ResponseSuccessJson(c, "success", update)
 }
 
+func (r *rest) MatkulUser(c *gin.Context) {
+	userId := c.MustGet("id").(float64)
+
+	readByID, err := r.service.User.ReadByID(int(userId))
+	if err != nil {
+		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
+		return
+	}
+
+	userResponse := response.ConvertToUserResponse(readByID)
+
+	helper.ResponseSuccessJson(c, "success", userResponse)
+}
+
 func (r *rest) Delete(c *gin.Context) {
 	id := c.Param("id")
 	idInt, _ := strconv.Atoi(id)

@@ -99,6 +99,15 @@ func (s *userService) UserHasMatkul(id uint, userHasMatkuls *model.UserHasMatkul
 	return addMatkul, err
 }
 
+func (s *userService) MatkulUser(ID int) (*model.User, error) {
+	user, err := s.userRepository.ReadByID(ID)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
 func (s *userService) ReadAll() ([]*model.User, error) {
 	users, err := s.userRepository.ReadAll()
 	if err != nil {

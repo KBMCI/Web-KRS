@@ -45,6 +45,7 @@ type (
 	UserService interface {
 		Register(user *request.UserRequest) (*User, error)
 		UserHasMatkul(id uint, userHasMatkul *UserHasMatkulReq) (*User, error)
+		MatkulUser(ID int) (*User, error)
 		ReadAll() ([]*User, error)
 		ReadByID(ID int) (*User, error)
 		GetByEmail(email string) (*User, error)
