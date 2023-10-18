@@ -80,6 +80,14 @@ export const header = [
     jumat: "",
   },
   {
+    jam: "13:40 - 16:19",
+    senin: "",
+    selasa: "",
+    rabu: "",
+    kamis: "",
+    jumat: "",
+  },
+  {
     jam: "14:30 - 17:09",
     senin: "",
     selasa: "",

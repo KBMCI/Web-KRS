@@ -68,7 +68,6 @@ const TableMatkul = ({ data }) => {
 
   const dataTemp = useRef([...data.data]);
 
-
   const table = useRef(null);
 
   const setTable = (data) => {
@@ -109,7 +108,7 @@ const TableMatkul = ({ data }) => {
 
   return (
     <>
-    {/* {dataTemp.current.map((dt, index) => {
+      {/* {dataTemp.current.map((dt, index) => {
           return <TableMatkul data={dt} key={index} />;
       })} */}
       <div className="relative overflow-x-auto shadow-md p-10">
