@@ -11,8 +11,8 @@ import Error from "./Error";
 import Success from "./Success";
 
 const Login = () => {
-  const [password, setPassword] = useState("Admin123.");
-  const [email, setEmail] = useState("admin@gmail.com");
+  const [password, setPassword] = useState("User123.");
+  const [email, setEmail] = useState("user@gmail.com");
   const [type, setType] = useState("password");
   const [errMsg, setErrMsg] = useState("");
   const [notSuccess, setNotSuccess] = useState(false);
@@ -32,33 +32,36 @@ const Login = () => {
       console.log("INI RESPONSENYA");
       console.log(response);
       console.log(response.data.data.token);
-      const dataUser = response.data.data.data
-      const id = dataUser.ID
-      const nama = dataUser.nama
-      const nim = dataUser.nim
-      const program_studi = dataUser.program_studi
-      const role = dataUser.role
-   
-      setAuth( { id, email, nama, nim, program_studi, role})
-    
+      const dataUser = response.data.data.data;
+      const id = dataUser.ID;
+      const nama = dataUser.nama;
+      const nim = dataUser.nim;
+      const program_studi = dataUser.program_studi;
+      const role = dataUser.role;
+
+      setAuth({ id, email, nama, nim, program_studi, role });
+
       // ambil token
       const accessToken = response.data.data.token;
       // Simpan token pada localStorage
       localStorage.setItem("Authorization", accessToken);
       localStorage.setItem("role", role);
       setSuccess(true);
-      
-      if ( role === 'admin'){
+
+      if (role === "admin") {
         setTimeout(() => {
           setSuccess(false);
           navigate("/admin");
-        }, 4000);
+        }, 3100);
       } else {
         setTimeout(() => {
+          console.log(`000000000000000000000000000`);
           setSuccess(false);
           navigate("/");
-        }, 4000);
+        }, 3100);
       }
+
+      console.log(`000000000000000000000000000`);
     } catch (err) {
       console.log("error dijalankan");
       setErrMsg(err.response.message);
@@ -90,9 +93,9 @@ const Login = () => {
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem("Authorization");
-  };
+  // const logout = () => {
+  //   localStorage.removeItem("Authorization");
+  // };
 
   useEffect(() => {
     console.log(email);
@@ -106,7 +109,7 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-[#F3F7FF] h-full w-full flex items-center justify-center gap-[58px]">
+    <div className="bg-[#F3F7FF] h-screen w-full flex items-center justify-center gap-[58px]">
       {/* <img src={EllipseBiru} className="bg-right-top z-0"></img>     */}
 
       {/* Kiri */}
@@ -119,7 +122,8 @@ const Login = () => {
         <img
           className="mx-[231px] mt-[92px] mb-[83px]"
           src={Logo}
-          width="67px"></img>
+          width="67px"
+        ></img>
         <div className="w-[351px] h-[108px]">
           <h1 className="font-bold text-5xl flex justify-center mb-[14px]">
             Aloo!
@@ -168,7 +172,8 @@ const Login = () => {
               {password ? (
                 <div
                   onClick={handleType}
-                  className="absolute right-[18px] top-4">
+                  className="absolute right-[18px] top-4"
+                >
                   {eyes()}
                 </div>
               ) : (
@@ -184,7 +189,8 @@ const Login = () => {
                 <input className="" type="checkbox" name="rememberme" />
                 <label
                   className="text-neutral-400 font-semibold text-[13px] ml-[4px]"
-                  htmlFor="rememberme">
+                  htmlFor="rememberme"
+                >
                   Remember Me
                 </label>
               </div>
@@ -206,13 +212,8 @@ const Login = () => {
           </div>
         </div>
       </div>
-      {success ? (
-        <>
-          <Success></Success>
-        </>
-      ) : (
-        ""
-      )}
+      <Success isOpen={success}></Success>
+      {success ? <>{/* <Success isOpen={success}></Success> */}</> : ""}
       {notSuccess ? <Error errmsg={errMsg}></Error> : ""}
     </div>
   );

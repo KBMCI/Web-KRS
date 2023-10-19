@@ -6,18 +6,19 @@ import LogoRandom from "../../assets/LogoRandom.svg";
 import LogoSearch from "../../assets/LogoSearch.svg";
 import TablePlan from "../../component/TablePlan";
 import { DataContext } from "../../context/DataContext";
+import MatkulCheckbox from "./MatkulCheckbox";
 
 const DashboardUser = () => {
   const [isFilled, setIsFilled] = useState(false);
   const [firstPlan, setFirstPlan] = useState([]);
-  const [isChecked, setIsChecked] = useState(false);
-  const [electiveMatkul, setElectiveMatkul] = useState([]);
-  const [selectedId, setSelectedId] = useState([]);
+  const [namaMataKuliahTabel, setNamaMataKuliahTabel] = useState([]);
   const [query, setQuery] = useState("");
   const { selectedIdMatkul, setSelectedIdMatkul } = useContext(DataContext);
 
   useEffect(() => {
-    const getMataKuliah = async () => {
+    // Tabel Mata Kuliah Dipilih ===============
+    // Mendapatkan Nama Mata Kulah untuk tabel "Mata Kuliah Dipilih"
+    const getNamaMataKuliah = async () => {
       try {
         const token = localStorage.getItem("Authorization");
         let config = {
@@ -26,15 +27,16 @@ const DashboardUser = () => {
           },
         };
         const response = await url.get("/dashboard", config);
-        console.log(response.data.data.matkuls);
-        console.log("di atas ku adalah matkul");
-        setElectiveMatkul(response.data.data.matkuls);
+        // console.log(response.data.data.matkuls);
+        setNamaMataKuliahTabel(response.data.data.matkuls);
       } catch (err) {
         console.log(err);
       }
     };
+    getNamaMataKuliah();
 
-    getMataKuliah();
+    // My Plan ============================
+    // Mendapatkan Jadwal Kuliah yang telah di Tambahkan User
     const getMyplans = async () => {
       try {
         const token = localStorage.getItem("Authorization");
@@ -45,10 +47,6 @@ const DashboardUser = () => {
         };
         const response = await url.get("/my-plan", config);
         console.log(response);
-        console.log(response.data.data);
-        // const myPlans = response.data.data
-        // const myPlan = myPlans[0]
-        // console.log(myPlan.plan)
         setIsFilled(true);
         setFirstPlan(response.data.data);
       } catch (err) {
@@ -56,26 +54,25 @@ const DashboardUser = () => {
       }
     };
     getMyplans();
-  }, []);
 
-  const selectedMatkul = (index, event) => {
-    console.log(event.target.checked);
-    console.log(event);
-    if (event.target.checked) {
-      console.log("Yeay you've checked this " + index);
-      setSelectedId([...selectedId, { ID: index }]);
-    } else {
-      console.log("Oh, very sad for this " + index);
-      const filterSelectedId = selectedId.filter((item) => {
-        return item.ID !== index;
-      });
-      console.log(filterSelectedId);
-      setSelectedId(filterSelectedId);
-    }
+    // Mengambil id matkul untuk check checkbox
+    setSelectedIdMatkul(JSON.parse(localStorage.getItem("Temporary_plan")));
 
-    console.log(selectedId);
-  };
+    // const getIDMatkuls = async () => {
+    //   const token = localStorage.getItem("Authorization");
+    //   let config = {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   };
 
+    //   const response = await url.get("/kelas", config);
+    //   console.log(response.data.data);
+    // };
+    // getIDMatkuls();
+  }, [, setSelectedIdMatkul]);
+
+  // Handle ketika user menng-klik tombol save/simpan
   const onPostHandle = async () => {
     try {
       const token = localStorage.getItem("Authorization");
@@ -86,13 +83,13 @@ const DashboardUser = () => {
       };
       const response = await url.post(
         "/user/matkul",
-        { matkuls: selectedId },
+        { matkuls: selectedIdMatkul },
         config
       );
-
-      // INI DIOPER KEDALAM USE CONTEXT DATA
-      setSelectedIdMatkul(selectedId);
+      console.log("Matkul yang diupdate");
+      console.log(selectedIdMatkul);
       console.log(response);
+      localStorage.setItem("Temporary_plan", JSON.stringify(selectedIdMatkul));
     } catch (err) {
       console.log(err.message);
     }
@@ -102,7 +99,11 @@ const DashboardUser = () => {
     if (!query) {
       return items;
     }
-    return items.filter((matkul) => matkul.nama.toLowerCase().includes(query.toLowerCase()));
+    console.log(query);
+    console.log(items);
+    return items.filter((matkul) =>
+      matkul.nama.toLowerCase().includes(query.toLowerCase())
+    );
   };
 
   const barisTabel = () => {
@@ -110,7 +111,7 @@ const DashboardUser = () => {
   };
 
   // filter
-  const filteredItems = getFilteredItems(query, electiveMatkul);
+  const filteredItems = getFilteredItems(query, namaMataKuliahTabel);
 
   return (
     <div className="bg-secondary p-7">
@@ -153,25 +154,30 @@ const DashboardUser = () => {
                   filteredItems.map((matkul, index) => (
                     <tr
                       key={index}
-                      className="bg-secondary text-neutral-900 border-b border-neutral-400 ">
+                      className="bg-secondary text-neutral-900 border-b border-neutral-400 "
+                    >
+                      {/* {console.log(matkul)} */}
                       <td className="px-4 py-[10px] w-[47px] h-[51.13]">
-                        <input
-                          value={matkul.nama}
+                        <MatkulCheckbox
+                          namaMatkul={matkul.nama}
                           id={matkul.ID}
-                          type="checkbox"
-                          onChange={(event) => selectedMatkul(matkul.ID, event)}
+                          index={index}
+                          AllMatkul={matkul}
                         />
                       </td>
                       <td
-                        className={`${barisTabel()} py-[10px] px-4 font-semibold w-[101px]`}>
+                        className={`${barisTabel()} py-[10px] px-4 font-semibold w-[101px]`}
+                      >
                         {matkul.kode_matkul}
                       </td>
                       <td
-                        className={`${barisTabel()} py-[10px] px-4 font-semibold w-[335px]`}>
+                        className={`${barisTabel()} py-[10px] px-4 font-semibold w-[335px]`}
+                      >
                         {matkul.nama}
                       </td>
                       <td
-                        className={`${barisTabel()} py-[10px] px-4 font-semibold w-[335px]`}></td>
+                        className={`${barisTabel()} py-[10px] px-4 font-semibold w-[335px]`}
+                      ></td>
                     </tr>
                   ))}
               </tbody>
@@ -189,12 +195,13 @@ const DashboardUser = () => {
               <>
                 <TablePlan
                   data={firstPlan[0].plan}
-                  dashboardUser={true}></TablePlan>
+                  dashboardUser={true}
+                ></TablePlan>
               </>
             ) : (
               <>
                 <div className="mt-[20px]">
-                  <img className="mb-[10px]" src={LogoMyPlans} />
+                  <img className="mb-[10px]" src={LogoMyPlans} alt="" />
                 </div>
                 <p className="neutral-900 text-center font-semibold text-base p-[10px] mx-[151px] mb-[10px]">
                   Oops, kamu belum memiliki plan apapun yang tersimpan. Buat

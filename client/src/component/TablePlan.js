@@ -16,6 +16,9 @@ const TablePlan = ({
   myPlan,
   idDelete,
   dashboardUser,
+  postPerPage,
+  isDisabled,
+  idPlan,
 }) => {
   // menetapkan agar header tidak akan berubah
   Object.freeze(header);
@@ -35,7 +38,8 @@ const TablePlan = ({
       } else {
         setIsSave(false);
       }
-      console.log(data);
+      // console.log(data);
+      // console.log("ini current page nya" + currentPage);
       // console.log(jadwalKuliah);
       Array.isArray(data) &&
         data.map((item, i) => (
@@ -81,6 +85,8 @@ const TablePlan = ({
     };
     setPlan();
     setRefresh(false);
+    // console.log("Jadwal-nya");
+    // console.log(jadwalKuliah);
   }, [data, refresh]);
 
   // Clear Jadwal Tabel agar bisa dipakai
@@ -140,12 +146,28 @@ const TablePlan = ({
     return `px-4 py-2 ${dashboardUser && `  `}`;
   };
 
+  // Melakukan update terhadap jadwal
+  const update = () => {
+    setId_kelas([]);
+    console.log(data);
+    data.forEach((item, i) => {
+      id_kelas.push(item.id_kelas);
+    });
+    navigate("/planning-krs", {
+      state: {
+        id: idPlan,
+        data: id_kelas,
+      },
+    });
+  };
+
   return (
     <>
       <div
         className={` ${
           dashboardUser ? "" : "min-h-[448px] bg-secondary px-7 pb-7 pt-4"
-        } `}>
+        } `}
+      >
         <div className={`${dashboardUser ? `` : `mt-5 mb-9`}`}>
           {" "}
           {/* mbungkus semua plan */}
@@ -161,18 +183,22 @@ const TablePlan = ({
               className={`${
                 dashboardUser &&
                 `rounded-2xl overflow-y-scroll mt-[10px] h-[290px] scrollbar scrollbar-w-[5px] scrollbar-thumb-neutral-400 `
-              }`}>
+              }`}
+            >
               <table
-                className={`table-fixed border-collapse border-b border-neutral-400 w-full drop-shadow-2xl rounded-2xl  ... ${
+                className={`table-fixed  border-collapse border-b border-neutral-400 w-full drop-shadow-2xl rounded-2xl  ... ${
                   dashboardUser ? `` : ` overflow-hidden  min-w-fit`
-                } `}>
+                } `}
+              >
                 <thead className="">
                   <tr
                     className={` ${
                       dashboardUser && ` sticky top-0 `
-                    } bg-primary  text-secondary`}>
+                    } bg-primary  text-secondary`}
+                  >
                     <th
-                      className={`${headerTabel()} flex justify-center items-center `}>
+                      className={`${headerTabel()} flex justify-center items-center `}
+                    >
                       <img src={LogoJam} alt="logo-jam" className="" />
                     </th>
                     <th className={headerTabel()}>Senin</th>
@@ -188,7 +214,8 @@ const TablePlan = ({
                       key={index}
                       className={` ${
                         dashboardUser && ``
-                      } bg-secondary text-neutral-900 border-b border-neutral-400`}>
+                      } bg-secondary text-neutral-900 border-b border-neutral-400`}
+                    >
                       <td className={jamTabel()}>{jadwal.jam}</td>
                       <td className={barisTabel()}>{jadwal.senin}</td>
                       <td className={barisTabel()}>{jadwal.selasa}</td>
@@ -199,7 +226,6 @@ const TablePlan = ({
                   ))}
                 </tbody>
               </table>
-           
             </div>
             <div className="my-6 flex justify-end">
               {dashboardUser ? (
@@ -208,15 +234,17 @@ const TablePlan = ({
                 <div className="flex gap-6">
                   <button
                     onClick={() => {
-                      navigate("/planning-krs");
+                      update();
                     }}
-                    className="font-bold bg-accent flex items-center py-[11px] px-[16px] gap-2 rounded-[10px]">
+                    className="font-bold bg-accent flex items-center py-[11px] px-[16px] gap-2 rounded-[10px]"
+                  >
                     <FiEdit2 />
                     Update
                   </button>
                   <button
                     onClick={() => deleteHandler(idDelete)}
-                    className="font-bold bg-error flex items-center py-[11px] px-[16px] gap-2 rounded-[10px] text-secondary">
+                    className="font-bold bg-error flex items-center py-[11px] px-[16px] gap-2 rounded-[10px] text-secondary"
+                  >
                     <FiTrash />
                     Delete
                   </button>
@@ -240,6 +268,7 @@ const TablePlan = ({
                 <Button
                   icon={<FiPlus />}
                   name='Add to "MyPlans"'
+                  disabled={isDisabled}
                   onClick={(e) => handleIsSave()}
                 />
               )}

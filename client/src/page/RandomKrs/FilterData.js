@@ -98,6 +98,14 @@ export const DataJadwal = [
     Jumat: "Jumat",
   },
   {
+    Jam: "13:40-16:19",
+    Senin: "Senin",
+    Selasa: "Selasa",
+    Rabu: "Rabu",
+    Kamis: "Kamis",
+    Jumat: "Jumat",
+  },
+  {
     Jam: "14:30-17:09",
     Senin: "Senin",
     Selasa: "Selasa",
@@ -105,6 +113,7 @@ export const DataJadwal = [
     Kamis: "Kamis",
     Jumat: "Jumat",
   },
+
   {
     Jam: "15:30-18:09",
     Senin: "Senin",

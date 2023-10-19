@@ -12,11 +12,10 @@ const MyPlan = () => {
   const [postPerPage] = useState(5);
   const lastPostIndex = currentPage * postPerPage;
   const firstPostIndex = lastPostIndex - postPerPage;
-  const [displayPagination, setDisplayPagination] = useState(false)
+  const [displayPagination, setDisplayPagination] = useState(false);
 
   // Mencoba get myplan
   useEffect(() => {
-    
     const fetchMyPlan = async () => {
       try {
         const token = localStorage.getItem("Authorization");
@@ -30,7 +29,6 @@ const MyPlan = () => {
         console.log(res);
         setMyPlan(res.data.data);
         setSuccess(true);
-       
       } catch (err) {
         console.log(err);
       }
@@ -76,27 +74,26 @@ const MyPlan = () => {
               console.log(plans);
               return (
                 <div key={i}>
-                <TablePlan
+                  <TablePlan
                     data={plans.plan}
                     plan={firstPostIndex + i + 1}
                     currentPage={currentPage}
                     myPlan={true}
                     deleteHandler={deleteHandler}
                     idDelete={plans.id}
-                  /> 
-                 
+                    idPlan={plans.id}
+                  />
                 </div>
               );
             })}
 
           <div className=" bg-secondary p-7">
-           <Paginations
+            <Paginations
               data={myPlan}
               itemsPerPage={postPerPage}
               setCurrentPage={setCurrentPage}
               currentPage={currentPage}
-            /> 
-           
+            />
           </div>
         </>
       )}

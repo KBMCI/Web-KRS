@@ -1,16 +1,48 @@
-const Checkbox = ({ name, id, size, value, onChange, checked, label }) => {
+import InputJam from "../page/RandomKrs/InputJam";
+import InputKelas from "../page/RandomKrs/InputKelas";
+
+const Checkbox = ({
+  namaKelas,
+  namaMatkul,
+  id,
+  size,
+  value,
+  onChange,
+  checked,
+  label,
+  day,
+  time,
+}) => {
+  // console.log(namaKelas);
+  // if (label === "circle") console.log(value);
+
   return (
     <div>
-      <input
-        type="checkbox"
-        name={name}
-        id={id}
-        size={size}
-        onChange={onChange}
-        checked={checked}
-        value={value}
-        className={`${label === "circle" && "rounded-full"} w-4 h-4`}
-      />
+      {label === "circle" ? (
+        <InputKelas
+          namaKelas={namaKelas}
+          namaMatkul={namaMatkul}
+          id={id}
+          size={size}
+          onChange={onChange}
+          checked={checked}
+          value={value}
+          className={label}
+        />
+      ) : (
+        <InputJam
+          type="checkbox"
+          name={namaKelas}
+          id={id}
+          size={size}
+          onChange={onChange}
+          checked={checked}
+          value={value}
+          day={day}
+          time={time}
+          className={`${label === "circle" && "rounded-full"} w-4 h-4`}
+        />
+      )}
     </div>
   );
 };

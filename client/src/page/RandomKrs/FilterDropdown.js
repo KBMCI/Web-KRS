@@ -1,35 +1,42 @@
 import { useState } from "react";
-import { FiChevronUp, FiChevronDown } from "react-icons/fi";
+import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import Checkbox from "../../component/Checkbox";
 
 const FilterDropdown = ({ nama, kelas, kelasChange, selectedKelas }) => {
   const [isOpen, setIsOpen] = useState(false);
+
   return (
     <>
-      {/* adsis */}
+      {/* Nama Mata Kuliah */}
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="py-3 px-6 w-full flex items-center justify-between font-bold"
+        className="py-3 px-6 w-full flex items-center justify-between font-bold z-10 bg-neutral-10"
       >
         {nama}
         {!isOpen ? <FiChevronDown /> : <FiChevronUp />}
       </button>
 
-      {isOpen && (
-        <div className="flex flex-col items-start px-6 w-full">
-          {kelas.map((kls) => (
-            <div className="flex w-full justify-between" key={kls.ID}>
-              <label className="font-semibold py-3">{kls.nama}</label>
-              <Checkbox
-                value={`${nama}-${kls.nama}`}
-                onChange={() => kelasChange(`${nama}-${kls.nama}`)}
-                checked={selectedKelas.includes(`${nama}-${kls.nama}`)}
-                label={'circle'}
-              />
-            </div>
-          ))}
-        </div>
-      )}
+      <div
+        className={`${
+          isOpen
+            ? `opacity-100 overflow-visible -translate-y-0  `
+            : `opacity-0 overflow-hidden  max-h-0  -translate-y-14   `
+        } items-start px-6 w-full bg-neutral-10  ...   transition-all duration-1000`}
+      >
+        {kelas.map((kls) => (
+          <div className={`flex w-full justify-between`} key={kls.ID}>
+            <Checkbox
+              namaKelas={kls.nama}
+              namaMatkul={nama}
+              id={kls.ID}
+              value={`${nama} - ${kls.nama}`}
+              onChange={() => kelasChange(`${nama}-${kls.nama}`)}
+              checked={selectedKelas.includes(`${nama}-${kls.nama}`)}
+              label={"circle"}
+            />
+          </div>
+        ))}
+      </div>
     </>
   );
 };
