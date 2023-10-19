@@ -97,15 +97,15 @@ const TablePlanning = ({ data: matkuls, setData, idPlan }) => {
   }, [matkuls, setTabel, trigger]);
 
   const barisTabel = () => {
-    return "text-center px-2 font-semibold text-[12px]";
+    return "p-2 text-center font-semibold text-[12px] w-1/6";
   };
 
   const jamTabel = () => {
-    return "py-2 px-4 text-center font-bold text-[12px]";
+    return "p-2 text-center font-bold text-[12px] w-1/6";
   };
 
   const headerTabel = () => {
-    return "px-4 py-2 text-[14px]";
+    return "p-2 text-[12px] w-1/6";
   };
 
   const statusHandlerTrue = (id_matkul, id_kelas, jadwal_kelas) => {
@@ -400,10 +400,10 @@ const TablePlanning = ({ data: matkuls, setData, idPlan }) => {
           <div className="flex gap-4">
             <div>
               <h2 className="text-xl font-medium mb-2">Custom KRS</h2>
-              <div className="overflow-y-scroll h-screen">
-                <table className="table-fixed w-full border-collapse border-b border-neutral-400 drop-shadow-2xl rounded-2xl overflow-hidden basis-1/2">
-                  <thead>
-                    <tr className="bg-primary text-secondary">
+              <div className="">
+                <table className="w-full table-fixed drop-shadow-2xl basis-1/2">
+                  <thead className="flex w-full rounded-t-2xl overflow-hidden">
+                    <tr className=" flex w-full bg-primary text-secondary">
                       <th className={headerTabel()}></th>
                       <th className={headerTabel()}>Senin</th>
                       <th className={headerTabel()}>Selasa</th>
@@ -412,7 +412,10 @@ const TablePlanning = ({ data: matkuls, setData, idPlan }) => {
                       <th className={headerTabel()}>Jumat</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody
+                    className="flex flex-col w-full rounded-b-2xl justify-between overflow-y-scroll scrollbar scrollbar-w-[5px] scrollbar-thumb-neutral-400 scrollbar-thumb-rounded-full"
+                    style={{ height: "80vh", width: `calc(100% + 5px)` }}
+                  >
                     {tabelJadwal?.map((jadwal, index) => (
                       <tr
                         key={index}

@@ -9,7 +9,7 @@ const BtnPlanning = ({
   const [pilih, setPilih] = useState("");
 
   const selected = () => {
-    return "p-1 bg-selected/10 border border-1 text-neutral-900 border-primary rounded-md my-2";
+    return "p-1 bg-primary/10 border border-1 text-neutral-900 border-primary rounded-md my-2";
   };
   const disable = () => {
     return "p-1 text-neutral-400 border border-1 border-neutral-400 rounded-md my-2";
