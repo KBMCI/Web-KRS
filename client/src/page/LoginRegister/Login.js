@@ -109,7 +109,7 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-[#F3F7FF] h-full w-full flex items-center justify-center gap-[58px]">
+    <div className="bg-[#F3F7FF] h-screen w-full flex items-center justify-center gap-[58px]">
       {/* <img src={EllipseBiru} className="bg-right-top z-0"></img>     */}
 
       {/* Kiri */}

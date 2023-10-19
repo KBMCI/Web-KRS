@@ -1,0 +1,54 @@
+import { useEffect, useState } from "react";
+
+const BtnPlanning = ({
+  value,
+  statusHandlerTrue,
+  statusHandlerfalse,
+  trigger,
+}) => {
+  const [pilih, setPilih] = useState("");
+
+  const selected = () => {
+    return "p-1 bg-selected/10 border border-1 text-neutral-900 border-primary rounded-md my-2";
+  };
+  const disable = () => {
+    return "p-1 text-neutral-400 border border-1 border-neutral-400 rounded-md my-2";
+  };
+  const active = () => {
+    return "p-1 my-2 rounded-md border border-1 text-neutral-900 border-neutral-900";
+  };
+
+  useEffect(() => {
+    if (value.status === 1) {
+      setPilih(selected());
+    } else if (value.status === -1) {
+      setPilih(disable());
+    } else {
+      setPilih(active());
+    }
+  }, [value.status]);
+
+  const handleClick = () => {
+    if (value.status === 1) {
+      console.log("Menjalankan handler false");
+      statusHandlerfalse(value);
+    } else {
+      console.log("Menjalankan handler true");
+      statusHandlerTrue(value.id_matkul , value.id_kelas, value.jadwal_kelas);
+    }
+  };
+
+  return (
+    <button
+      disabled={value.status === -1 && true}
+      className={pilih}
+      onClick={handleClick}
+    >
+      <h1 className="text-[10px]">
+        {value.matkul} {value.kelas}
+      </h1>
+    </button>
+  );
+};
+
+export default BtnPlanning;

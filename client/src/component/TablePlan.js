@@ -18,6 +18,7 @@ const TablePlan = ({
   dashboardUser,
   postPerPage,
   isDisabled,
+  idPlan,
 }) => {
   // menetapkan agar header tidak akan berubah
   Object.freeze(header);
@@ -145,6 +146,21 @@ const TablePlan = ({
     return `px-4 py-2 ${dashboardUser && `  `}`;
   };
 
+  // Melakukan update terhadap jadwal
+  const update = () => {
+    setId_kelas([]);
+    console.log(data);
+    data.forEach((item, i) => {
+      id_kelas.push(item.id_kelas);
+    });
+    navigate("/planning-krs", {
+      state: {
+        id: idPlan,
+        data: id_kelas,
+      },
+    });
+  };
+
   return (
     <>
       <div
@@ -218,7 +234,7 @@ const TablePlan = ({
                 <div className="flex gap-6">
                   <button
                     onClick={() => {
-                      navigate("/planning-krs");
+                      update();
                     }}
                     className="font-bold bg-accent flex items-center py-[11px] px-[16px] gap-2 rounded-[10px]"
                   >
