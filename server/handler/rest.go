@@ -69,6 +69,26 @@ func (r *rest) RegisterMiddlewareAndRoutes() {
 		user.DELETE("/:id", middleware.ValidateToken("admin"), r.Delete)
 	}
 
+	// fakultas routes
+	fakultas := r.httpServer.Group("/fakultas", middleware.ValidateToken("admin"))
+	{
+		fakultas.POST("", r.StoreFakultasHandler)
+		fakultas.PATCH("/:id", r.EditFakultasHandler)
+		fakultas.GET("/:id", r.DetailFakultasHandler)
+		fakultas.DELETE("/:id", r.DeleteFakultasHandler)
+		fakultas.GET("", r.FetchFakultasHandler)
+	}
+
+	// prodi routes
+	prodi := r.httpServer.Group("/program-studi", middleware.ValidateToken("admin"))
+	{
+		prodi.POST("", r.StoreProdiHandler)
+		prodi.PATCH("/:id", r.EditProdiHandler)
+		prodi.GET("/:id", r.DetailProdiHandler)
+		prodi.DELETE("/:id", r.DeleteProdiHandler)
+		prodi.GET("", r.FetchProdiHandler)
+	}
+
 	// matkul routes
 	matkul := r.httpServer.Group("/matkul", middleware.ValidateToken("admin"))
 	{
