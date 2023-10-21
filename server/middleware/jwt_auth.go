@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"errors"
 	"net/http"
 	"os"
 	"time"
@@ -29,7 +28,7 @@ func ValidateToken(roleParam string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		bearerToken := c.Request.Header.Get("Authorization")
 		if bearerToken == "" {
-			helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("token not found"))
+			helper.ResponseValidationErrorJson(c, http.StatusUnauthorized, "token not found", nil)
 			c.Abort()
 			return
 		}
@@ -37,7 +36,7 @@ func ValidateToken(roleParam string) gin.HandlerFunc {
 		bearerToken = bearerToken[7:] // menghilangkan Bearer
 		tokenExtract, err := jwt.Parse(bearerToken, tokenExtract)
 		if err != nil {
-			helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, err)
+			helper.ResponseValidationErrorJson(c, http.StatusUnauthorized, err.Error(), nil)
 			c.Abort()
 			return
 		}
@@ -51,18 +50,18 @@ func ValidateToken(roleParam string) gin.HandlerFunc {
 					c.Next()
 					return
 				} else {
-					helper.ResponseWhenFailOrError(c, http.StatusUnauthorized, errors.New("user is not an admin"))
+					helper.ResponseValidationErrorJson(c, http.StatusUnauthorized, "invalid token", nil)
 					c.Abort()
 					return
 				}
 			} else if roleParam == "user" {
 				c.Set("id", userId)
 				c.Next()
-			}	
+			}
 
 			return
 		}
-		helper.ResponseWhenFailOrError(c, http.StatusForbidden, errors.New("invalid token"))
+		helper.ResponseValidationErrorJson(c, http.StatusForbidden, "invalid token", nil)
 		c.Abort()
 	}
 }

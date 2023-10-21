@@ -20,7 +20,7 @@ func (r *rest) FetchRandomKrsHandler(c *gin.Context) {
 
 	randomKrsList, err := r.service.RandomKrs.FetchRandomKrs(uint(idUser))
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
+		helper.ResponseValidationErrorJson(c, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 
@@ -55,7 +55,7 @@ func (r *rest) FilterRandomKrsHandler(c *gin.Context) {
 
 	filterKrsList, err := r.service.RandomKrs.FilterRandomKrs(uint(idUser), filterJadwals, filterKelas)
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
+		helper.ResponseValidationErrorJson(c, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 

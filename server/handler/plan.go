@@ -17,13 +17,13 @@ func (r *rest) StorePlanHandler(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Error binding struct", err.Error())
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
 	kelas, err := r.service.Plan.StorePlan(uint(idUser), req.IdKelas)
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
@@ -35,7 +35,7 @@ func (r *rest) FetchPlanHandler(c *gin.Context) {
 
 	planList, err := r.service.Plan.GetByIdUser(uint(idUser))
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
+		helper.ResponseValidationErrorJson(c, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 
@@ -56,13 +56,13 @@ func (r *rest) EditPlanHandler(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Error binding struct", err.Error())
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
 	kelas, err := r.service.Plan.EditPlan(uint(idUser), uint(idPlanUint), req.IdKelas)
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
@@ -76,7 +76,7 @@ func (r *rest) DeletePlanHandler(c *gin.Context) {
 
 	err := r.service.Plan.DestroyPlan(uint(idUser), uint(idPlanUint))
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
+		helper.ResponseValidationErrorJson(c, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 

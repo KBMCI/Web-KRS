@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"errors"
 	"net/http"
 	"strconv"
 	"web-krs/helper"
@@ -20,7 +19,7 @@ func (r *rest) CreateUser(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&userRequest)
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Error binding struct", err)
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
@@ -28,7 +27,7 @@ func (r *rest) CreateUser(c *gin.Context) {
 
 	createUser, err := r.service.User.Register(&userRequest)
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Cannot create user", err.Error())
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
@@ -43,7 +42,7 @@ func (r *rest) CreateAdmin(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&userRequest)
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Error binding struct", err)
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
@@ -51,7 +50,7 @@ func (r *rest) CreateAdmin(c *gin.Context) {
 
 	createUser, err := r.service.User.Register(&userRequest)
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Cannot create user", err.Error())
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
@@ -65,26 +64,26 @@ func (r *rest) UserLogin(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&userLoginRequset)
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Error binding struct", err)
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
 	// cek email
 	user, err := r.service.User.GetByEmail(userLoginRequset.Email)
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusBadRequest, errors.New("invalid email or password"))
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, "invalid email or password", nil)
 		return
 	}
 
 	// cek password
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(userLoginRequset.Password)); err != nil {
-		helper.ResponseErrorJson(c, http.StatusBadRequest, errors.New("invalid email or password"))
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, "invalid email or password", nil)
 		return
 	}
 
 	tokenJwt, err := middleware.GenerateToken(user.ID, user.Role) // generate token
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusBadRequest, errors.New("error generating token"))
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, "error generating token", nil)
 		return
 	}
 
@@ -99,7 +98,7 @@ func (r *rest) ReadAll(c *gin.Context) {
 	users, err := r.service.User.ReadAll()
 
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Error Fetch Users", err.Error())
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
@@ -120,7 +119,7 @@ func (r *rest) ReadByID(c *gin.Context) {
 
 	readByID, err := r.service.User.ReadByID(id)
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
@@ -134,7 +133,7 @@ func (r *rest) Update(c *gin.Context) {
 
 	err := c.ShouldBind(&UserRequest)
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Error binding struct", err.Error())
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
@@ -143,7 +142,7 @@ func (r *rest) Update(c *gin.Context) {
 
 	update, err := r.service.User.Update(id, &UserRequest)
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Error Update User", err.Error())
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
@@ -159,13 +158,13 @@ func (r *rest) UpdateProfile(c *gin.Context) {
 
 	err := c.ShouldBind(&UserRequest)
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Error binding struct", err.Error())
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
 	update, err := r.service.User.UpdateProfile(file, int(idUserLogin), &UserRequest)
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Error Update User", err.Error())
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
@@ -179,26 +178,26 @@ func (r *rest) ForgotPassword(c *gin.Context) {
 	err := c.ShouldBindJSON(&UserRequest)
 
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Error Binding Struct", err)
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
 	findUser, err := r.service.User.GetByEmail(UserRequest.Email)
 
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Record not found", err.Error())
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
 	if UserRequest.VerifPassword != UserRequest.Password {
-		helper.ResponseValidationErrorJson(c, "Password incorrect", err)
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
 	update, _ := r.service.User.ForgotPassword(int(findUser.ID), &UserRequest)
 
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Error Update User", err)
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
@@ -214,13 +213,13 @@ func (r *rest) HasMatkul(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&user)
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Error binding struct", err.Error())
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
 	update, err := r.service.User.UserHasMatkul(uint(userId), &user)
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusUnprocessableEntity, err)
+		helper.ResponseValidationErrorJson(c, http.StatusUnprocessableEntity, err.Error(), nil)
 		return
 	}
 
@@ -232,7 +231,7 @@ func (r *rest) MatkulUser(c *gin.Context) {
 
 	readByID, err := r.service.User.ReadByID(int(userId))
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
@@ -247,21 +246,21 @@ func (r *rest) Delete(c *gin.Context) {
 
 	user, err := r.service.User.ReadByID(idInt)
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
 	if user.Image != "" {
 		err = r.service.User.DeleteImage(uint(idInt))
 		if err != nil {
-			helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
+			helper.ResponseValidationErrorJson(c, http.StatusInternalServerError, err.Error(), nil)
 			return
 		}
 	}
 
 	delete, err := r.service.User.Delete(idInt)
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Error, cannot delete", err.Error())
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 	}
 
 	helper.ResponseSuccessJson(c, "delete success", delete)

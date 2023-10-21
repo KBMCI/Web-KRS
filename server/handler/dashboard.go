@@ -13,7 +13,7 @@ func (r *rest) DashboardHandler(c *gin.Context) {
 
 	fetchMatkul, getPlansUser, err := r.service.Dashboard.GetDashboard(uint(idUser))
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
+		helper.ResponseValidationErrorJson(c, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 

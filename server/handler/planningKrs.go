@@ -15,13 +15,13 @@ func (r *rest) SuggestionKrs(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Error binding struct", err.Error())
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
 	Random, err := r.service.PlanningKrs.Suggestion(uint(idUser), req.IdKelas)
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 

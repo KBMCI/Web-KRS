@@ -15,13 +15,13 @@ func (r *rest) StoreKelasHandler(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Error binding struct", err.Error())
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
 	kelas, err := r.service.Kelas.StoreKelas(&req)
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
@@ -35,7 +35,7 @@ func (r *rest) EditKelasHandler(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Error binding struct", err.Error())
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
@@ -47,7 +47,7 @@ func (r *rest) EditKelasHandler(c *gin.Context) {
 
 	kelas, err := r.service.Kelas.EditKelas(uint(idKelasUint), uint(idJadwalUint), &req)
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusUnprocessableEntity, err)
+		helper.ResponseValidationErrorJson(c, http.StatusUnprocessableEntity, err.Error(), nil)
 		return
 	}
 
@@ -62,7 +62,7 @@ func (r *rest) DetailKelasHandler(c *gin.Context) {
 
 	kelas, err := r.service.Kelas.GetByID(uint(idUint))
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
@@ -80,7 +80,7 @@ func (r *rest) DetailJadwalKelasHandler(c *gin.Context) {
 
 	jadwal, err := r.service.Kelas.GetByIDJadwal(uint(idJadwalUint), uint(idKelasUint))
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
@@ -95,7 +95,7 @@ func (r *rest) DeleteKelasHandler(c *gin.Context) {
 
 	err := r.service.Kelas.DestroyKelas(uint(idUint))
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusUnprocessableEntity, err)
+		helper.ResponseValidationErrorJson(c, http.StatusUnprocessableEntity, err.Error(), nil)
 		return
 	}
 
@@ -105,7 +105,7 @@ func (r *rest) DeleteKelasHandler(c *gin.Context) {
 func (r *rest) FetchKelasHandler(c *gin.Context) {
 	kelasList, err := r.service.Kelas.FetchKelas()
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
+		helper.ResponseValidationErrorJson(c, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 

@@ -15,13 +15,13 @@ func (r *rest) StoreMatkulHandler(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Error binding struct", err.Error())
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
 	matkul, err := r.service.Matkul.StoreMatkul(&req)
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
@@ -35,7 +35,7 @@ func (r *rest) EditMatkulHandler(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		helper.ResponseValidationErrorJson(c, "Error binding struct", err.Error())
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
@@ -44,7 +44,7 @@ func (r *rest) EditMatkulHandler(c *gin.Context) {
 
 	matkul, err := r.service.Matkul.EditMatkul(uint(idUint), &req)
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusUnprocessableEntity, err)
+		helper.ResponseValidationErrorJson(c, http.StatusUnprocessableEntity, err.Error(), nil)
 		return
 	}
 
@@ -59,7 +59,7 @@ func (r *rest) DetailMatkulHandler(c *gin.Context) {
 
 	matkul, err := r.service.Matkul.GetByID(uint(idUint))
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusBadRequest, err)
+		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
 	}
 
@@ -72,7 +72,7 @@ func (r *rest) DeleteMatkulHandler(c *gin.Context) {
 
 	err := r.service.Matkul.DestroyMatkul(uint(idUint))
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusUnprocessableEntity, err)
+		helper.ResponseValidationErrorJson(c, http.StatusUnprocessableEntity, err.Error(), nil)
 		return
 	}
 
@@ -82,7 +82,7 @@ func (r *rest) DeleteMatkulHandler(c *gin.Context) {
 func (r *rest) FetchMatkulHandler(c *gin.Context) {
 	matkulList, err := r.service.Matkul.FetchMatkul()
 	if err != nil {
-		helper.ResponseErrorJson(c, http.StatusInternalServerError, err)
+		helper.ResponseValidationErrorJson(c, http.StatusInternalServerError, err.Error(), nil)
 		return
 	}
 
