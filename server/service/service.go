@@ -14,6 +14,8 @@ type Service struct {
 	RandomKrs   model.RandomKrsService
 	PlanningKrs model.PlanningKrsService
 	Dashboard   model.DashboardService
+	Fakultas    model.FakultasService
+	ProgramStudi model.ProgramStudiService
 }
 
 func Init(repository *repository.Repository) *Service {
@@ -28,8 +30,9 @@ func Init(repository *repository.Repository) *Service {
 		Plan:      NewPlanService(repository.Plan, repository.Kelas, repository.User),
 		User:      NewUserService(repository.User),
 		RandomKrs: NewRandomKrsService(repository.User, repository.Matkul, repository.Kelas),
-		// masih belum tau
 		PlanningKrs: NewPlanningKrsService(instRandomKrs),
-		Dashboard: NewDashboardService(instMatkul, instPlan),
+		Dashboard:   NewDashboardService(instMatkul, instPlan),
+		Fakultas: NewFakultasService(repository.Fakultas),
+		ProgramStudi: NewProgramStudiService(repository.ProgramStudi),
 	}
 }

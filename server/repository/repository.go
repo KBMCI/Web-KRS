@@ -7,11 +7,13 @@ import (
 )
 
 type Repository struct {
-	Matkul   model.MatkulRepository
-	Kelas    model.KelasRepository
-	JamKelas model.JamKelasRepository
-	Plan     model.PlanRepository
-	User     model.UserRepository
+	Matkul       model.MatkulRepository
+	Kelas        model.KelasRepository
+	JamKelas     model.JamKelasRepository
+	Plan         model.PlanRepository
+	User         model.UserRepository
+	Fakultas     model.FakultasRepository
+	ProgramStudi model.ProgramStudiRepository
 }
 
 func Init(db *gorm.DB) *Repository {
@@ -21,5 +23,7 @@ func Init(db *gorm.DB) *Repository {
 		JamKelas: NewJamKelasRepository(db),
 		Plan:     NewPlanRepository(db),
 		User:     NewUserRepository(db),
+		Fakultas: NewFakultasRepository(db),
+		ProgramStudi: NewProgramStudiRepository(db),
 	}
 }
