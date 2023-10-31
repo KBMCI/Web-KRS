@@ -1,8 +1,8 @@
-import Form from "./KelasForm";
-import { useState, useContext } from "react";
+import { useContext, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { url } from "../../api/url";
 import { DataContext } from "../../context/DataContext";
+import Form from "./KelasForm";
 
 export const KelasTambah = () => {
   const { feedbackHandler, validate } = useOutletContext();
@@ -37,23 +37,35 @@ export const KelasTambah = () => {
     jam_selesai,
   }) => {
     try {
-      const res = await url.post("/kelas", {
-        kode_matkul,
-        nama,
-        ruang_kelas,
-        hari,
-        jam_mulai,
-        jam_selesai,
-        updated_at: null,
-        created_at: null,
-      });
+      const token = localStorage.getItem("Authorization");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const res = await url.post(
+        "/kelas",
+        {
+          kode_matkul,
+          nama,
+          ruang_kelas,
+          hari,
+          jam_mulai,
+          jam_selesai,
+          updated_at: null,
+          created_at: null,
+        },
+        config
+      );
       if (res.status === 200) {
         console.log(res);
         setFormValue(intialValue);
         TriggerKelas();
         feedbackHandler(true, "post");
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleSubmit = (e) => {

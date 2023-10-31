@@ -56,7 +56,13 @@ function MatkulContent() {
     setLoading(true);
     if (showDel.show && showDel.id) {
       try {
-        const res = await url.delete(`/matkul/${showDel.id}`);
+        const token = localStorage.getItem("Authorization");
+        let config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const res = await url.delete(`/matkul/${showDel.id}`, config);
         if (res.status === 200) {
           console.log(res);
           feedbackHandler(true, "delete");

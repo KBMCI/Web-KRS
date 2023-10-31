@@ -1,16 +1,17 @@
-import Button from "../../component/Button";
-import Paginate from "../../component/Paginate";
-import KelasTable from "./KelasTable";
-import { FiPlus, FiTrello } from "react-icons/fi";
-import FilterTable from "../../component/FilterTable";
 import { useContext, useState } from "react";
+import { FiPlus, FiTrello } from "react-icons/fi";
+import { Outlet, useLocation } from "react-router-dom";
 import { url } from "../../api/url";
-import { DataContext } from "../../context/DataContext";
+import Button from "../../component/Button";
 import Feedback from "../../component/Feedback";
-import { Outlet } from "react-router-dom";
+import FilterTable from "../../component/FilterTable";
+import Paginate from "../../component/Paginate";
+import { DataContext } from "../../context/DataContext";
+import KelasTable from "./KelasTable";
 
 function KelasContent() {
   const { dataKelas, TriggerKelas } = useContext(DataContext);
+  const location = useLocation();
 
   // Create pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -43,18 +44,31 @@ function KelasContent() {
   });
 
   // Show Confimation Box Delete
-  const deleteHandler = (id) => {
+  const deleteHandler = (idKelas, idJadwal) => {
+    console.log(idKelas, idJadwal);
     setShowDel({
       show: true,
-      id,
+      id: {
+        idKelas,
+        idJadwal,
+      },
     });
   };
 
   // perform deletion and hide popup
   const deleteHandlerTrue = async () => {
     if (showDel.show && showDel.id) {
+      const token = localStorage.getItem("Authorization");
+      let config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
       try {
-        const res = await url.delete(`/kelas/${showDel.id}`);
+        const res = await url.delete(
+          `/kelas/${showDel.id.idKelas}/jadwal/${showDel.id.idJadwal}`,
+          config
+        );
         if (res.status === 200) {
           console.log(res);
           TriggerKelas();
@@ -79,7 +93,7 @@ function KelasContent() {
   };
 
   // Menampilkan feedback
-   const [feedback, setFeedback] = useState({
+  const [feedback, setFeedback] = useState({
     show: false,
     check: false,
     note: null,

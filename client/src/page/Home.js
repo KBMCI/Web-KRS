@@ -9,9 +9,9 @@ export function Home() {
   const { open } = useContext(DataContext);
   // Items Navbar
   const itemsNavbar = {
-    name : "admin",
-    link : "/admin/"
-  }
+    name: "admin",
+    link: "/admin/",
+  };
   // Items Sidebar
   const itemsSidebar = [
     {
@@ -43,9 +43,9 @@ export function Home() {
         <div
           className={`${
             open ? "w-4/5" : "w-11/12"
-          } fixed bg-neutral-100 right-0 z-10 duration-300  bg-neutral-50`}
+          } fixed bg-neutral-100 right-0 z-50 duration-300  bg-neutral-50`}
         >
-          <Navbar items={itemsNavbar}/>
+          <Navbar items={itemsNavbar} />
         </div>
         <div
           className={`${

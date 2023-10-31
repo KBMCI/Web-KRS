@@ -1,4 +1,4 @@
-import { FiTrash2, FiEdit2 } from "react-icons/fi";
+import { FiEdit2, FiTrash2 } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import PopUpDel from "../../component/PopUpDel";
 
@@ -10,13 +10,7 @@ export default function MatkulTabel({
   deleteHandler,
   loading,
 }) {
-  const table = [
-    "Kode MK",
-    "Nama Mata Kuliah",
-    "SKS",
-    "Tahun Kurikulum",
-    "",
-  ];
+  const table = ["Kode MK", "Nama Mata Kuliah", "SKS", "Tahun Kurikulum", ""];
   // Style Component
   const barisTabel = () => {
     return "py-2 text-start px-4 font-semibold";
@@ -41,8 +35,7 @@ export default function MatkulTabel({
               return (
                 <tr
                   key={value.kode_matkul}
-                  className="bg-secondary text-neutral-900 border-b border-neutral-400 "
-                >
+                  className="bg-secondary text-neutral-900 border-b border-neutral-400 ">
                   <th className={barisTabel()}>{value.kode_matkul}</th>
                   <th className={barisTabel()}>{value.nama}</th>
                   <th className={barisTabel()}>{value.sks} SKS</th>
@@ -50,13 +43,11 @@ export default function MatkulTabel({
                   <th className=" py-2 px-4">
                     <div className="flex text-2xl justify-around gap-5 align-center">
                       <button>
-                        <Link to={`${value.kode_matkul}`}>
+                        <Link to={`${value.ID}`}>
                           <FiEdit2 className="text-primary" />
                         </Link>
                       </button>
-                      <button
-                        onClick={deleteHandler.bind(this, value.kode_matkul)}
-                      >
+                      <button onClick={deleteHandler.bind(this, value.ID)}>
                         <FiTrash2 className="text-primary" />
                       </button>
                     </div>

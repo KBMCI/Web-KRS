@@ -1,8 +1,8 @@
-import { useState, useContext } from "react";
+import { useContext, useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import { url } from "../../api/url";
 import { DataContext } from "../../context/DataContext";
 import MatkulForm from "./MatkulForm";
-import { url } from "../../api/url";
-import { useOutletContext } from "react-router-dom";
 
 export default function MatkulTambah() {
   const { feedbackHandler, validate } = useOutletContext();
@@ -31,14 +31,24 @@ export default function MatkulTambah() {
   const postData = async ({ kode_matkul, nama, tahun_kurikulum, sks }) => {
     try {
       setLoading(true);
-      const res = await url.post("/matkul", {
-        kode_matkul,
-        nama,
-        tahun_kurikulum: parseInt(tahun_kurikulum),
-        sks: parseInt(sks),
-        updated_at: null,
-        created_at: null,
-      });
+      const token = localStorage.getItem("Authorization");
+      let config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const res = await url.post(
+        "/matkul",
+        {
+          kode_matkul,
+          nama,
+          tahun_kurikulum: parseInt(tahun_kurikulum),
+          sks: parseInt(sks),
+          updated_at: null,
+          created_at: null,
+        },
+        config
+      );
       if (res.status === 200) {
         console.log(res);
         feedbackHandler(true, "post");

@@ -34,18 +34,28 @@ const UserEdit = () => {
     role,
   }) => {
     try {
+      const token = localStorage.getItem("Authorization");
+      let config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
       setLoading(true);
-      const res = await url.patch(`user/${kodeParams.current.kode}`, {
-        id: null,
-        email,
-        nama,
-        program_studi,
-        nim,
-        password,
-        role,
-        updated_at: null,
-        created_at: null,
-      });
+      const res = await url.patch(
+        `user/${kodeParams.current.kode}`,
+        {
+          id: null,
+          email,
+          nama,
+          program_studi,
+          nim,
+          password,
+          role,
+          updated_at: null,
+          created_at: null,
+        },
+        config
+      );
       if (res.status === 200) {
         console.log(res);
         feedbackHandler(true, "patch");
@@ -63,15 +73,24 @@ const UserEdit = () => {
   useEffect(() => {
     const getMatkulId = async () => {
       try {
-        const { data } = await url.get(`user/${kodeParams.current.kode}`);
+        const token = localStorage.getItem("Authorization");
+        let config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const { data } = await url.get(
+          `user/${kodeParams.current.kode}`,
+          config
+        );
         console.log(data);
         setFormValue({
-          email: data.data.email,
-          nama: data.data.nama,
-          program_studi: data.data.program_studi,
-          nim: data.data.nim,
-          password: data.data.password,
-          role: data.data.role,
+          email: data.data.data.email,
+          nama: data.data.data.nama,
+          program_studi: data.data.data.program_studi,
+          nim: data.data.data.nim,
+          password: data.data.data.password,
+          role: data.data.data.role,
         });
       } catch (err) {
         console.log(err);
@@ -87,6 +106,7 @@ const UserEdit = () => {
   };
 
   const handleSubmit = (e) => {
+    console.log(formValue);
     e.preventDefault();
     setFormErrors(validate(formValue));
     setIsSubmit(true);
