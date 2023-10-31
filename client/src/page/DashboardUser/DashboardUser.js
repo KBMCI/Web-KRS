@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { url } from "../../api/url";
 import LogoMyPlans from "../../assets/LogoMyPlans.svg";
 import LogoPlanning from "../../assets/LogoPlanning.svg";
@@ -13,6 +14,7 @@ const DashboardUser = () => {
   const [firstPlan, setFirstPlan] = useState([]);
   const [namaMataKuliahTabel, setNamaMataKuliahTabel] = useState([]);
   const [query, setQuery] = useState("");
+  const navigate = useNavigate();
   const { selectedIdMatkul, setSelectedIdMatkul } = useContext(DataContext);
 
   useEffect(() => {
@@ -55,21 +57,29 @@ const DashboardUser = () => {
     };
     getMyplans();
 
+    // Mengambil ID Mata kuliah User yang telah dipilih dari Database
+    const getIDMatkuls = async () => {
+      const token = localStorage.getItem("Authorization");
+      let config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const response = await url.get("/user/matkul", config);
+      console.log(response.data.data.matkuls);
+      // const getIDFromResponse = response.data.data.matkuls.map(
+      //   (item) => item.ID
+      // );
+      // console.log(getIDFromResponse);
+      setSelectedIdMatkul(response.data.data.matkuls);
+    };
+    getIDMatkuls();
+    console.log("Show Id Matkuls");
+    console.log(selectedIdMatkul);
+
     // Mengambil id matkul untuk check checkbox
-    setSelectedIdMatkul(JSON.parse(localStorage.getItem("Temporary_plan")));
-
-    // const getIDMatkuls = async () => {
-    //   const token = localStorage.getItem("Authorization");
-    //   let config = {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   };
-
-    //   const response = await url.get("/kelas", config);
-    //   console.log(response.data.data);
-    // };
-    // getIDMatkuls();
+    // setSelectedIdMatkul(JSON.parse(localStorage.getItem("Temporary_plan")));
   }, [, setSelectedIdMatkul]);
 
   // Handle ketika user menng-klik tombol save/simpan
@@ -89,12 +99,16 @@ const DashboardUser = () => {
       console.log("Matkul yang diupdate");
       console.log(selectedIdMatkul);
       console.log(response);
-      localStorage.setItem("Temporary_plan", JSON.stringify(selectedIdMatkul));
+      window.alert(
+        "Mata kuliah anda sudah dipilih untuk diproses dalam Random Krs"
+      );
+      // localStorage.setItem("Temporary_plan", JSON.stringify(selectedIdMatkul));
     } catch (err) {
       console.log(err.message);
     }
   };
 
+  // Logic untuk Search Bar
   const getFilteredItems = (query, items) => {
     if (!query) {
       return items;
@@ -106,22 +120,22 @@ const DashboardUser = () => {
     );
   };
 
+  // filter
+  const filteredItems = getFilteredItems(query, namaMataKuliahTabel);
+
   const barisTabel = () => {
     return "h-[51.13px] min-h-[51.13px] py-[10px] px-4 font-semibold text-base";
   };
 
-  // filter
-  const filteredItems = getFilteredItems(query, namaMataKuliahTabel);
-
   return (
     <div className="bg-secondary p-7">
-      <h1 className="neutral-900 font-semibold text-2xl ml-[2px] mt-[1px] p-[10px]">
-        Mata Kuliah Dipilih
-      </h1>
-
-      <div className="flex flex-row gap-[35px] ml-[12px]">
-        <div className="flex-col ">
-          <div className="w-full shadow-lg rounded-[10px] mb-[31px] h-[451px] max-h-[451px] overflow-y-scroll scrollbar scrollbar-thumb-neutral-400 scrollbar-w-1 scrollbar-thumb-rounded-lg">
+      <div className=" grid grid-cols-6 gap-3">
+        {/* Tabel Mata Kuliah */}
+        <h1 className="neutral-900 font-semibold text-2xl ml-[2px] mt-[1px] p-[10px] col-span-6 ">
+          Mata Kuliah Dipilih
+        </h1>
+        <div className="Tabel-Mata-Kuliah  col-span-4">
+          <div className="w-full shadow-lg  rounded-[10px] mb-[10px] h-[451px] max-h-[451px] overflow-y-scroll scrollbar scrollbar-thumb-neutral-400 scrollbar-w-1 scrollbar-thumb-rounded-lg">
             <table className="table-auto border-collapse border-b border-neutral-400 w-full drop-shadow-xl ">
               <thead className="">
                 <tr className="bg-primary text-secondary sticky top-0">
@@ -132,19 +146,18 @@ const DashboardUser = () => {
                   <th className="px-[16px] py-[10px] h-[42px] w-[335px] text-left">
                     Nama Mata Kuliah
                   </th>
-                  <th className="h-[42px] w-[235px]">
-                    <div className="flex justify-center items-center">
+                  <th className="h-[42px] w-[235px] p-2">
+                    <div className="flex justify-center items-center gap-2">
                       <div>
-                        <img src={LogoSearch} alt="" className="" />
+                        <img src={LogoSearch} alt="" width="30" />
                       </div>
-                      <div>
-                        <input
-                          type="text"
-                          onChange={(e) => setQuery(e.target.value)}
-                          className="bg-primary border-none rounded-3xl text-[15px] text-secondary  py-[4px] px-3 border-2  focus:border-primary placeholder:text-secondary placeholder:text-[13px]  font-semibold w-[300px] ...  focus:outline-non focus:outline-primary transition duration-300 "
-                          placeholder="Search Mata Kuliah"
-                        />
-                      </div>
+
+                      <input
+                        type="text"
+                        onChange={(e) => setQuery(e.target.value)}
+                        className="bg-primary border-none rounded-3xl text-[15px] text-secondary  py-[4px] px-3 border-2  focus:border-neutral-50 primary placeholder:text-secondary placeholder:text-[13px]  font-semibold w-[300px] ...  focus:outline-non focus:outline-neutral-10 transition duration-300 "
+                        placeholder="Search Mata Kuliah"
+                      />
                     </div>
                   </th>
                 </tr>
@@ -183,13 +196,56 @@ const DashboardUser = () => {
               </tbody>
             </table>
           </div>
-          <button className="bg-primary rounded-xl p-3" onClick={onPostHandle}>
-            Simpan
-          </button>
-          {/* My Plan */}
-          <h1 className="neutral-900 font-semibold text-2xl ml-[22px] mb-[7px]">
-            My Plans
-          </h1>
+          <div className="flex justify-end items-end text-neutral-10">
+            <button
+              className="bg-primary rounded-xl p-3"
+              onClick={onPostHandle}
+            >
+              Simpan
+            </button>
+          </div>
+        </div>
+
+        {/* Card Planning  */}
+        <div className="Card-Planning  col-span-2">
+          <div className="flex-col">
+            <div className="bg-secondary h-[451px] w-[337px] flex flex-col items-center shadow-2xl rounded-[15px] ">
+              <div className="mt-[48px] mb-[40px]">
+                <img
+                  className="mx-[131px] mb-[17px]"
+                  src={LogoPlanning}
+                  width={75}
+                  height={75}
+                  alt="Planning KRS"
+                />
+                <div>
+                  <h1 className="neutral-900 font-bold text-2xl text-center p-[10px]">
+                    Planning KRS
+                  </h1>
+                  <p className="neutral-900 text-center p-[10px]">
+                    merupakan fitur yang dibuat untuk anda melakukan perencanaan
+                    Kartu Rencana Semester. Akan disediakan banyak mata kuliah
+                    yang dapat Anda pilih nantinya.
+                  </p>
+                </div>
+              </div>
+
+              <button
+                className="bg-accent rounded-[10px] font-semibold text-base px-[32px] py-[15px] mb-[48px]"
+                onClick={() => navigate("/myplan")}
+              >
+                Coba
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Tabel My Plan */}
+        <h1 className=" neutral-900 font-semibold text-2xl ml-[22px] mb-[7px] col-span-6">
+          My Plans
+        </h1>
+
+        <div className="Tabel-My-Plan col-span-4">
           <div className="bg-secondary h-[303px] flex flex-col items-center w-full  shadow-2xl rounded-[10px]">
             {isFilled && firstPlan ? (
               <>
@@ -216,34 +272,9 @@ const DashboardUser = () => {
           </div>
         </div>
 
-        <div className="flex-col">
-          <div className="bg-secondary h-[451px] w-[337px] flex flex-col items-center shadow-lg rounded-[15px] mb-[71px]">
-            <div className="mt-[48px] mb-[40px]">
-              <img
-                className="mx-[131px] mb-[17px]"
-                src={LogoPlanning}
-                width={75}
-                height={75}
-                alt="Planning KRS"
-              />
-              <div>
-                <h1 className="neutral-900 font-bold text-2xl text-center p-[10px]">
-                  Planning KRS
-                </h1>
-                <p className="neutral-900 text-center p-[10px]">
-                  merupakan fitur yang dibuat untuk anda melakukan perencanaan
-                  Kartu Rencana Semester. Akan disediakan banyak mata kuliah
-                  yang dapat Anda pilih nantinya.
-                </p>
-              </div>
-            </div>
-
-            <button className="bg-accent rounded-[10px] font-semibold text-base px-[32px] py-[15px] mb-[48px]">
-              Coba
-            </button>
-          </div>
-
-          <div className="bg-secondary h-[303px] w-[337px] flex flex-col items-center shadow-lg rounded-[15px]">
+        {/* Card Random KRS */}
+        <div className="Card-Random-KRS col-span-2">
+          <div className="bg-secondary h-[303px] w-[337px] flex flex-col items-center shadow-2xl rounded-[15px]">
             <img
               className="mt-[17.8px] mb-[10px]"
               src={LogoRandom}
@@ -258,11 +289,15 @@ const DashboardUser = () => {
                 dengan acak
               </p>
             </div>
-            <button className="bg-accent rounded-[10px] font-semibold text-base px-[32px] py-[15px] mb-[17.8px]">
+            <button
+              className="bg-accent rounded-[10px] font-semibold text-base px-[32px] py-[15px] mb-[17.8px]"
+              onClick={() => navigate("/random-krs")}
+            >
               Coba
             </button>
           </div>
         </div>
+        {/*  */}
       </div>
     </div>
   );

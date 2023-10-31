@@ -165,7 +165,7 @@ const TablePlan = ({
     <>
       <div
         className={` ${
-          dashboardUser ? "" : "min-h-[448px] bg-secondary px-7 pb-7 pt-4"
+          dashboardUser ? "" : "min-h-[448px] bg-secondary px-7 pb-1 pt-4"
         } `}
       >
         <div className={`${dashboardUser ? `` : `mt-5 mb-9`}`}>
@@ -183,10 +183,10 @@ const TablePlan = ({
               className={`${
                 dashboardUser &&
                 `rounded-2xl overflow-y-scroll mt-[10px] h-[290px] scrollbar scrollbar-w-[5px] scrollbar-thumb-neutral-400 `
-              }`}
+              } `}
             >
               <table
-                className={`table-fixed  border-collapse border-b border-neutral-400 w-full drop-shadow-2xl rounded-2xl  ... ${
+                className={`table-fixed  border-collapse border-b border-neutral-400 w-full drop-shadow-xl rounded-2xl  ... ${
                   dashboardUser ? `` : ` overflow-hidden  min-w-fit`
                 } `}
               >
