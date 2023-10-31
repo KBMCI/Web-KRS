@@ -1,5 +1,6 @@
 import qs from "qs";
 import React, { useContext, useEffect, useState } from "react";
+import { BsFillArrowUpCircleFill } from "react-icons/bs";
 import { FiFilter } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { url } from "../../api/url";
@@ -353,6 +354,12 @@ const RandomKrs = () => {
             fixed={true}
             // disabled={plan.length > 0 ? false : true}
           />
+
+          <div className="fixed right-5 bottom-4 z-10 text-primary shadow-primary shadow-2xl rounded-full">
+            <a href="#">
+              <BsFillArrowUpCircleFill size={60} />
+            </a>
+          </div>
 
           {plan.length > 0 ? (
             plan &&

@@ -17,6 +17,7 @@ const TabelFilter = ({
 }) => {
   const { selectedIdMatkul, setSelectedIdMatkul, setKelasFiltered } =
     useContext(DataContext);
+
   const [descMatkulFilter, setDescMatkulFilter] = useState([]);
   const [descMatkul, setDescMatkul] = useState([]);
 
@@ -53,7 +54,8 @@ const TabelFilter = ({
   }, []);
 
   useEffect(() => {
-    const planTerpilih = JSON.parse(localStorage.getItem("Temporary_plan"));
+    const planTerpilih = selectedIdMatkul;
+    console.log(selectedIdMatkul);
     // console.log("Plan Terpilih");
     // console.log(planTerpilih);
 
@@ -125,7 +127,7 @@ const TabelFilter = ({
               <div className="w-5/12 pl-[30px] mt-[18px] pt-[2px] pb-[1rem]">
                 <h1 className="text-3xl font-bold">Mata Kuliah</h1>
                 <h3 className="mt-4 text-sm font-normal">
-                  Pilih Kelas Mata Kuliah yang ingin kamu hindari.
+                  Pilih Kelas Mata Kuliah yang ingin kamu inginkan.
                 </h3>
               </div>
             </div>
