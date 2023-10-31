@@ -57,23 +57,23 @@ const TableResultPlanning = ({ data: matkuls, trigger, resetHandler }) => {
   }, [matkuls, trigger, setTabel]);
 
   const barisTabel = () => {
-    return "text-center px-2 font-semibold text-[12px]";
+    return "p-2 text-center font-semibold text-[12px] w-1/6 flex items-center";
   };
 
   const jamTabel = () => {
-    return "py-2 px-4 text-center font-bold text-[12px]";
+    return "p-2 text-center font-bold text-[12px] w-1/6 flex items-center";
   };
 
   const headerTabel = () => {
-    return "px-4 py-2 text-[14px]";
+    return "p-2 text-[12px] w-1/6";
   };
   return (
     <div>
       <h2 className="text-xl font-medium mb-2">My Current Plan </h2>
-      <div className="h-screen overflow-y-auto">
-        <table className="table-fixed border-collapse border-b border-neutral-400 w-full drop-shadow-2xl rounded-2xl overflow-hidden">
-          <thead>
-            <tr className="bg-primary text-secondary">
+      <div className="">
+        <table className="w-full table-fixed drop-shadow-2xl ">
+          <thead className="flex w-full rounded-t-2xl overflow-hidden">
+            <tr className=" flex w-full bg-primary text-secondary">
               <th className={headerTabel()}></th>
               <th className={headerTabel()}>Senin</th>
               <th className={headerTabel()}>Selasa</th>
@@ -82,11 +82,14 @@ const TableResultPlanning = ({ data: matkuls, trigger, resetHandler }) => {
               <th className={headerTabel()}>Jumat</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody
+            className="flex flex-col items-center rounded-b-2xl justify-between overflow-y-scroll w-full scrollbar scrollbar-w-[5px] scrollbar-thumb-neutral-400 scrollbar-thumb-rounded-full"
+            style={{ height: "80vh", width: `calc(100% + 5px)` }}
+          >
             {tabelJadwal?.map((jadwal, index) => (
               <tr
                 key={index}
-                className="bg-secondary text-neutral-900 border-b border-neutral-400"
+                className="bg-secondary text-neutral-900 border-b border-neutral-400 flex w-full "
               >
                 <td className={jamTabel()}>{jadwal.jam}</td>
                 <td className={barisTabel()}>{jadwal.hari.senin}</td>
@@ -99,10 +102,12 @@ const TableResultPlanning = ({ data: matkuls, trigger, resetHandler }) => {
           </tbody>
         </table>
       </div>
-
-
     </div>
   );
 };
 
+
+
+
 export default TableResultPlanning;
+

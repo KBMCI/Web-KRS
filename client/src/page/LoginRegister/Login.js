@@ -109,22 +109,19 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-[#F3F7FF] h-screen w-full flex items-center justify-center gap-[58px]">
-      {/* <img src={EllipseBiru} className="bg-right-top z-0"></img>     */}
-
+    <div className="bg-[#F3F7FF] h-screen w-full flex items-center justify-center gap-20">
       {/* Kiri */}
-      <div className="bg-blue w-50 flex items-center justify-center rounded-2xl shadow-lg h-[864px] w-[530px] z-10">
-        <img src={LoginImg} width={531} height={531}></img>
+      <div className="bg-blue flex items-center justify-center rounded-2xl shadow-lg p-8 ">
+        <img src={LoginImg} alt="bg-login" className="object-cover w-full h-full object-center"/>
       </div>
       {/* Kanan */}
-
-      <div className=" static bg-secondary w-50 flex flex-col items-center justify-center rounded-2xl shadow-lg h-auto w-[530px] my-[80px] z-10">
+      <div className=" bg-secondary flex flex-col items-center justify-center rounded-2xl shadow-lg z-10 p-10">
         <img
-          className="mx-[231px] mt-[92px] mb-[83px]"
           src={Logo}
           width="67px"
-        ></img>
-        <div className="w-[351px] h-[108px]">
+          alt="bg-login"
+        />
+        <div className="w-[351px] h-full">
           <h1 className="font-bold text-5xl flex justify-center mb-[14px]">
             Aloo!
           </h1>
@@ -133,7 +130,7 @@ const Login = () => {
             kamu.
           </p>
         </div>
-        <div className="mt-[39px] w-[350px] h-[294px] mb-[181px]">
+        <div className="mt-[39px] w-[350px] h-full">
           <form onSubmit={handleLogin} className="flex flex-col" action="">
             <div className="relative">
               <input
