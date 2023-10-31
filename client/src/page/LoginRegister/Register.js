@@ -101,16 +101,16 @@ const Register = () => {
     <div className="bg-[#F3F7FF] h-full w-full flex items-center justify-center gap-[58px]">
       {/* Kiri */}
       <div className="bg-blue w-50 flex items-center justify-center rounded-2xl shadow-lg h-[864px] w-[530px]">
-        <img src={RegisterImg} width={590} height={590}></img>
+        <img src={RegisterImg} width={590} height={590} alt="bg-register"/>
       </div>
       {/* Kanan */}
       <div className="bg-secondary w-50 flex flex-col items-center justify-center rounded-2xl shadow-lg h-auto w-[530px] my-[80px]">
         <img
           className="mx-[231px] mt-[44px] mb-[20px]"
+          alt=""
           src={Logo}
-          width="67px"></img>
+          width="67px" />
         <div className="w-[380px] h-[65px] mx-[75px] mb-[32px] text-center">
-          {/* ini harusnya 5xl tapi kegedean */}
           <h1 className="font-bold text-4xl">Yuk, Daftar Dulu!</h1>
         </div>
         <div className="w-[350px] h-[588px] mx-[90px] mb-[48px]">
@@ -262,7 +262,7 @@ const Register = () => {
             <p className="text-neutral-400 text-[15px]">
               Sudah mempunyai akun?{" "}
             </p>
-            <a className="text-primary text-[15px]" href="">
+            <a className="text-primary text-[15px]" >
               <Link to="/login"> &nbsp;Login</Link>
             </a>
           </div>
