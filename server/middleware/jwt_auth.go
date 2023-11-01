@@ -50,7 +50,7 @@ func ValidateToken(roleParam string) gin.HandlerFunc {
 					c.Next()
 					return
 				} else {
-					helper.ResponseValidationErrorJson(c, http.StatusUnauthorized, "invalid token", nil)
+					helper.ResponseValidationErrorJson(c, http.StatusUnauthorized, "user is not an admin", nil)
 					c.Abort()
 					return
 				}
