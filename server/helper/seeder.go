@@ -20,36 +20,74 @@ func SeederRefresh() {
 	database.Migrator().DropTable(&model.Kelas{})
 	database.Migrator().DropTable(&model.JadwalKelas{})
 	database.Migrator().DropTable(&model.JamKelas{})
+	database.Migrator().DropTable(&model.Fakultas{})
+	database.Migrator().DropTable(&model.ProgramStudi{})
 
-	database.AutoMigrate(&model.User{}, &model.Matkul{}, &model.Kelas{}, &model.JadwalKelas{}, &model.JamKelas{}, &model.Plan{})
+	database.AutoMigrate(
+		&model.User{}, 
+		&model.Matkul{}, 
+		&model.Kelas{}, 
+		&model.JadwalKelas{}, 
+		&model.JamKelas{}, 
+		&model.Plan{},
+		&model.Fakultas{},
+		&model.ProgramStudi{},
+	)
 
 	hashAdmin, _ := HashPassword("Admin123.")
 	hashUser, _ := HashPassword("User123.")
 
 	users := []model.User{
-		{Nama: "Admin", Email: "admin@gmail.com", ProgramStudi: "Teknologi Informasi", Nim: "215150700111021", Password: hashAdmin, Role: "admin"},
-		{Nama: "User", Email: "user@gmail.com", ProgramStudi: "Teknologi Informasi", Nim: "215150700111022", Password: hashUser, Role: "user"},
+		{Nama: "Admin", Email: "admin@gmail.com", ProgramStudiID: 1, Nim: "215150700111021", Password: hashAdmin, Role: "admin"},
+		{Nama: "User", Email: "user@gmail.com", ProgramStudiID: 1, Nim: "215150700111022", Password: hashUser, Role: "user"},
+	}
+
+	fakultas := model.Fakultas{
+		Nama: "Ilmu Komputer",
+	}
+
+	prodis := []model.ProgramStudi {
+		{
+			Nama: "Teknologi Informasi",
+			FakultasID: 1,
+		},
+		{
+			Nama: "Pendidikan Teknologi Informasi",
+			FakultasID: 1,
+		},
+		{
+			Nama: "Teknik Komputer",
+			FakultasID: 1,
+		},
+		{
+			Nama: "Teknik Informatika",
+			FakultasID: 1,
+		},
+		{
+			Nama: "Sistem Informasi",
+			FakultasID: 1,
+		},
 	}
 
 	matkuls := []model.Matkul{
 		// wajib
-		{Kode: "COM60051", Nama: "Metodologi Penelitian dan Penulisan Ilmiah", TahunKurikulum: 2020, Sks: 3},
-		{Kode: "CSD60004", Nama: "Keamanan Jaringan", TahunKurikulum: 2020, Sks: 3},
-		{Kode: "CIT61020", Nama: "Administrasi Basis Data", TahunKurikulum: 2020, Sks: 4},
-		{Kode: "CIT61021", Nama: "Data Warehouse", TahunKurikulum: 2020, Sks: 3},
-		{Kode: "CIT61022", Nama: "Pemrograman Integratif", TahunKurikulum: 2020, Sks: 4},
+		{Kode: "COM60051", ProgramStudiID: 1, Nama: "Metodologi Penelitian dan Penulisan Ilmiah", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CSD60004", ProgramStudiID: 1, Nama: "Keamanan Jaringan", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CIT61020", ProgramStudiID: 1, Nama: "Administrasi Basis Data", TahunKurikulum: 2020, Sks: 4},
+		{Kode: "CIT61021", ProgramStudiID: 1, Nama: "Data Warehouse", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CIT61022", ProgramStudiID: 1, Nama: "Pemrograman Integratif", TahunKurikulum: 2020, Sks: 4},
 		// pilihan
-		{Kode: "CIT60024", Nama: "Basis Data Terdistribusi", TahunKurikulum: 2020, Sks: 3},
-		{Kode: "CSD60013", Nama: "Pengantar Big Data", TahunKurikulum: 2020, Sks: 3},
-		{Kode: "CIT60028", Nama: "High Availability System", TahunKurikulum: 2020, Sks: 3},
-		{Kode: "CIT60029", Nama: "Internet of Things", TahunKurikulum: 2020, Sks: 3},
-		{Kode: "CIT60031", Nama: "Manajemen Proyek Teknologi Informasi", TahunKurikulum: 2020, Sks: 3},
-		{Kode: "CSD60001", Nama: "Sistem Informasi Geografi", TahunKurikulum: 2020, Sks: 3},
-		{Kode: "CIT60035", Nama: "Sistem Terdistribusi", TahunKurikulum: 2020, Sks: 3},
-		{Kode: "CIT60036", Nama: "Teknologi Berbasis Cloud", TahunKurikulum: 2020, Sks: 3},
-		{Kode: "CIT60037", Nama: "Microservice Architecture", TahunKurikulum: 2020, Sks: 2},
-		{Kode: "CSD60007", Nama: "Digital Financial Platform", TahunKurikulum: 2020, Sks: 2},
-		{Kode: "CIT60039", Nama: "Pemrograman Web Lanjut", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CIT60024", ProgramStudiID: 1, Nama: "Basis Data Terdistribusi", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CSD60013", ProgramStudiID: 1, Nama: "Pengantar Big Data", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CIT60028", ProgramStudiID: 1, Nama: "High Availability System", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CIT60029", ProgramStudiID: 1, Nama: "Internet of Things", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CIT60031", ProgramStudiID: 1, Nama: "Manajemen Proyek Teknologi Informasi", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CSD60001", ProgramStudiID: 1, Nama: "Sistem Informasi Geografi", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CIT60035", ProgramStudiID: 1, Nama: "Sistem Terdistribusi", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CIT60036", ProgramStudiID: 1, Nama: "Teknologi Berbasis Cloud", TahunKurikulum: 2020, Sks: 3},
+		{Kode: "CIT60037", ProgramStudiID: 1, Nama: "Microservice Architecture", TahunKurikulum: 2020, Sks: 2},
+		{Kode: "CSD60007", ProgramStudiID: 1, Nama: "Digital Financial Platform", TahunKurikulum: 2020, Sks: 2},
+		{Kode: "CIT60039", ProgramStudiID: 1, Nama: "Pemrograman Web Lanjut", TahunKurikulum: 2020, Sks: 3},
 	}
 
 	jamKelas := []model.JamKelas{
@@ -397,7 +435,7 @@ func SeederRefresh() {
 		}},
 
 		// Sistem Informasi Geografi
-		{KodeMatkul: "CIT60034", Nama: "A", JadwalKelas: []model.JadwalKelas{
+		{KodeMatkul: "CSD60001", Nama: "A", JadwalKelas: []model.JadwalKelas{
 			{
 				Hari:       "Selasa",
 				JamMulai:   "07:00",
@@ -456,7 +494,11 @@ func SeederRefresh() {
 			},
 		}},
 	}
-
+	
+	database.Create(&fakultas)
+	
+	database.Create(&prodis)
+	
 	for _, user := range users {
 		database.Create(&user)
 	}
