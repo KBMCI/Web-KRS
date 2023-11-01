@@ -8,7 +8,8 @@ type (
 		Nama       string   `json:"nama" gorm:"type:varchar(50)"`
 		FakultasID uint     `json:"id_fakultas"`
 		Fakultas   Fakultas `json:"-"`
-		
+		Matkuls    []Matkul `json:"-"`
+		Users      []User   `json:"-"`
 	}
 
 	ProgramStudiRepository interface {

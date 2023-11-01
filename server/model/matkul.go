@@ -9,15 +9,15 @@ import (
 
 type (
 	Matkul struct {
-		// gorm.Model
-		ID				uint 		`gorm:"primaryKey"`
-		Kode			string 		`json:"kode_matkul" gorm:"unique;type:varchar(11)"`
-		Nama 			string		`json:"nama" gorm:"type:varchar(100)"`
-		TahunKurikulum 	int16		`json:"tahun_kurikulum"`
-		Sks				int8		`json:"sks"`
-		CreatedAt 		time.Time 	`json:"-"`	
-		UpdatedAt 		time.Time 	`json:"-"`
-		Kelas			[]Kelas 	`json:"kelas" gorm:"foreignKey:KodeMatkul;references:Kode;constraint:OnDelete:CASCADE"` // Relationship: One-to-Many (One course has many classes)
+		ID             uint      `gorm:"primaryKey"`
+		Kode           string    `json:"kode_matkul" gorm:"unique;type:varchar(11)"`
+		ProgramStudiID uint      `json:"id_program_studi"`
+		Nama           string    `json:"nama" gorm:"type:varchar(100)"`
+		TahunKurikulum int16     `json:"tahun_kurikulum"`
+		Sks            int8      `json:"sks"`
+		CreatedAt      time.Time `json:"-"`
+		UpdatedAt      time.Time `json:"-"`
+		Kelas          []Kelas   `json:"kelas" gorm:"foreignKey:KodeMatkul;references:Kode;constraint:OnDelete:CASCADE"` // Relationship: One-to-Many (One course has many classes)
 	}
 
 	MatkulRepository interface {

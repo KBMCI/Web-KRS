@@ -37,7 +37,7 @@ func (r *programStudiRepository) UpdateByID(programStudi *model.ProgramStudi) (*
 func (r *programStudiRepository) FindByID(id uint) (*model.ProgramStudi, error) {
 	programStudi := new(model.ProgramStudi)
 
-	err := r.database.Preload("Fakultas").First(programStudi, id).Error
+	err := r.database.Preload("Fakultas").Preload("Matkuls").First(programStudi, id).Error
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (r *programStudiRepository) Delete(programStudi *model.ProgramStudi) (*mode
 func (r *programStudiRepository) Fetch() ([]*model.ProgramStudi, error) {
 	var data []*model.ProgramStudi
 
-	err := r.database.Preload("Fakultas").Find(&data).Error
+	err := r.database.Preload("Fakultas").Preload("Matkuls").Find(&data).Error
 	if err != nil {
 		return nil, err
 	}

@@ -65,12 +65,12 @@ func (s *userService) Register(userRequest *request.UserRequest) (*model.User, e
 	hash, _ := HashPassword(userRequest.Password)
 
 	user := &model.User{
-		Email:        userRequest.Email,
-		Nama:         userRequest.Nama,
-		ProgramStudi: userRequest.ProgramStudi,
-		Nim:          userRequest.Nim,
-		Password:     hash,
-		Role:         userRequest.Role,
+		ProgramStudiID: userRequest.ProgramStudiID,
+		Email:          userRequest.Email,
+		Nama:           userRequest.Nama,
+		Nim:            userRequest.Nim,
+		Password:       hash,
+		Role:           userRequest.Role,
 	}
 
 	user, err := s.userRepository.Create(user)
@@ -161,11 +161,11 @@ func (s *userService) UpdateProfile(file *multipart.FileHeader, ID int, userRequ
 	}
 
 	newUser, err := s.userRepository.Update(&model.User{
-		ID:           uint(ID),
-		Nama:         userRequest.Nama,
-		Nim:          userRequest.Nim,
-		ProgramStudi: userRequest.ProgramStudi,
-		Image:        userRequest.Image,
+		ID:             uint(ID),
+		ProgramStudiID: userRequest.ProgramStudiID,
+		Nama:           userRequest.Nama,
+		Nim:            userRequest.Nim,
+		Image:          userRequest.Image,
 	})
 
 	if err != nil {
@@ -177,10 +177,10 @@ func (s *userService) UpdateProfile(file *multipart.FileHeader, ID int, userRequ
 
 func (s *userService) Update(ID int, userRequest *request.UserUpdateRequest) (*model.User, error) {
 	newUser, err := s.userRepository.Update(&model.User{
-		ID:           uint(ID),
-		Nama:         userRequest.Nama,
-		Nim:          userRequest.Nim,
-		ProgramStudi: userRequest.ProgramStudi,
+		ID:             uint(ID),
+		ProgramStudiID: userRequest.ProgramStudiID,
+		Nama:           userRequest.Nama,
+		Nim:            userRequest.Nim,
 	})
 
 	if err != nil {

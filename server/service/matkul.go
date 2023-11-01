@@ -16,6 +16,7 @@ func NewMatkulService(matkul model.MatkulRepository) model.MatkulService {
 func (s *matkulService) StoreMatkul(req *request.MatkulRequest) (*model.Matkul, error) {
 	matkul := &model.Matkul{
 		Kode: req.KodeMatkul,
+		ProgramStudiID: req.ProgramStudiId,
 		Nama: req.Nama,
 		TahunKurikulum: req.TahunKurikulum,
 		Sks: req.Sks,
@@ -33,6 +34,7 @@ func (s *matkulService) EditMatkul(id uint, req *request.MatkulRequest) (*model.
 	newMatkul, err := s.matkulRepository.UpdateByID(&model.Matkul{
 		ID: id,
 		Kode: req.KodeMatkul,
+		ProgramStudiID: req.ProgramStudiId,
 		Nama: req.Nama,
 		TahunKurikulum: req.TahunKurikulum,
 		Sks: req.Sks,
