@@ -20,7 +20,7 @@ type Service struct {
 
 func Init(repository *repository.Repository) *Service {
 	instRandomKrs := NewRandomKrsService(repository.User, repository.Matkul, repository.Kelas)
-	instMatkul := NewMatkulService(repository.Matkul)
+	instUSer := NewUserService(repository.User)
 	instPlan := NewPlanService(repository.Plan, repository.Kelas, repository.User)
 
 	return &Service{
@@ -31,7 +31,7 @@ func Init(repository *repository.Repository) *Service {
 		User:      NewUserService(repository.User),
 		RandomKrs: NewRandomKrsService(repository.User, repository.Matkul, repository.Kelas),
 		PlanningKrs: NewPlanningKrsService(instRandomKrs),
-		Dashboard:   NewDashboardService(instMatkul, instPlan),
+		Dashboard:   NewDashboardService(instUSer, instPlan),
 		Fakultas: NewFakultasService(repository.Fakultas),
 		ProgramStudi: NewProgramStudiService(repository.ProgramStudi),
 	}

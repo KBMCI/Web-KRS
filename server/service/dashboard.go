@@ -3,20 +3,20 @@ package service
 import "web-krs/model"
 
 type dashboadService struct {
-	matkulService model.MatkulService
+	userService model.UserService
 	planService model.PlanService
 }
 
-
-func NewDashboardService(matkulService model.MatkulService, planService model.PlanService) model.DashboardService {
+func NewDashboardService(userService model.UserService, planService model.PlanService) model.DashboardService {
 	return &dashboadService{
-		matkulService: matkulService,
+		userService: userService,
 		planService: planService,
 	}
 }
 
-func (d *dashboadService) GetDashboard(idUser uint) ([]*model.Matkul, []*model.Plan, error) {
-	matkuls, err := d.matkulService.FetchMatkul()
+func (d *dashboadService) GetDashboard(idUser uint) (*model.User, []*model.Plan, error) {
+
+	user, err := d.userService.ReadByID(int(idUser))
 	if err != nil {
 		return nil, nil, err
 	}
@@ -26,5 +26,5 @@ func (d *dashboadService) GetDashboard(idUser uint) ([]*model.Matkul, []*model.P
 		return nil, nil, err
 	}
 
-	return matkuls, plans, nil
+	return user, plans, nil
 }

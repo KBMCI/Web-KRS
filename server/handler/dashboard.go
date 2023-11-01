@@ -11,7 +11,7 @@ import (
 func (r *rest) DashboardHandler(c *gin.Context) {
 	idUser := c.MustGet("id").(float64)
 
-	fetchMatkul, getPlansUser, err := r.service.Dashboard.GetDashboard(uint(idUser))
+	user, getPlansUser, err := r.service.Dashboard.GetDashboard(uint(idUser))
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, http.StatusInternalServerError, err.Error(), nil)
 		return
@@ -22,8 +22,7 @@ func (r *rest) DashboardHandler(c *gin.Context) {
 		planResponse = append(planResponse, response.ConvertToPlanResponse(*p))
 	}
 
-	helper.ResponseSuccessJson(c, "success", gin.H{
-		"matkuls":    fetchMatkul,
-		"user_plans": planResponse,
-	})
+	dashboardResponse := response.ConvertToDashboardResponse(user, planResponse)
+
+	helper.ResponseSuccessJson(c, "success", dashboardResponse)
 }
