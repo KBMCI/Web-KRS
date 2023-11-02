@@ -26,7 +26,7 @@ func (k *kelasRepository) Create(kelas *model.Kelas) (*model.Kelas, error) {
 
 	if rowEffect.RowsAffected != 0 {
 		kelas.ID = kelasExist.ID
-		if err := k.database.Model(&kelasExist).Association("JadwalKelas").Append(&kelas.JadwalKelas[0]); err != nil {
+		if err := k.database.Model(&kelasExist).Preload("Matkul").Association("JadwalKelas").Append(&kelas.JadwalKelas[0]); err != nil {
 			return nil, err
 		}
 		return kelasExist, nil
@@ -42,9 +42,10 @@ func (k *kelasRepository) Create(kelas *model.Kelas) (*model.Kelas, error) {
 		KodeMatkul:  kelas.KodeMatkul,
 		Nama:        kelas.Nama,
 		JadwalKelas: kelas.JadwalKelas,
+		Matkul:      kelas.Matkul,
 	}
 
-	if err := k.database.Model(&kelas).Association("JadwalKelas").Append(&kelas.JadwalKelas[0]); err != nil {
+	if err := k.database.Model(&kelas).Preload("Matkul").Association("JadwalKelas").Append(&kelas.JadwalKelas[0]); err != nil {
 		return nil, err
 	}
 	return &kelasOutput, nil
@@ -86,7 +87,7 @@ func (k *kelasRepository) FindBySomeID(id []uint) ([]*model.Kelas, error) {
 func (k *kelasRepository) Fetch() ([]*model.Kelas, error) {
 	var data []*model.Kelas
 
-	err := k.database.Preload("Matkul").Preload("JadwalKelas").Find(&data).Error
+	err := k.database.Preload("Matkul").Find(&data).Error
 	if err != nil {
 		return nil, err
 	}

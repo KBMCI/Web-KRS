@@ -50,6 +50,15 @@ func (s *fakultasService) GetByID(id uint) (*model.Fakultas, error) {
 	return fakultas, nil
 }
 
+func (s *fakultasService) GetJamKelasByFakultasID(id uint) (*model.Fakultas, error) {
+	fakultas, err := s.fakultasRepository.FindJamKelasByFakultasID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return fakultas, nil
+}
+
 func (s *fakultasService) DestroyFakultas(id uint) error {
 	fakultas, err := s.fakultasRepository.FindByID(id)
 	if err != nil {

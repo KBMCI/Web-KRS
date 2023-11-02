@@ -4,23 +4,26 @@ import "web-krs/model"
 
 type (
 	JamKelasResponse struct {
-		Jam string `json:"jam"`
-		Senin string `json:"senin"`
-		Selasa string `json:"selasa"`
-		Rabu string `json:"rabu"`
-		Kamis string `json:"kamis"`
-		Jumat string `json:"jumat"`
-	
+		ID                       uint                     `json:"id"`
+		JamMulai                 string                   `json:"jam_mulai"`
+		JamSelesai               string                   `json:"jam_selesai"`
+		FakultasJamKelasResponse FakultasJamKelasResponse `json:"fakultas"`
+	}
+
+	FakultasJamKelasResponse struct {
+		ID   uint   `json:"id"`
+		Nama string `json:"nama"`
 	}
 )
 
 func ConvertToJamKelasResponse(j *model.JamKelas) JamKelasResponse {
 	return JamKelasResponse{
-		Jam:    j.JamMulai + " - " + j.JamSelesai,
-		Senin:  "",
-		Selasa: "",
-		Rabu:   "",
-		Kamis:  "",
-		Jumat:  "",
+		ID:         j.ID,
+		JamMulai:   j.JamMulai,
+		JamSelesai: j.JamSelesai,
+		FakultasJamKelasResponse: FakultasJamKelasResponse{
+			ID:   j.Fakultas.ID,
+			Nama: j.Fakultas.Nama,
+		},
 	}
 }

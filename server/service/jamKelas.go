@@ -18,6 +18,7 @@ func (j *jamKelasService) StoreJamKelas(req *request.JamKelasRequest) (*model.Ja
 	jamKelas := &model.JamKelas{
 		JamMulai:   req.JamMulai,
 		JamSelesai: req.JamSelesai,
+		FakultasID: req.FakultasID,
 	}
 
 	newJamKelas, err := j.jamKelasRepository.Create(jamKelas)
@@ -54,6 +55,7 @@ func (j *jamKelasService) EditJamKelas(id uint, req *request.JamKelasRequest) (*
 		ID:         id,
 		JamMulai:   req.JamMulai,
 		JamSelesai: req.JamSelesai,
+		FakultasID: req.FakultasID,
 	})
 
 	if err != nil {
