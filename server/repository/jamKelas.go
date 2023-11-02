@@ -30,7 +30,7 @@ func (j *JamKelasRepository) Create(jamKelas *model.JamKelas) (*model.JamKelas, 
 func (j *JamKelasRepository) Fetch() ([]*model.JamKelas, error) {
 	var data []*model.JamKelas
 
-	err := j.database.Find(&data).Error
+	err := j.database.Preload("Fakultas").Find(&data).Error
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func (j *JamKelasRepository) Fetch() ([]*model.JamKelas, error) {
 func (j *JamKelasRepository) FindByID(id uint) (*model.JamKelas, error) {
 	data := new(model.JamKelas)
 
-	err := j.database.Find(&data, id).Error
+	err := j.database.Preload("Fakultas").Find(&data, id).Error
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func (j *JamKelasRepository) FindByID(id uint) (*model.JamKelas, error) {
 
 // UpdateByID implements model.JamKelasRepository.
 func (j *JamKelasRepository) UpdateByID(jamKelas *model.JamKelas) (*model.JamKelas, error) {
-	err := j.database.Model(&jamKelas).Updates(&jamKelas).First(&jamKelas).Error
+	err := j.database.Model(&jamKelas).Preload("Fakultas").Updates(&jamKelas).First(&jamKelas).Error
 	if err != nil {
 		return nil, err
 	}

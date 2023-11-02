@@ -25,7 +25,10 @@ func (r *rest) StoreJamKelasHandler(c *gin.Context) {
 		return
 	}
 
-	helper.ResponseSuccessJson(c, "success", jamKelas)
+	jamKelasResponse := response.ConvertToJamKelasResponse(jamKelas)
+	jamKelasResponse.FakultasJamKelasResponse.ID = req.FakultasID
+
+	helper.ResponseSuccessJson(c, "success", jamKelasResponse)
 }
 
 func (r *rest) FetchJamKelasHandler(c *gin.Context) {
@@ -54,7 +57,9 @@ func (r *rest) DetailJamKelasHandler(c *gin.Context) {
 		return
 	}
 
-	helper.ResponseSuccessJson(c, "", jamKelas)
+	jamKelasResponse := response.ConvertToJamKelasResponse(jamKelas)
+
+	helper.ResponseSuccessJson(c, "success", jamKelasResponse)
 }
 
 func (r *rest) EditJamKelasHandler(c *gin.Context) {
@@ -75,7 +80,9 @@ func (r *rest) EditJamKelasHandler(c *gin.Context) {
 		return
 	}
 
-	helper.ResponseSuccessJson(c, "success", jamKelas)
+	jamKelasResponse := response.ConvertToJamKelasResponse(jamKelas)
+
+	helper.ResponseSuccessJson(c, "success", jamKelasResponse)
 }
 
 func (r *rest) DeleteJamKelasHandler(c *gin.Context) {

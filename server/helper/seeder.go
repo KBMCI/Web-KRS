@@ -15,61 +15,39 @@ func HashPassword(password string) (string, error) {
 func SeederRefresh() {
 	database := config.NewConfig().Database()
 
+	database.Migrator().DropTable(&model.Fakultas{})
+	database.Migrator().DropTable(&model.ProgramStudi{})
 	database.Migrator().DropTable(&model.User{})
 	database.Migrator().DropTable(&model.Matkul{})
 	database.Migrator().DropTable(&model.Kelas{})
 	database.Migrator().DropTable(&model.JadwalKelas{})
 	database.Migrator().DropTable(&model.JamKelas{})
-	database.Migrator().DropTable(&model.Fakultas{})
-	database.Migrator().DropTable(&model.ProgramStudi{})
 
-	database.AutoMigrate(
-		&model.User{}, 
-		&model.Matkul{}, 
-		&model.Kelas{}, 
-		&model.JadwalKelas{}, 
-		&model.JamKelas{}, 
-		&model.Plan{},
-		&model.Fakultas{},
-		&model.ProgramStudi{},
-	)
+	database.AutoMigrate(&model.Fakultas{}, &model.ProgramStudi{}, &model.User{}, &model.Matkul{}, &model.Kelas{}, &model.JadwalKelas{}, &model.JamKelas{}, &model.Plan{})
 
 	hashAdmin, _ := HashPassword("Admin123.")
 	hashUser, _ := HashPassword("User123.")
 
-	users := []model.User{
+	users := []*model.User{
 		{Nama: "Admin", Email: "admin@gmail.com", ProgramStudiID: 1, Nim: "215150700111021", Password: hashAdmin, Role: "admin"},
-		{Nama: "User", Email: "user@gmail.com", ProgramStudiID: 1, Nim: "215150700111022", Password: hashUser, Role: "user"},
+		{Nama: "User Teknologi Informasi", Email: "userti@gmail.com", ProgramStudiID: 1, Nim: "215150700111022", Password: hashUser, Role: "user",},
+		{Nama: "User Sistem Informasi", Email: "usersi@gmail.com", ProgramStudiID: 2, Nim: "215150700111022", Password: hashUser, Role: "user"},
+		{Nama: "User Teknik Kimia", Email: "usertk@gmail.com", ProgramStudiID:3, Nim: "215150700111022", Password: hashUser, Role: "user"},
 	}
 
-	fakultas := model.Fakultas{
-		Nama: "Ilmu Komputer",
+	fakultas := []model.Fakultas{
+		{Nama: "Ilmu Komputer"},
+		{Nama: "Teknik"},
 	}
 
-	prodis := []model.ProgramStudi {
-		{
-			Nama: "Teknologi Informasi",
-			FakultasID: 1,
-		},
-		{
-			Nama: "Pendidikan Teknologi Informasi",
-			FakultasID: 1,
-		},
-		{
-			Nama: "Teknik Komputer",
-			FakultasID: 1,
-		},
-		{
-			Nama: "Teknik Informatika",
-			FakultasID: 1,
-		},
-		{
-			Nama: "Sistem Informasi",
-			FakultasID: 1,
-		},
+	prodis := []model.ProgramStudi{
+		{Nama: "Teknologi Informasi", FakultasID: 1},
+		{Nama: "Sistem Informasi", FakultasID: 1},
+		{Nama: "Teknik Kimia", FakultasID: 2},
 	}
 
 	matkuls := []model.Matkul{
+		// Teknologi Informasi
 		// wajib
 		{Kode: "COM60051", ProgramStudiID: 1, Nama: "Metodologi Penelitian dan Penulisan Ilmiah", TahunKurikulum: 2020, Sks: 3},
 		{Kode: "CSD60004", ProgramStudiID: 1, Nama: "Keamanan Jaringan", TahunKurikulum: 2020, Sks: 3},
@@ -88,64 +66,100 @@ func SeederRefresh() {
 		{Kode: "CIT60037", ProgramStudiID: 1, Nama: "Microservice Architecture", TahunKurikulum: 2020, Sks: 2},
 		{Kode: "CSD60007", ProgramStudiID: 1, Nama: "Digital Financial Platform", TahunKurikulum: 2020, Sks: 2},
 		{Kode: "CIT60039", ProgramStudiID: 1, Nama: "Pemrograman Web Lanjut", TahunKurikulum: 2020, Sks: 3},
+
+		// Sistem Informasi
+		{Kode: "CSD60015", Nama: "Sistem Enterprise", TahunKurikulum: 2020, Sks: 3, ProgramStudiID: 2},
+		{Kode: "CIS61032", Nama: "Manajemen Risiko dan Kontrol Sistem Informasi", TahunKurikulum: 2020, Sks: 3, ProgramStudiID: 2},
 	}
 
 	jamKelas := []model.JamKelas{
+		// Fakultas Ilmu Komputer
 		{
 			JamMulai:   "07:00",
 			JamSelesai: "08:39",
+			FakultasID: 1,
 		},
 		{
 			JamMulai:   "07:00",
 			JamSelesai: "09:29",
+			FakultasID: 1,
 		},
 		{
 			JamMulai:   "07:50",
 			JamSelesai: "10:19",
+			FakultasID: 1,
 		},
 		{
 			JamMulai:   "08:40",
 			JamSelesai: "10:19",
+			FakultasID: 1,
 		},
 		{
 			JamMulai:   "08:40",
 			JamSelesai: "11:09",
+			FakultasID: 1,
 		},
 		{
 			JamMulai:   "09:30",
 			JamSelesai: "11:09",
+			FakultasID: 1,
 		},
 		{
 			JamMulai:   "09:30",
 			JamSelesai: "11:59",
+			FakultasID: 1,
 		},
 		{
 			JamMulai:   "10:20",
 			JamSelesai: "11:59",
+			FakultasID: 1,
 		},
 		{
 			JamMulai:   "12:50",
 			JamSelesai: "14:29",
+			FakultasID: 1,
 		},
 		{
 			JamMulai:   "12:50",
 			JamSelesai: "15:19",
+			FakultasID: 1,
 		},
 		{
 			JamMulai:   "13:40",
 			JamSelesai: "16:19",
+			FakultasID: 1,
 		},
 		{
 			JamMulai:   "14:30",
 			JamSelesai: "17:09",
+			FakultasID: 1,
 		},
 		{
 			JamMulai:   "15:30",
 			JamSelesai: "18:09",
+			FakultasID: 1,
 		},
 		{
 			JamMulai:   "16:20",
 			JamSelesai: "18:09",
+			FakultasID: 1,
+		},
+
+		// Fakultas Teknik
+		{
+			JamMulai:   "07:01",
+			JamSelesai: "08:00",
+			FakultasID: 2,
+		},
+		{
+			JamMulai:   "08:01",
+			JamSelesai: "09:00",
+			FakultasID: 2,
+		},
+		{
+			JamMulai:   "09:01",
+			JamSelesai: "10:00",
+			FakultasID: 2,
 		},
 	}
 
@@ -493,12 +507,37 @@ func SeederRefresh() {
 				RuangKelas: "F4.7",
 			},
 		}},
+
+
+		// Sistem Informasi
+		// Sistem Enterprise
+		{KodeMatkul: "CSD60015", Nama: "B", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Rabu",
+				JamMulai:   "15:30",
+				JamSelesai: "18:09",
+				RuangKelas: "F2.5",
+			},
+		}},
+		// Manajemen Risiko dan Kontrol Sistem Informasi
+		{KodeMatkul: "CIS61032", Nama: "A", JadwalKelas: []model.JadwalKelas{
+			{
+				Hari:       "Selasa",
+				JamMulai:   "14:30",
+				JamSelesai: "17:09",
+				RuangKelas: "F2.1",
+			},
+		}},
 	}
-	
-	database.Create(&fakultas)
-	
-	database.Create(&prodis)
-	
+
+	for _, f := range fakultas {
+		database.Create(&f)
+	}
+
+	for _, prodi := range prodis {
+		database.Create(&prodi)
+	}
+
 	for _, user := range users {
 		database.Create(&user)
 	}
@@ -516,13 +555,20 @@ func SeederRefresh() {
 	}
 
 	// User add matkuls
-	var matkulAdmin []model.Matkul
-	var userAdmin model.User
+	var matkuUserTi []model.Matkul
+	var matkuUserSi []model.Matkul
+	var userTi model.User
+	var userSi model.User
 
-	database.First(&userAdmin)
-	database.Find(&matkulAdmin, []int{1, 2, 3, 4, 5})
+	database.First(&userTi, 2)
+	database.Find(&matkuUserTi, []int{1, 2, 3, 4, 5})
 
-	userAdmin.Matkuls = matkulAdmin
+	database.First(&userSi, 3)
+	database.Find(&matkuUserSi, []int{17, 18})
 
-	database.Model(&userAdmin).Updates(&userAdmin)
+	userTi.Matkuls = matkuUserTi
+	userSi.Matkuls = matkuUserSi
+
+	database.Model(&userTi).Updates(&userTi)
+	database.Model(&userSi).Updates(&userSi)
 }

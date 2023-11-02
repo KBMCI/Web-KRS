@@ -36,6 +36,17 @@ func (r *fakultasRepository) FindByID(id uint) (*model.Fakultas, error) {
 	return fakultas, nil
 }
 
+func (r *fakultasRepository) FindJamKelasByFakultasID(id uint) (*model.Fakultas, error) {
+	fakultas := new(model.Fakultas)
+
+	err := r.database.Preload("JamKelas").First(fakultas, id).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return fakultas, nil
+}
+
 func (r *fakultasRepository) Fetch() ([]*model.Fakultas, error) {
 	var data []*model.Fakultas
 

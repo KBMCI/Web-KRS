@@ -8,9 +8,11 @@ import (
 
 type (
 	JamKelas struct {
-		ID         uint   `json:"id" gorm:"primaryKey"`
-		JamMulai   string `json:"jam_mulai" gorm:"type:varchar(5)"`
-		JamSelesai string `json:"jam_selesai" gorm:"type:varchar(5)"`
+		ID         uint     `json:"id" gorm:"primaryKey"`
+		JamMulai   string   `json:"jam_mulai" gorm:"type:varchar(5)"`
+		JamSelesai string   `json:"jam_selesai" gorm:"type:varchar(5)"`
+		FakultasID uint     `json:"id_fakultas"`
+		Fakultas   Fakultas `json:"-"`
 	}
 
 	JamKelasRepository interface {

@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"web-krs/helper"
 	"web-krs/request"
+	"web-krs/response"
 
 	"github.com/gin-gonic/gin"
 )
@@ -59,6 +60,21 @@ func (r *rest) DetailFakultasHandler(c *gin.Context) {
 	}
 
 	helper.ResponseSuccessJson(c, "", fakultas)
+}
+
+func (r *rest) DetailJamKelasFakultasHandler(c *gin.Context) {
+	id := c.Param("id")
+	idUint, _ := strconv.ParseUint(id, 10, 32)
+
+	fakultas, err := r.service.Fakultas.GetJamKelasByFakultasID(uint(idUint))
+	if err != nil {
+		helper.ResponseValidationErrorJson(c, http.StatusInternalServerError, err.Error(), nil)
+		return
+	}
+
+	fakultasResponse := response.ConvertToJamKelasFakultasResponsea(fakultas)
+
+	helper.ResponseSuccessJson(c, "", fakultasResponse)
 }
 
 func (r *rest) FetchFakultasHandler(c *gin.Context) {
