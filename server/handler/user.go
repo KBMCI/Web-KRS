@@ -31,9 +31,7 @@ func (r *rest) CreateUser(c *gin.Context) {
 		return
 	}
 
-	userResponse := response.ConvertToUserResponse(createUser)
-
-	helper.ResponseSuccessJson(c, "Create user success", userResponse)
+	helper.ResponseSuccessJson(c, "Create user success", createUser)
 }
 
 func (r *rest) CreateAdmin(c *gin.Context) {
@@ -54,9 +52,7 @@ func (r *rest) CreateAdmin(c *gin.Context) {
 		return
 	}
 
-	userResponse := response.ConvertToUserResponse(createUser)
-
-	helper.ResponseSuccessJson(c, "Create admin success", userResponse)
+	helper.ResponseSuccessJson(c, "Create admin success", createUser)
 }
 
 func (r *rest) UserLogin(c *gin.Context) {
@@ -88,7 +84,7 @@ func (r *rest) UserLogin(c *gin.Context) {
 	}
 
 	helper.ResponseSuccessJson(c, "User logged in", gin.H{
-		"data":  user,
+		"user":  user,
 		"token": tokenJwt,
 	})
 
@@ -258,10 +254,10 @@ func (r *rest) Delete(c *gin.Context) {
 		}
 	}
 
-	delete, err := r.service.User.Delete(idInt)
+	_, err = r.service.User.Delete(idInt)
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 	}
 
-	helper.ResponseSuccessJson(c, "delete success", delete)
+	helper.ResponseSuccessJson(c, "delete success", "")
 }

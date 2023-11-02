@@ -25,7 +25,7 @@ func (r *rest) StoreKelasHandler(c *gin.Context) {
 		return
 	}
 
-	kelasResponse := response.ConvertToKelasResponse(*kelas)
+	kelasResponse := response.ConvertToKelasResponseDetail(*kelas)
 
 	helper.ResponseSuccessJson(c, "success", kelasResponse)
 }
@@ -51,7 +51,7 @@ func (r *rest) EditKelasHandler(c *gin.Context) {
 		return
 	}
 
-	kelasResponse := response.ConvertToKelasResponse(*kelas)
+	kelasResponse := response.ConvertToKelasResponseDetail(*kelas)
 
 	helper.ResponseSuccessJson(c, "success", kelasResponse)
 }

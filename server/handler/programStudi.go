@@ -25,7 +25,9 @@ func (r *rest) StoreProdiHandler(c *gin.Context) {
 		return
 	}
 
-	helper.ResponseSuccessJson(c, "success", programStudi)
+	prodiResponse := response.ConvertToProdiResponseDetail(*programStudi)
+
+	helper.ResponseSuccessJson(c, "success", prodiResponse)
 }
 
 func (r *rest) EditProdiHandler(c *gin.Context) {
@@ -46,7 +48,10 @@ func (r *rest) EditProdiHandler(c *gin.Context) {
 		return
 	}
 
-	helper.ResponseSuccessJson(c, "success", programStudi)
+	prodiResponse := response.ConvertToProdiResponseDetail(*programStudi)
+	prodiResponse.Fakultas.ID = req.FakultasID
+
+	helper.ResponseSuccessJson(c, "success", prodiResponse)
 }
 
 func (r *rest) DetailProdiHandler(c *gin.Context) {

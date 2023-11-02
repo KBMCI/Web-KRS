@@ -25,9 +25,9 @@ func (r *rest) StoreMatkulHandler(c *gin.Context) {
 		return
 	}
 
-	MatkulResponse := response.ConvertToMatkulResponse(*matkul)
+	matkulResponse := response.ConvertToMatkulResponse(*matkul)
 
-	helper.ResponseSuccessJson(c, "success", MatkulResponse)
+	helper.ResponseSuccessJson(c, "success", matkulResponse)
 }
 
 func (r *rest) EditMatkulHandler(c *gin.Context) {
@@ -48,9 +48,9 @@ func (r *rest) EditMatkulHandler(c *gin.Context) {
 		return
 	}
 
-	MatkulResponse := response.ConvertToMatkulResponse(*matkul)
+	matkulResponse := response.ConvertToMatkulResponse(*matkul)
 
-	helper.ResponseSuccessJson(c, "success", MatkulResponse)
+	helper.ResponseSuccessJson(c, "success", matkulResponse)
 }
 
 func (r *rest) DetailMatkulHandler(c *gin.Context) {
@@ -63,7 +63,9 @@ func (r *rest) DetailMatkulHandler(c *gin.Context) {
 		return
 	}
 
-	helper.ResponseSuccessJson(c, "", matkul)
+	matkulResponse := response.ConvertToMatkulResponse(*matkul)
+
+	helper.ResponseSuccessJson(c, "success", matkulResponse)
 }
 
 func (r *rest) DeleteMatkulHandler(c *gin.Context) {
@@ -86,5 +88,10 @@ func (r *rest) FetchMatkulHandler(c *gin.Context) {
 		return
 	}
 
-	helper.ResponseSuccessJson(c, "success", matkulList)
+	matkulResponse := []response.MatkulResponse{}
+	for _, matkul := range matkulList {
+		matkulResponse = append(matkulResponse, response.ConvertToMatkulResponse(*matkul))
+	}
+
+	helper.ResponseSuccessJson(c, "success", matkulResponse)
 }

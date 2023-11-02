@@ -10,13 +10,12 @@ type (
 			ID   uint   `json:"id_fakultas"`
 			Nama string `json:"nama"`
 		} `json:"fakultas"`
-		Matkul []model.Matkul `json:"matkul"`
 	}
 )
 
 func ConvertToProdiResponseDetail(p model.ProgramStudi) ProdiResponseDetail {
 	return ProdiResponseDetail{
-		ID:   p.ID,
+		ID: p.ID,
 		Nama: p.Nama,
 		Fakultas: struct {
 			ID   uint   `json:"id_fakultas"`
@@ -25,6 +24,5 @@ func ConvertToProdiResponseDetail(p model.ProgramStudi) ProdiResponseDetail {
 			ID:   p.Fakultas.ID,
 			Nama: p.Fakultas.Nama,
 		},
-		Matkul: p.Matkuls,
 	}
 }

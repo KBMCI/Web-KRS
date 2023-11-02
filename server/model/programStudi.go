@@ -4,7 +4,7 @@ import "web-krs/request"
 
 type (
 	ProgramStudi struct {
-		ID         uint     `gorm:"primaryKey"`
+		ID         uint     `json:"id" gorm:"primaryKey"`
 		Nama       string   `json:"nama" gorm:"type:varchar(50)"`
 		FakultasID uint     `json:"id_fakultas"`
 		Fakultas   Fakultas `json:"-"`
