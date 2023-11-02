@@ -28,7 +28,7 @@ func (m *matkulRepository) Create(matkul *model.Matkul) (*model.Matkul, error) {
 func (m *matkulRepository) FindByID(id uint) (*model.Matkul, error){
 	matkul := new(model.Matkul)
 
-	err := m.database.Preload("Kelas.JadwalKelas").First(matkul, id).Error
+	err := m.database.Preload("ProgramStudi").First(matkul, id).Error
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +39,7 @@ func (m *matkulRepository) FindByID(id uint) (*model.Matkul, error){
 func (m *matkulRepository) FindBySomeID(id []uint) ([]*model.Matkul, error) {
 	var data []*model.Matkul
 
-	err := m.database.Preload("Kelas.JadwalKelas").Find(&data, id).Error
+	err := m.database.Preload("Kelas.JadwalKelas").Preload("ProgramStudi").Find(&data, id).Error
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +50,7 @@ func (m *matkulRepository) FindBySomeID(id []uint) ([]*model.Matkul, error) {
 func (m *matkulRepository) Fetch() ([]*model.Matkul, error) {
 	var data []*model.Matkul
 
-	err := m.database.Preload("Kelas.JadwalKelas").Find(&data).Error
+	err := m.database.Preload("ProgramStudi").Find(&data).Error
 	if err != nil {
 		return nil, err
 	}

@@ -28,7 +28,7 @@ func (u *userRepositoty) Create(user *model.User) (*model.User, error) {
 func (u *userRepositoty) ReadAll() ([]*model.User, error) {
 	var user []*model.User
 
-	err := u.database.Preload("Matkuls").Preload("ProgramStudi.Matkuls").Find(&user).Error
+	err := u.database.Preload("ProgramStudi.Fakultas").Find(&user).Error
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +39,7 @@ func (u *userRepositoty) ReadAll() ([]*model.User, error) {
 func (u *userRepositoty) ReadByID(ID int) (*model.User, error) {
 	var user *model.User
 
-	err := u.database.Preload("Matkuls.Kelas.JadwalKelas").Preload("ProgramStudi.Matkuls").First(&user, ID).Error
+	err := u.database.Preload("Matkuls.Kelas.JadwalKelas").Preload("ProgramStudi.Matkuls").Preload("ProgramStudi.Fakultas").First(&user, ID).Error
 	if err != nil {
 		return nil, err
 	}
@@ -59,10 +59,11 @@ func (u *userRepositoty) FindByEmail(email string) (*model.User, error) {
 	return user, err
 }
 
-func (u *userRepositoty) Update(user *model.User) (*model.User, error) {
-	err := u.database.Model(&user).Preload("Matkuls.Kelas.JadwalKelas").Updates(&user).First(&user).Error
+func (u *userRepositoty) Update(user *model.User) (*model.User, error){	
+	err := u.database.Model(&user).Preload("Matkuls").Updates(&user).First(&user).Error
 	if err != nil {
 		return nil, err
+		
 	}
 
 	return user, err

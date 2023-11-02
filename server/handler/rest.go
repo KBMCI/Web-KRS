@@ -62,7 +62,7 @@ func (r *rest) RegisterMiddlewareAndRoutes() {
 		user.PATCH("/forgot", r.ForgotPassword)
 		user.PATCH("/profile", middleware.ValidateToken("user"), r.UpdateProfile)
 		// role admin
-		user.POST("/register/admin", r.CreateAdmin)
+		user.POST("/register/admin", middleware.ValidateToken("admin"), r.CreateAdmin)
 		user.GET("", middleware.ValidateToken("admin"), r.ReadAll)
 		user.GET("/:id", middleware.ValidateToken("admin"), r.ReadByID)
 		user.PATCH("/:id", middleware.ValidateToken("admin"), r.Update)
@@ -70,13 +70,16 @@ func (r *rest) RegisterMiddlewareAndRoutes() {
 	}
 
 	// fakultas routes
-	fakultas := r.httpServer.Group("/fakultas", middleware.ValidateToken("admin"))
+	fakultas := r.httpServer.Group("/fakultas")
 	{
-		fakultas.POST("", r.StoreFakultasHandler)
-		fakultas.PATCH("/:id", r.EditFakultasHandler)
-		fakultas.GET("/:id", r.DetailFakultasHandler)
-		fakultas.DELETE("/:id", r.DeleteFakultasHandler)
-		fakultas.GET("", r.FetchFakultasHandler)
+		fakultasAdminGroup := fakultas.Group("", middleware.ValidateToken("admin"))
+		fakultasUserGroup := fakultas.Group("", middleware.ValidateToken("user"))
+		fakultasAdminGroup.POST("", r.StoreFakultasHandler)
+		fakultasAdminGroup.PATCH("/:id", r.EditFakultasHandler)
+		fakultasAdminGroup.GET("/:id", r.DetailFakultasHandler)
+		fakultasUserGroup.GET("/:id/jam-kelas", r.DetailJamKelasFakultasHandler)
+		fakultasAdminGroup.DELETE("/:id", r.DeleteFakultasHandler)
+		fakultasAdminGroup.GET("", r.FetchFakultasHandler)
 	}
 
 	// prodi routes
