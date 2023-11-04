@@ -39,7 +39,7 @@ func (u *userRepositoty) ReadAll() ([]*model.User, error) {
 func (u *userRepositoty) ReadByID(ID int) (*model.User, error) {
 	var user *model.User
 
-	err := u.database.Preload("Matkuls.Kelas.JadwalKelas").Preload("ProgramStudi.Matkuls").Preload("ProgramStudi.Fakultas").First(&user, ID).Error
+	err := u.database.Preload("Matkuls.Kelas.JadwalKelas").Preload("ProgramStudi.Fakultas").First(&user, ID).Error
 	if err != nil {
 		return nil, err
 	}
