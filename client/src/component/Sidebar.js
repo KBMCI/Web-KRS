@@ -13,9 +13,10 @@ function Sidebar({ items }) {
       //   Membersihkan localStorage
       localStorage.removeItem("Authorization");
       localStorage.removeItem("role");
-      localStorage.removeItem("Temporary_plan");
+      localStorage.removeItem("Profile");
+      // localStorage.removeItem("Temporary_plan");
       navigate("/login");
-      console.log("LocalStorage is Empty now");
+      // console.log("LocalStorage is Empty now");
     } catch (err) {
       console.log(err.message);
     }

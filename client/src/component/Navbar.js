@@ -8,6 +8,8 @@ function Navbar({ items }) {
   const { auth } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
 
+  const profileObject = JSON.parse(localStorage.getItem("Profile"));
+
   console.log(auth);
   return (
     <>
@@ -21,8 +23,10 @@ function Navbar({ items }) {
         >
           <FiUser size={40} className="rounded-full border-2 border-primary" />
           <div className="cursor-pointer text-end">
-            <h1 className="font-bold text-[20px]">{auth.nama}</h1>
-            <p>{auth.nim}</p>
+            <h1 className="font-bold text-[20px]">
+              {profileObject.nama} || {profileObject.program_studi}
+            </h1>
+            <p>{profileObject.nim}</p>
           </div>
         </div>
       </nav>

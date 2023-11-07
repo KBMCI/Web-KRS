@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import axios from "axios";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Eyes_close from "../../assets/Eyes_close.svg";
 import Eyes_open from "../../assets/Eyes_open.svg";
@@ -17,7 +17,6 @@ const Login = () => {
   const [errMsg, setErrMsg] = useState("");
   const [notSuccess, setNotSuccess] = useState(false);
   const [success, setSuccess] = useState(false);
-  const errRef = useRef();
   const navigate = useNavigate();
   // Set Auth berasal dari AuthContext.js
   const { auth, setAuth } = useContext(AuthContext);
@@ -29,23 +28,35 @@ const Login = () => {
         "http://localhost:8080/user/login",
         JSON.stringify({ email, password })
       );
-      console.log("INI RESPONSENYA");
-      console.log(response);
-      console.log(response.data.data.token);
-      const dataUser = response.data.data.data;
-      const id = dataUser.ID;
-      const nama = dataUser.nama;
-      const nim = dataUser.nim;
-      const program_studi = dataUser.program_studi;
+      // console.log("INI RESPONSENYA");
+      // console.log(response);
+      // console.log(response.data.data.token);
+      const dataUser = response.data.data.user;
+      // console.log(response.data.data);
       const role = dataUser.role;
 
-      setAuth({ id, email, nama, nim, program_studi, role });
+      setAuth({
+        id: dataUser.id,
+        email,
+        nama: dataUser.nama,
+        nim: dataUser.nim,
+        program_studi: dataUser.program_studi,
+        role,
+      });
 
       // ambil token
       const accessToken = response.data.data.token;
       // Simpan token pada localStorage
       localStorage.setItem("Authorization", accessToken);
       localStorage.setItem("role", role);
+
+      const profileObject = {
+        id: dataUser.id,
+        nama: dataUser.nama,
+        nim: dataUser.nim,
+        program_studi: dataUser.program_studi,
+      };
+      localStorage.setItem("Profile", JSON.stringify(profileObject));
       setSuccess(true);
 
       if (role === "admin") {
@@ -55,15 +66,13 @@ const Login = () => {
         }, 3100);
       } else {
         setTimeout(() => {
-          console.log(`000000000000000000000000000`);
+          console.log(`masuk sebagai user`);
           setSuccess(false);
           navigate("/");
         }, 3100);
       }
-
-      console.log(`000000000000000000000000000`);
     } catch (err) {
-      console.log("error dijalankan");
+      console.log(err);
       setErrMsg(err.response.message);
       setNotSuccess(true);
       if (err.response.status === 400) {
@@ -72,8 +81,6 @@ const Login = () => {
           setNotSuccess(false);
         }, 5000);
       }
-      console.log(email);
-      console.log(err.response.status);
     }
   };
 
@@ -93,10 +100,6 @@ const Login = () => {
     }
   };
 
-  // const logout = () => {
-  //   localStorage.removeItem("Authorization");
-  // };
-
   useEffect(() => {
     console.log(email);
     console.log(errMsg);
@@ -112,15 +115,15 @@ const Login = () => {
     <div className="bg-[#F3F7FF] h-screen w-full flex items-center justify-center gap-20">
       {/* Kiri */}
       <div className="bg-blue flex items-center justify-center rounded-2xl shadow-lg p-8 ">
-        <img src={LoginImg} alt="bg-login" className="object-cover w-full h-full object-center"/>
+        <img
+          src={LoginImg}
+          alt="bg-login"
+          className="object-cover w-full h-full object-center"
+        />
       </div>
       {/* Kanan */}
       <div className=" bg-secondary flex flex-col items-center justify-center rounded-2xl shadow-lg z-10 p-10">
-        <img
-          src={Logo}
-          width="67px"
-          alt="bg-login"
-        />
+        <img src={Logo} width="67px" alt="bg-login" />
         <div className="w-[351px] h-full">
           <h1 className="font-bold text-5xl flex justify-center mb-[14px]">
             Aloo!
@@ -210,7 +213,7 @@ const Login = () => {
         </div>
       </div>
       <Success isOpen={success}></Success>
-      {success ? <>{/* <Success isOpen={success}></Success> */}</> : ""}
+      {success ? "" : ""}
       {notSuccess ? <Error errmsg={errMsg}></Error> : ""}
     </div>
   );
