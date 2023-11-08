@@ -23,12 +23,12 @@ const TabelFilter = ({
 
   const { kelasFiltered, waktuFiltered } = useContext(DataContext);
 
-  useEffect(() => {
-    console.log("Test Kelas dalam FilterTable.js");
-    console.log(kelasFiltered);
-    console.log("Test Waktu dalam FilterTable.js");
-    console.log(waktuFiltered);
-  }, [, kelasFiltered, waktuFiltered]);
+  // useEffect(() => {
+  //   console.log("Test Kelas dalam FilterTable.js");
+  //   console.log(kelasFiltered);
+  //   console.log("Test Waktu dalam FilterTable.js");
+  //   console.log(waktuFiltered);
+  // }, [, kelasFiltered, waktuFiltered]);
 
   useEffect(() => {
     const getNamaMataKuliah = async () => {
@@ -39,40 +39,43 @@ const TabelFilter = ({
             Authorization: `Bearer ${token}`,
           },
         };
-        const response = await url.get("/dashboard", config);
+        const response = await url.get("/user/matkul", config);
         setDescMatkul(response.data.data.matkuls);
 
-        console.log("Jadwal seluruh Matkul");
-        console.log(response.data.data);
+        // console.log("Jadwal seluruh Matkul");
+        // console.log(response.data.data.matkuls);
       } catch (err) {
         console.log(err);
       }
     };
 
     getNamaMataKuliah();
-    console.log(descMatkulFilter);
+    // console.log(descMatkulFilter);
   }, []);
 
-  useEffect(() => {
-    const planTerpilih = selectedIdMatkul;
-    console.log(selectedIdMatkul);
-    // console.log("Plan Terpilih");
-    // console.log(planTerpilih);
+  // useEffect(() => {
+  //   const planTerpilih = selectedIdMatkul;
+  //   console.log(selectedIdMatkul);
+  //   // console.log("Plan Terpilih");
+  //   // console.log(planTerpilih);
 
-    // console.log(descMatkul);
-    const filtered = descMatkul.filter((matkuls) => {
-      return planTerpilih.some((plan) => plan.ID === matkuls.ID);
-    });
-    // console.log("Telah Difilter");
-    // console.log(filtered);
-    setDescMatkulFilter(filtered);
-  }, [descMatkul]);
+  //   // console.log(descMatkul);
+  //   // const filtered = descMatkul.filter((matkuls) => {
+  //   //   return planTerpilih.some((plan) => plan.ID === matkuls.id);
+  //   // });
+  //   // // console.log("Telah Difilter");
+  //   // // console.log(filtered);
+  //   // setDescMatkulFilter(filtered);
+  //   console.log(descMatkul);
+  //   console.log("Jadwal yang telah di filter");
+  //   console.log(descMatkulFilter);
+  // }, [descMatkul]);
 
-  const onClick = () => {
-    console.log("YEYEYE");
-    console.log(kelasFiltered);
-    console.log(plan);
-  };
+  // const onClick = () => {
+  //   console.log("YEYEYE");
+  //   console.log(kelasFiltered);
+  //   console.log(plan);
+  // };
 
   // FUngsi untuk Tampilan
   const barisTabel = () => {
@@ -86,7 +89,7 @@ const TabelFilter = ({
   const [animation, setAnimation] = useState(false);
   useEffect(() => {
     setAnimation(!animation);
-    console.log("dijalankan");
+    // console.log("dijalankan");
   }, []);
 
   return (
@@ -240,10 +243,10 @@ const TabelFilter = ({
               <div className="w-5/12 h-[43rem] overflow-auto bg-neutral-10">
                 <div className="flex flex-col w-full bg-neutral-10">
                   {/* Maping untuk membuat list Dropdown */}
-                  {descMatkulFilter.map((matkul) => {
+                  {descMatkul.map((matkul) => {
                     return (
                       <FilterDropdown
-                        key={matkul.ID}
+                        key={matkul.id}
                         nama={matkul.nama}
                         kelas={matkul.kelas}
                         selectedKelas={selectedKelas}

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { url } from "../../api/url";
 import LogoMyPlans from "../../assets/LogoMyPlans.svg";
 import LogoPlanning from "../../assets/LogoPlanning.svg";
@@ -29,8 +29,8 @@ const DashboardUser = () => {
           },
         };
         const response = await url.get("/dashboard", config);
-        // console.log(response.data.data.matkuls);
-        setNamaMataKuliahTabel(response.data.data.matkuls);
+        // console.log(response);
+        setNamaMataKuliahTabel(response.data.data.ProgramStudi.prodi_matkul);
       } catch (err) {
         console.log(err);
       }
@@ -48,7 +48,7 @@ const DashboardUser = () => {
           },
         };
         const response = await url.get("/my-plan", config);
-        console.log(response);
+        // console.log(response);
         setIsFilled(true);
         setFirstPlan(response.data.data);
       } catch (err) {
@@ -67,16 +67,17 @@ const DashboardUser = () => {
       };
 
       const response = await url.get("/user/matkul", config);
-      console.log(response.data.data.matkuls);
-      // const getIDFromResponse = response.data.data.matkuls.map(
-      //   (item) => item.ID
-      // );
+      // console.log(response);
+      const getIDFromResponse = response.data.data.matkuls.map((item) => ({
+        ID: item.id,
+      }));
       // console.log(getIDFromResponse);
-      setSelectedIdMatkul(response.data.data.matkuls);
+      setSelectedIdMatkul(getIDFromResponse);
+      // setSelectedIdMatkul(response.data.data.matkuls);
     };
     getIDMatkuls();
-    console.log("Show Id Matkuls");
-    console.log(selectedIdMatkul);
+    // console.log("Show Id Matkuls");
+    // console.log(selectedIdMatkul);
 
     // Mengambil id matkul untuk check checkbox
     // setSelectedIdMatkul(JSON.parse(localStorage.getItem("Temporary_plan")));
@@ -96,9 +97,9 @@ const DashboardUser = () => {
         { matkuls: selectedIdMatkul },
         config
       );
-      console.log("Matkul yang diupdate");
-      console.log(selectedIdMatkul);
-      console.log(response);
+      // console.log("Matkul yang diupdate");
+      // console.log(selectedIdMatkul);
+      // console.log(response);
       window.alert(
         "Mata kuliah anda sudah dipilih untuk diproses dalam Random Krs"
       );
@@ -113,8 +114,8 @@ const DashboardUser = () => {
     if (!query) {
       return items;
     }
-    console.log(query);
-    console.log(items);
+    // console.log(query);
+    // console.log(items);
     return items.filter((matkul) =>
       matkul.nama.toLowerCase().includes(query.toLowerCase())
     );
@@ -173,7 +174,7 @@ const DashboardUser = () => {
                       <td className="px-4 py-[10px] w-[47px] h-[51.13]">
                         <MatkulCheckbox
                           namaMatkul={matkul.nama}
-                          id={matkul.ID}
+                          id={matkul.id}
                           index={index}
                           AllMatkul={matkul}
                         />
@@ -229,13 +230,11 @@ const DashboardUser = () => {
                   </p>
                 </div>
               </div>
-
-              <button
-                className="bg-accent rounded-[10px] font-semibold text-base px-[32px] py-[15px] mb-[48px]"
-                onClick={() => navigate("/myplan")}
-              >
-                Coba
-              </button>
+              <Link to="/planning-krs">
+                <button className="bg-accent rounded-[10px] font-semibold text-base px-[32px] py-[15px] mb-[48px]">
+                  Coba
+                </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -246,7 +245,7 @@ const DashboardUser = () => {
         </h1>
 
         <div className="Tabel-My-Plan col-span-4">
-          <div className="bg-secondary h-[303px] flex flex-col items-center w-full  shadow-2xl rounded-[10px]">
+          <div className="bg-secondary  flex flex-col items-center w-full px-20 h-fit  md:h-[303px] shadow-2xl rounded-[10px]">
             {isFilled && firstPlan ? (
               <>
                 <TablePlan
@@ -259,14 +258,16 @@ const DashboardUser = () => {
                 <div className="mt-[20px]">
                   <img className="mb-[10px]" src={LogoMyPlans} alt="" />
                 </div>
-                <p className="neutral-900 text-center font-semibold text-base p-[10px] mx-[151px] mb-[10px]">
+                <p className="neutral-900 text-center font-semibold text-base lg:p-[10px] ">
                   Oops, kamu belum memiliki plan apapun yang tersimpan. Buat
                   satu atau lebih agar dapat ditampilkan disini
                 </p>
 
-                <button className="bg-accent rounded-[10px] font-semibold text-base px-[32px] py-[15px] mb-[20px]">
-                  Add Plan
-                </button>
+                <Link to="/random-krs">
+                  <button className="bg-accent rounded-[10px] font-semibold text-base px-[32px] py-[15px] mb-[20px]">
+                    Add Plan
+                  </button>
+                </Link>
               </>
             )}
           </div>
@@ -274,7 +275,7 @@ const DashboardUser = () => {
 
         {/* Card Random KRS */}
         <div className="Card-Random-KRS col-span-2">
-          <div className="bg-secondary h-[303px] w-[337px] flex flex-col items-center shadow-2xl rounded-[15px]">
+          <div className="bg-secondary  w-[337px] flex flex-col items-center shadow-2xl rounded-[15px]">
             <img
               className="mt-[17.8px] mb-[10px]"
               src={LogoRandom}
@@ -289,12 +290,11 @@ const DashboardUser = () => {
                 dengan acak
               </p>
             </div>
-            <button
-              className="bg-accent rounded-[10px] font-semibold text-base px-[32px] py-[15px] mb-[17.8px]"
-              onClick={() => navigate("/random-krs")}
-            >
-              Coba
-            </button>
+            <Link to="/random-krs">
+              <button className="bg-accent rounded-[10px] font-semibold text-base px-[32px] py-[15px] mb-[17.8px]">
+                Coba
+              </button>
+            </Link>
           </div>
         </div>
         {/*  */}

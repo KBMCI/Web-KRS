@@ -10,7 +10,7 @@ function Navbar({ items }) {
 
   const profileObject = JSON.parse(localStorage.getItem("Profile"));
 
-  console.log(auth);
+  // console.log(auth);
   return (
     <>
       <nav className="flex justify-between items-center px-10 py-4 shadow-lg">

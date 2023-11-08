@@ -28,11 +28,11 @@ const InputKelas = (props) => {
   } = props;
 
   const selectedClass = (event) => {
-    console.log(event.target.id);
-    console.log(id);
+    // console.log(event.target.id);
+    // console.log(id);
     if (event.target.checked) {
-      console.log("randomKrs");
-      console.log(`${namaMatkul}-${namaKelas}`);
+      // console.log("randomKrs");
+      // console.log(`${namaMatkul}-${namaKelas}`);
 
       setKelasFiltered([...kelasFiltered, `${namaMatkul}-${namaKelas}`]);
       setTrigger(true);

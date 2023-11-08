@@ -119,8 +119,8 @@ const TablePlan = ({
     // console.log(data);
     try {
       const response = await url.post("/my-plan", { id_kelas }, config);
-      console.log("Berhasil");
-      console.log(response);
+      // console.log("Berhasil");
+      // console.log(response);
     } catch (err) {
       console.log(err);
     }
@@ -128,9 +128,9 @@ const TablePlan = ({
     setIsSave(true);
   };
 
-  useEffect(() => {
-    console.log(isSave);
-  }, [isSave]);
+  // useEffect(() => {
+  //   console.log(isSave);
+  // }, [isSave]);
 
   const navigate = useNavigate();
 
@@ -149,7 +149,7 @@ const TablePlan = ({
   // Melakukan update terhadap jadwal
   const update = () => {
     setId_kelas([]);
-    console.log(data);
+    // console.log(data);
     data.forEach((item, i) => {
       id_kelas.push(item.id_kelas);
     });

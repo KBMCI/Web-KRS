@@ -4,7 +4,10 @@ import Checkbox from "../../component/Checkbox";
 
 const FilterDropdown = ({ nama, kelas, kelasChange, selectedKelas }) => {
   const [isOpen, setIsOpen] = useState(false);
-
+  // useEffect(() => {
+  //   console.log("Dijalankan hahaha");
+  //   console.log(nama);
+  // }, []);
   return (
     <>
       {/* Nama Mata Kuliah */}
@@ -23,8 +26,8 @@ const FilterDropdown = ({ nama, kelas, kelasChange, selectedKelas }) => {
             : `opacity-0 overflow-hidden  max-h-0  -translate-y-14   `
         } items-start px-6 w-full bg-neutral-10  ...   transition-all duration-1000`}
       >
-        {kelas.map((kls) => (
-          <div className={`flex w-full justify-between`} key={kls.ID}>
+        {kelas.map((kls, index) => (
+          <div className={`flex w-full justify-between`} key={index}>
             <Checkbox
               namaKelas={kls.nama}
               namaMatkul={nama}

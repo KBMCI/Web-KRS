@@ -10,19 +10,6 @@ const MatkulCheckbox = (props) => {
   const { planContext, setPlanContext } = useContext(PlanContext);
 
   useEffect(() => {
-    // Cek apakah ID saat ini ada dalam selectedIdMatkul
-    // console.log(planContext);
-    // console.log(selectedIdMatkul);
-    // console.log(
-    //   "ID Matkul Asli " +
-    //     id +
-    //     " = " +
-    //     (index + 1) +
-    //     " Nama Matkul: " +
-    //     namaMatkul
-    // );
-    // console.log(selectedIdMatkul);
-
     if (selectedIdMatkul) {
       // Mengubah Object menjadi Array
       const ArraySelectedMatkul = selectedIdMatkul.map((item) => item?.ID);
@@ -51,19 +38,20 @@ const MatkulCheckbox = (props) => {
     // Atur status checkbox berdasarkan hasil seleksi
   }, [, AllMatkul]);
   const selectedMatkul = (index, event) => {
-    console.log(event.target.id);
-    console.log(event);
+    // console.log(event.target.id);
+    // console.log(index);
+    // console.log(event);
     if (event.target.checked) {
       setIsChecked(true);
-      console.log("Yeay you've checked this " + index);
-      console.log(selectedIdMatkul);
+      // console.log("Yeay you've checked this " + index);
+      // console.log(selectedIdMatkul);
       if (selectedIdMatkul) {
         setSelectedIdMatkul([...selectedIdMatkul, { ID: index }]);
       } else {
         setSelectedIdMatkul([{ ID: index }]);
       }
     } else {
-      console.log("Oh, very sad for this " + index);
+      // console.log("Oh, very sad for this " + index);
       setIsChecked(false);
       const filterSelectedId = selectedIdMatkul.filter((item) => {
         return item.ID !== index;
@@ -72,7 +60,7 @@ const MatkulCheckbox = (props) => {
       setSelectedIdMatkul(filterSelectedId);
     }
 
-    return console.log(selectedIdMatkul);
+    // return console.log(selectedIdMatkul);
   };
 
   return (
