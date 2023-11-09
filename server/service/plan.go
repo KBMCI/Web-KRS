@@ -53,12 +53,12 @@ func (p *planService) GetByIdUser(idUser uint) ([]*model.Plan, error) {
 
 func (p *planService) EditPlan(idUser uint, idPlan uint, idKelas []uint) ([]*model.Kelas, error) {
 	
-	if err := p.DestroyPlan(idUser, idPlan); err != nil {
-		return nil, err
-	}
-
 	kelasList, err := p.StorePlan(idUser, idKelas)
 	if err != nil {
+		return nil, err
+	}
+	
+	if err := p.DestroyPlan(idUser, idPlan); err != nil {
 		return nil, err
 	}
 
