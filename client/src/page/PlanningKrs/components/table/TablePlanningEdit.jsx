@@ -3,7 +3,13 @@ import { createTable } from "../../lib/tableOfCourseHours";
 import timeToDecimal from "../../lib/timeToDecimal";
 import Button from "../button/Button";
 
-const TablePlanningEdit = ({ matkuls, setData, setTrigger, trigger, statusHandlerTrue}) => {
+const TablePlanningEdit = ({
+  matkuls,
+  setData,
+  setTrigger,
+  trigger,
+  statusHandlerTrue,
+}) => {
   const table = createTable();
   const [tabelJadwal, setTabelJadwal] = useState();
 
@@ -84,7 +90,6 @@ const TablePlanningEdit = ({ matkuls, setData, setTrigger, trigger, statusHandle
     });
   }, [matkuls, setTabel, trigger]);
 
-  
   const statusHandlerFalse = ({ id_matkul, jadwal_kelas, id_kelas }) => {
     let dataTemp = matkuls;
     matkuls.forEach((matkul, indexMatkul) => {

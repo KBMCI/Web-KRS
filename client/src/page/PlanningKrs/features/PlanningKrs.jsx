@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { usePrompt } from "../../../hooks/usePrompt";
+import Message from "../components/message/Message";
 import TablePlanningEdit from "../components/table/TablePlanningEdit";
 import TablePlanningResult from "../components/table/TablePlanningResult";
 import timeToDecimal from "../lib/timeToDecimal";
@@ -13,13 +14,27 @@ const PlanningKrs = () => {
   const [trigger, setTrigger] = useState(false);
   const [matkulSelected, setMatkulSelected] = useState([]);
   const { state } = useLocation();
-  const idPlan = state ? state.id : null;
+  const [idPlan, setIdPlan] = useState(state?.id);
   const token = window.localStorage.getItem("Authorization");
+
+  // Suggestion
+  const [lockMatkul, setLockMatkul] = useState({
+    showSuggest: false,
+    idMatkulLock: [],
+    historyMatkul: [],
+    fetchSuggest: false,
+  });
 
   const [isSave, setIsSave] = useState(false);
   const [loading, setLoading] = useState({
     saveUpdateMyPlan: false,
     suggestion: false,
+  });
+
+  const [notif, setNotif] = useState({
+    open: false,
+    status: false,
+    message: "",
   });
 
   // Method untuk menambahkan dan mengatur status
@@ -61,6 +76,7 @@ const PlanningKrs = () => {
 
         if (result?.response?.data) {
           alert(result.response.data.message);
+          return;
         }
 
         setStatus(result.data.data.matkuls);
@@ -96,18 +112,44 @@ const PlanningKrs = () => {
       const result = await postMyPlan(token, matkulSelected);
 
       if (result?.response?.data) {
-        alert(result.response.data.message);
+        setNotif(() => ({
+          open: true,
+          status: false,
+          message: result.response.data.message,
+        }));
+
+        setTimeout(() => {
+          setLoading((prev) => ({
+            ...prev,
+            saveUpdateMyPlan: false,
+          }));
+          setNotif((prev) => ({
+            ...prev,
+            open: false,
+          }));
+        }, 2000);
+
+        return;
+      }
+
+      setNotif(() => ({
+        open: true,
+        status: true,
+        message: result.data.message,
+      }));
+
+      setTimeout(() => {
         setLoading((prev) => ({
           ...prev,
           saveUpdateMyPlan: false,
         }));
-      }
-      alert(result.data.message);
-      setLoading((prev) => ({
-        ...prev,
-        saveUpdateMyPlan: false,
-      }));
-      setIsSave(true);
+        setNotif((prev) => ({
+          ...prev,
+          open: false,
+        }));
+        setIsSave(true);
+      }, 2000);
+
       setMatkulSelected([]);
     } catch (err) {
       alert(err.response.data.message);
@@ -118,9 +160,17 @@ const PlanningKrs = () => {
   // Add Another Plan
   const addAnotherPlan = () => {
     const confirm = window.confirm("Ini bakalan tidak disave");
-    if (confirm) {
-      resetStatus();
+    if (!confirm) {
+      return;
     }
+    setIsSave(false);
+    resetStatus();
+    setLockMatkul(() => ({
+      showSuggest: false,
+      fetchSuggest: false,
+      idMatkulLock: [],
+      historyMatkul: [],
+    }));
   };
 
   // Reset All status kelas 0
@@ -135,14 +185,6 @@ const PlanningKrs = () => {
     setData(() => dataTemp);
     setTrigger((prev) => !prev);
   };
-
-  // Suggestion
-  const [lockMatkul, setLockMatkul] = useState({
-    showSuggest: false,
-    idMatkulLock: [],
-    historyMatkul: [],
-    fetchSuggest: false,
-  });
 
   const lockMatkulPlanning = () => {
     if (lockMatkul.showSuggest) {
@@ -163,7 +205,6 @@ const PlanningKrs = () => {
 
   const postSuggest = async () => {
     if (lockMatkul.fetchSuggest === true) {
-      console.log();
       setSugget(lockMatkul.historyMatkul);
       return;
     }
@@ -181,6 +222,7 @@ const PlanningKrs = () => {
           ...prev,
           suggestion: false,
         }));
+        return;
       }
 
       setTimeout(() => {
@@ -242,19 +284,44 @@ const PlanningKrs = () => {
       const result = await patchMyPlan(token, matkulSelected, idPlan);
 
       if (result?.response?.data) {
-        alert(result.response.data.message);
+        setNotif(() => ({
+          open: true,
+          status: false,
+          message: result.response.data.message,
+        }));
+
+        setTimeout(() => {
+          setLoading((prev) => ({
+            ...prev,
+            saveUpdateMyPlan: false,
+          }));
+          setNotif((prev) => ({
+            ...prev,
+            open: false,
+          }));
+        }, 2000);
+        return;
+      }
+
+      setNotif(() => ({
+        open: true,
+        status: true,
+        message: result.data.message,
+      }));
+
+      setTimeout(() => {
         setLoading((prev) => ({
           ...prev,
           saveUpdateMyPlan: false,
         }));
-      }
+        setNotif((prev) => ({
+          ...prev,
+          open: false,
+        }));
+        setIsSave(true);
+      }, 2000);
 
-      alert(result.data.message);
-      setLoading((prev) => ({
-        ...prev,
-        saveUpdateMyPlan: false,
-      }));
-      setIsSave(true);
+      console.log(result.data);
       setMatkulSelected([]);
     } catch (e) {
       console.log(e);
@@ -386,6 +453,11 @@ const PlanningKrs = () => {
             </div>
           )}
         </div>
+        <Message
+          open={notif.open}
+          statusMsg={notif.status}
+          textMsg={notif.message}
+        />
       </div>
     </>
   );
