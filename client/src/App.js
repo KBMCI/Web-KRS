@@ -17,7 +17,7 @@ import MataKuliah from "./page/MataKuliah/MataKuliah";
 import MatkulEdit from "./page/MataKuliah/MatkulEdit";
 import MatkulTambah from "./page/MataKuliah/MatkulTambah";
 import MyPlan from "./page/MyPlan/MyPlan";
-import PlanningKrs from "./page/PlanningKrs/PlanningKrs";
+import PlanningKrs from "./page/PlanningKrs/features/PlanningKrs";
 import RandomKrs from "./page/RandomKrs/RandomKrs";
 import UserEdit from "./page/UserPanel/UserEdit";
 import UserPanel from "./page/UserPanel/UserPanel";
