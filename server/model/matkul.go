@@ -23,19 +23,21 @@ type (
 
 	MatkulRepository interface {
 		Create(matkul *Matkul) (*Matkul, error)
-		UpdateByID(matkul *Matkul) (*Matkul, error)
 		FindByID(id uint) (*Matkul, error)
 		FindBySomeID(id []uint) ([]*Matkul, error)
-		Delete(matkul *Matkul) (*Matkul, error)
 		Fetch() ([]*Matkul, error)
+		CountAllMatkul() (int64, error)
+		UpdateByID(matkul *Matkul) (*Matkul, error)
+		Delete(matkul *Matkul) (*Matkul, error)
 	}
 
 	MatkulService interface {
 		StoreMatkul(req *request.MatkulRequest) (*Matkul, error)
-		EditMatkul(id uint, req *request.MatkulRequest) (*Matkul, error)
 		GetByID(id uint) (*Matkul, error)
-		DestroyMatkul(id uint) error
 		FetchMatkul() ([]*Matkul, error)
+		CountAllMatkul() (int64, error)
+		EditMatkul(id uint, req *request.MatkulRequest) (*Matkul, error)
+		DestroyMatkul(id uint) error
 	}
 
 	MatkulHandler interface {

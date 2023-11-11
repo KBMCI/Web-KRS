@@ -51,13 +51,22 @@ func (p *planService) GetByIdUser(idUser uint) ([]*model.Plan, error) {
 	return plans, nil
 }
 
+func (p *planService) CountAllPlan() (int64, error) {
+	plan, err := p.planRepository.CountAllPlan()
+	if err != nil {
+		return 0, err
+	}
+
+	return plan, nil
+}
+
 func (p *planService) EditPlan(idUser uint, idPlan uint, idKelas []uint) ([]*model.Kelas, error) {
-	
+
 	kelasList, err := p.StorePlan(idUser, idKelas)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	if err := p.DestroyPlan(idUser, idPlan); err != nil {
 		return nil, err
 	}
@@ -76,7 +85,7 @@ func (p *planService) DestroyPlan(idUser uint, idPlan uint) error {
 		return err
 	}
 
-	if err := p.planRepository.DeletePlan(user, plan); err != nil{
+	if err := p.planRepository.DeletePlan(user, plan); err != nil {
 		return err
 	}
 

@@ -19,20 +19,27 @@ type Service struct {
 }
 
 func Init(repository *repository.Repository) *Service {
-	instRandomKrs := NewRandomKrsService(repository.User, repository.Matkul, repository.Kelas)
 	instUSer := NewUserService(repository.User)
+	instFakultas := NewFakultasService(repository.Fakultas)
+	instProgramStudi := NewProgramStudiService(repository.ProgramStudi)
+	instMatkul := NewMatkulService(repository.Matkul)
+	instKelas := NewKelasService(repository.Kelas)
+	instJamKelas := NewJamKelasService(repository.JamKelas)
 	instPlan := NewPlanService(repository.Plan, repository.Kelas, repository.User)
+	instRandomKrs := NewRandomKrsService(repository.User, repository.Matkul, repository.Kelas)
+	instPlanningKrs := NewPlanningKrsService(instRandomKrs)
+	instDashboard := NewDashboardService(instUSer, instFakultas, instProgramStudi, instMatkul, instKelas, instPlan)
 
 	return &Service{
-		Matkul:    NewMatkulService(repository.Matkul),
-		Kelas:     NewKelasService(repository.Kelas),
-		JamKelas:  NewJamKelasService(repository.JamKelas),
-		Plan:      NewPlanService(repository.Plan, repository.Kelas, repository.User),
-		User:      NewUserService(repository.User),
-		RandomKrs: NewRandomKrsService(repository.User, repository.Matkul, repository.Kelas),
-		PlanningKrs: NewPlanningKrsService(instRandomKrs),
-		Dashboard:   NewDashboardService(instUSer, instPlan),
-		Fakultas: NewFakultasService(repository.Fakultas),
-		ProgramStudi: NewProgramStudiService(repository.ProgramStudi),
+		Matkul:    instMatkul,
+		Kelas:     instKelas,
+		JamKelas:  instJamKelas,
+		Plan:      instPlan,
+		User:      instUSer,
+		RandomKrs: instRandomKrs,
+		PlanningKrs: instPlanningKrs,
+		Dashboard:   instDashboard,
+		Fakultas: instFakultas,
+		ProgramStudi: instProgramStudi,
 	}
 }

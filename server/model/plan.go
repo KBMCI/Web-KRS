@@ -20,12 +20,14 @@ type (
 		Fetch() ([]*Plan, error)
 		FindByIdPlan(idPlan uint) (*Plan, error) 
 		FindByIdUser(idUser uint) ([]*Plan, error)
+		CountAllPlan() (int64, error)
 		DeletePlan(user *User, plan *Plan) error
 	}
 
 	PlanService interface {
 		StorePlan(idUser uint, idKelas []uint) ([]*Kelas, error)
 		GetByIdUser(idUser uint) ([]*Plan, error)
+		CountAllPlan() (int64, error)
 		EditPlan(idUser uint, idPlan uint, idKelas []uint) ([]*Kelas, error)
 		DestroyPlan(idUser uint, idPlan uint) error
 	}

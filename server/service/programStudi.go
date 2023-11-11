@@ -48,7 +48,16 @@ func (s *programStudiService) GetByID(id uint) (*model.ProgramStudi, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
+	return programStudi, nil
+}
+
+func (s *programStudiService) CountAllProgramStudi() (int64, error) {
+	programStudi, err := s.programStudiRepository.CountAllProgramStudi()
+	if err != nil {
+		return 0, err
+	}
+
 	return programStudi, nil
 }
 

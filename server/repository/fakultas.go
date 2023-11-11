@@ -58,6 +58,18 @@ func (r *fakultasRepository) Fetch() ([]*model.Fakultas, error) {
 	return data, nil
 }
 
+func (r *fakultasRepository) CountAllFakultas() (int64, error) {
+	var fakultas int64
+
+	err := r.database.Model(&model.Fakultas{}).Count(&fakultas).Error
+
+	if err != nil {
+		return 0, err
+	}
+
+	return fakultas, nil
+}
+
 func (r *fakultasRepository) UpdateByID(fakultas *model.Fakultas) (*model.Fakultas, error) {
 	err := r.database.Model(&fakultas).Updates(&fakultas).First(&fakultas).Error
 	if err != nil {

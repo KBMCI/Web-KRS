@@ -30,7 +30,7 @@ func (s *fakultasService) StoreFakultas(req *request.FakultasRequest) (*model.Fa
 
 func (s *fakultasService) EditFakultas(id uint, req *request.FakultasRequest) (*model.Fakultas, error) {
 	newFakultas, err := s.fakultasRepository.UpdateByID(&model.Fakultas{
-		ID: id,
+		ID:   id,
 		Nama: req.Nama,
 	})
 
@@ -54,6 +54,15 @@ func (s *fakultasService) GetJamKelasByFakultasID(id uint) (*model.Fakultas, err
 	fakultas, err := s.fakultasRepository.FindJamKelasByFakultasID(id)
 	if err != nil {
 		return nil, err
+	}
+
+	return fakultas, nil
+}
+
+func (s *fakultasService) CountAllFakultas() (int64, error) {
+	fakultas, err := s.fakultasRepository.CountAllFakultas()
+	if err != nil {
+		return 0, err
 	}
 
 	return fakultas, nil

@@ -147,7 +147,13 @@ func (r *rest) RegisterMiddlewareAndRoutes() {
 	// dashboard routes
 	dashboard := r.httpServer.Group("/dashboard").Use(middleware.ValidateToken("user"))
 	{
-		dashboard.GET("", r.DashboardHandler)
+		dashboard.GET("", r.DashboardUserHandler)
+	}
+
+	// dashboard routes
+	dashboardAdmin := r.httpServer.Group("admin/dashboard").Use(middleware.ValidateToken("admin"))
+	{
+		dashboardAdmin.GET("", r.DashboardAdminHandler)
 	}
 }
 

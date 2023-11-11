@@ -36,18 +36,20 @@ type (
 		FindByID(id uint) (*Kelas, error)
 		FindByJadwalID(idJadwal uint, idKelas uint) (*JadwalKelas, error)
 		FindBySomeID(id []uint) ([]*Kelas, error)
+		Fetch() ([]*Kelas, error)
+		CountAllKelas() (int64, error)
 		UpdateByJadwalID(jadwalKelas *JadwalKelas) (*JadwalKelas, error)
 		Delete(kelas *Kelas) (*Kelas, error)
-		Fetch() ([]*Kelas, error)
 	}
 
 	KelasService interface {
 		StoreKelas(req *request.KelasRequest) (*Kelas, error)
-		EditKelas(idKelas uint, idJadwal uint, req *request.KelasRequest) (*Kelas, error)
 		GetByID(id uint) (*Kelas, error)
 		GetByIDJadwal(idJadwal uint, idKelas uint) (*JadwalKelas, error)
-		DestroyKelas(id uint) error
 		FetchKelas() ([]*Kelas, error)
+		CountAllKelas() (int64, error)
+		EditKelas(idKelas uint, idJadwal uint, req *request.KelasRequest) (*Kelas, error)
+		DestroyKelas(id uint) error
 	}
 
 	KelasHandler interface {

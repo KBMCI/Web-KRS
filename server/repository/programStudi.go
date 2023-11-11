@@ -45,6 +45,18 @@ func (r *programStudiRepository) FindByID(id uint) (*model.ProgramStudi, error) 
 	return programStudi, nil
 }
 
+func (r *programStudiRepository) CountAllProgramStudi() (int64, error) {
+	var programStudi int64
+
+	err := r.database.Model(&model.ProgramStudi{}).Count(&programStudi).Error
+
+	if err != nil {
+		return 0, err
+	}
+
+	return programStudi, nil
+}
+
 func (r *programStudiRepository) Delete(programStudi *model.ProgramStudi) (*model.ProgramStudi, error) {
 	err := r.database.Delete(&programStudi).Error
 	if err != nil {

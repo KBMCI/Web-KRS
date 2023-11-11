@@ -59,11 +59,23 @@ func (u *userRepositoty) FindByEmail(email string) (*model.User, error) {
 	return user, err
 }
 
-func (u *userRepositoty) Update(user *model.User) (*model.User, error){	
+func (u *userRepositoty) CountAllUser() (int64, error) {
+	var user int64
+
+	err := u.database.Model(&model.User{}).Count(&user).Error
+
+	if err != nil {
+		return 0, err
+	}
+
+	return user, nil
+}
+
+func (u *userRepositoty) Update(user *model.User) (*model.User, error) {
 	err := u.database.Model(&user).Preload("Matkuls").Updates(&user).First(&user).Error
 	if err != nil {
 		return nil, err
-		
+
 	}
 
 	return user, err

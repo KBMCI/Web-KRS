@@ -38,6 +38,7 @@ type (
 		ReadAll() ([]*User, error)
 		ReadByID(ID int) (*User, error)
 		FindByEmail(email string) (*User, error)
+		CountAllUser() (int64, error)
 		Update(user *User) (*User, error)
 		Delete(user *User) (*User, error)
 		DeleteMatkul(userHasMatkuls *UserHasMatkuls, id uint) error
@@ -50,6 +51,7 @@ type (
 		ReadAll() ([]*User, error)
 		ReadByID(ID int) (*User, error)
 		GetByEmail(email string) (*User, error)
+		CountAllUser() (int64, error)
 		UpdateProfile(file *multipart.FileHeader, ID int, user *request.UserUpdateRequest) (*User, error)
 		Update(ID int, user *request.UserUpdateJSONRequest) (*User, error)
 		ForgotPassword(ID int, user *request.ForgotPasswordRequest) (*User, error)

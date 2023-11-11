@@ -14,16 +14,18 @@ type (
 
 	ProgramStudiRepository interface {
 		Create(programStudi *ProgramStudi) (*ProgramStudi, error)
-		UpdateByID(programStudi *ProgramStudi) (*ProgramStudi, error)
 		FindByID(id uint) (*ProgramStudi, error)
-		Delete(programStudi *ProgramStudi) (*ProgramStudi, error)
 		Fetch() ([]*ProgramStudi, error)
+		CountAllProgramStudi() (int64, error)
+		UpdateByID(programStudi *ProgramStudi) (*ProgramStudi, error)
+		Delete(programStudi *ProgramStudi) (*ProgramStudi, error)
 	}
 
 	ProgramStudiService interface {
 		StoreProgramStudi(req *request.ProgramStudiRequest) (*ProgramStudi, error)
 		EditProgramStudi(id uint, req *request.ProgramStudiRequest) (*ProgramStudi, error)
 		GetByID(id uint) (*ProgramStudi, error)
+		CountAllProgramStudi() (int64, error)
 		DestroyProgramStudi(id uint) error
 		FetchProgramStudi() ([]*ProgramStudi, error)
 	}

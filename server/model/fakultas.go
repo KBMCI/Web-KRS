@@ -15,16 +15,18 @@ type (
 		UpdateByID(fakultas *Fakultas) (*Fakultas, error)
 		FindByID(id uint) (*Fakultas, error)
 		FindJamKelasByFakultasID(id uint) (*Fakultas, error)
+		CountAllFakultas() (int64, error)
 		Delete(fakultas *Fakultas) (*Fakultas, error)
 		Fetch() ([]*Fakultas, error)
 	}
 
 	FakultasService interface {
 		StoreFakultas(req *request.FakultasRequest) (*Fakultas, error)
-		EditFakultas(id uint, req *request.FakultasRequest) (*Fakultas, error)
 		GetByID(id uint) (*Fakultas, error)
 		GetJamKelasByFakultasID(id uint) (*Fakultas, error)
-		DestroyFakultas(id uint) error
+		CountAllFakultas() (int64, error)
 		FetchFakultas() ([]*Fakultas, error)
+		EditFakultas(id uint, req *request.FakultasRequest) (*Fakultas, error)
+		DestroyFakultas(id uint) error
 	}
 )

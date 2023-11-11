@@ -18,7 +18,7 @@ func NewPlanRepository(database *gorm.DB) model.PlanRepository {
 }
 
 func (p *planRepository) Create(user *model.User, plan *model.Plan) (*model.Plan, error) {
-	plans, err := p.Fetch() 
+	plans, err := p.Fetch()
 	if err != nil {
 		return nil, err
 	}
@@ -29,7 +29,7 @@ func (p *planRepository) Create(user *model.User, plan *model.Plan) (*model.Plan
 		}
 		return plan, nil
 	}
-	
+
 	for _, userPlan := range duplicatePlan.Users {
 		if userPlan.ID == user.ID {
 			return nil, errors.New("user has added the plan")
@@ -73,6 +73,18 @@ func (p *planRepository) FindByIdUser(idUser uint) ([]*model.Plan, error) {
 	return user.Plans, err
 }
 
+func (p *planRepository) CountAllPlan() (int64, error) {
+	var plan int64
+
+	err := p.database.Model(&model.Plan{}).Count(&plan).Error
+
+	if err != nil {
+		return 0, err
+	}
+
+	return plan, nil
+}
+
 func (p *planRepository) DeletePlan(user *model.User, plan *model.Plan) error {
 	var currentPlan *model.Plan
 
@@ -99,7 +111,7 @@ func CheckDuplicatePlan(currentPlan []*model.Plan, kelas []*model.Kelas) *model.
 		if len(curPlan.Kelas) != len(kelas) {
 			continue
 		}
-		
+
 		for _, curKelas := range curPlan.Kelas {
 			for _, newKelas := range kelas {
 				if curKelas.ID == newKelas.ID {

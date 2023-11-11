@@ -95,6 +95,18 @@ func (k *kelasRepository) Fetch() ([]*model.Kelas, error) {
 	return data, err
 }
 
+func (k *kelasRepository) CountAllKelas() (int64, error) {
+	var kelas int64
+
+	err := k.database.Model(&model.Kelas{}).Count(&kelas).Error
+
+	if err != nil {
+		return 0, err
+	}
+
+	return kelas, nil
+}
+
 func (k *kelasRepository) UpdateByKelasID(kelas *model.Kelas) (*model.Kelas, error) {
 	err := k.database.Model(&kelas).Updates(&kelas).Error
 	if err != nil {

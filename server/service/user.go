@@ -135,6 +135,15 @@ func (s *userService) GetByEmail(email string) (*model.User, error) {
 	return user, nil
 }
 
+func (s *userService) CountAllUser() (int64, error) {
+	user, err := s.userRepository.CountAllUser()
+	if err != nil {
+		return 0, err
+	}
+
+	return user, nil
+}
+
 func (s *userService) UpdateProfile(file *multipart.FileHeader, ID int, userRequest *request.UserUpdateRequest) (*model.User, error) {
 	user, err := s.userRepository.ReadByID(ID)
 	if err != nil {
