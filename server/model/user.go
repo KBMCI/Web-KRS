@@ -51,7 +51,7 @@ type (
 		ReadByID(ID int) (*User, error)
 		GetByEmail(email string) (*User, error)
 		UpdateProfile(file *multipart.FileHeader, ID int, user *request.UserUpdateRequest) (*User, error)
-		Update(ID int, user *request.UserUpdateRequest) (*User, error)
+		Update(ID int, user *request.UserUpdateJSONRequest) (*User, error)
 		ForgotPassword(ID int, user *request.ForgotPasswordRequest) (*User, error)
 		Delete(ID int) (*User, error)
 		UploadImage(file *multipart.FileHeader) (string, error)

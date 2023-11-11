@@ -175,7 +175,7 @@ func (s *userService) UpdateProfile(file *multipart.FileHeader, ID int, userRequ
 	return newUser, nil
 }
 
-func (s *userService) Update(ID int, userRequest *request.UserUpdateRequest) (*model.User, error) {
+func (s *userService) Update(ID int, userRequest *request.UserUpdateJSONRequest) (*model.User, error) {
 	newUser, err := s.userRepository.Update(&model.User{
 		ID:             uint(ID),
 		ProgramStudiID: userRequest.ProgramStudiID,

@@ -23,6 +23,12 @@ type UserUpdateRequest struct {
 	Image          string
 }
 
+type UserUpdateJSONRequest struct {
+	ProgramStudiID uint   `json:"id_program_studi" binding:"required"`
+	Nama           string `json:"nama" binding:"required"`
+	Nim            string `json:"nim" binding:"required"`
+}
+
 type ForgotPasswordRequest struct {
 	Email         string `json:"email" binding:"email"`
 	Password      string `json:"password" binding:"required"`

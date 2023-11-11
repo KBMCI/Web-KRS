@@ -87,7 +87,7 @@ func (k *kelasRepository) FindBySomeID(id []uint) ([]*model.Kelas, error) {
 func (k *kelasRepository) Fetch() ([]*model.Kelas, error) {
 	var data []*model.Kelas
 
-	err := k.database.Preload("Matkul").Find(&data).Error
+	err := k.database.Preload("Matkul").Preload("JadwalKelas").Find(&data).Error
 	if err != nil {
 		return nil, err
 	}

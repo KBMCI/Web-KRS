@@ -125,9 +125,9 @@ func (r *rest) ReadByID(c *gin.Context) {
 }
 
 func (r *rest) Update(c *gin.Context) {
-	var UserRequest request.UserUpdateRequest
+	var UserRequest request.UserUpdateJSONRequest
 
-	err := c.ShouldBind(&UserRequest)
+	err := c.ShouldBindJSON(&UserRequest)
 	if err != nil {
 		helper.ResponseValidationErrorJson(c, http.StatusBadRequest, err.Error(), nil)
 		return
