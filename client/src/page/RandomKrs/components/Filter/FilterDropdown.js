@@ -1,13 +1,10 @@
 import { useState } from "react";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
-import Checkbox from "../../component/Checkbox";
+import Checkbox from "../../../../component/Checkbox";
 
 const FilterDropdown = ({ nama, kelas, kelasChange, selectedKelas }) => {
   const [isOpen, setIsOpen] = useState(false);
-  // useEffect(() => {
-  //   console.log("Dijalankan hahaha");
-  //   console.log(nama);
-  // }, []);
+
   return (
     <>
       {/* Nama Mata Kuliah */}

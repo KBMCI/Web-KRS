@@ -1,13 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import { DataContext } from "../../context/DataContext";
-import { PlanContext } from "../../context/PlanContext";
+import { DataContext } from "../../../../context/DataContext";
 
 const MatkulCheckbox = (props) => {
-  const { namaMatkul, id, index, AllMatkul } = props;
+  const { namaMatkul, id, AllMatkul } = props;
   const { selectedIdMatkul, setSelectedIdMatkul } = useContext(DataContext);
   const [isChecked, setIsChecked] = useState(false);
-  const [selectedId, setSelectedId] = useState([]);
-  const { planContext, setPlanContext } = useContext(PlanContext);
 
   useEffect(() => {
     if (selectedIdMatkul) {
@@ -29,38 +26,26 @@ const MatkulCheckbox = (props) => {
     } else {
       console.log("FALSE");
     }
-    // mengubah Object menjadi Array
-    // const idMatkul = selectedIdMatkul.map((item) => item?.ID);
-    // const isSelected = idMatkul.includes(id);
-    // console.log(idMatkul);
-    // console.log(isSelected);
-
-    // Atur status checkbox berdasarkan hasil seleksi
   }, [, AllMatkul]);
+
+  // Selected Matkul
   const selectedMatkul = (index, event) => {
-    // console.log(event.target.id);
-    // console.log(index);
-    // console.log(event);
     if (event.target.checked) {
       setIsChecked(true);
-      // console.log("Yeay you've checked this " + index);
-      // console.log(selectedIdMatkul);
+
       if (selectedIdMatkul) {
         setSelectedIdMatkul([...selectedIdMatkul, { ID: index }]);
       } else {
         setSelectedIdMatkul([{ ID: index }]);
       }
     } else {
-      // console.log("Oh, very sad for this " + index);
       setIsChecked(false);
       const filterSelectedId = selectedIdMatkul.filter((item) => {
         return item.ID !== index;
       });
-      // console.log(filterSelectedId);
+
       setSelectedIdMatkul(filterSelectedId);
     }
-
-    // return console.log(selectedIdMatkul);
   };
 
   return (

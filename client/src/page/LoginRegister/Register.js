@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Eyes_close from "../../assets/Eyes_close.svg";
 import Eyes_open from "../../assets/Eyes_open.svg";
@@ -8,6 +8,8 @@ import Logo from "../../assets/Logo.png";
 import RegisterImg from "../../assets/RegisterImg.png";
 import Error from "./Error";
 import Success from "./Success";
+import Dropdown from "./components/Dropdown";
+import getAllProgramStudi from "./services/getAllProgramStudi";
 
 const Register = () => {
   const [nama, setNama] = useState("");
@@ -15,7 +17,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm_password, setConfirm_password] = useState("");
-  const [program_studi, setProgram_studi] = useState("");
+  const [program_studi, setProgram_studi] = useState(0);
   const [role, setRole] = useState("user");
   const [type, setType] = useState("password");
   const [notSuccess, setNotSuccess] = useState(false);
@@ -24,8 +26,19 @@ const Register = () => {
   const [isRequired, setIsRequired] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const getAllProgStud = async () => {
+      const response = await getAllProgramStudi();
+      console.log(response);
+    };
+    getAllProgStud();
+
+    console.log(program_studi);
+  }, [, program_studi]);
+
   const handleRegister = async (e) => {
     e.preventDefault();
+
     try {
       const response = await axios.post(
         "http://localhost:8080/user/register",
@@ -35,15 +48,14 @@ const Register = () => {
           email,
           password,
           confirm_password,
-          program_studi,
-          role,
+          id_program_studi: program_studi,
         }),
         {
           headers: { "Content-Type": "application/json" },
         }
       );
       console.log("BERHASIL");
-     
+
       setSuccess(true);
       setTimeout(() => {
         setSuccess(false);
@@ -82,11 +94,17 @@ const Register = () => {
     focus:invalid:border-error 
     focus:invalid:ring-error`
         : ``
-    } h-[56px] rounded-xl shadow-lg w-full py-[17px] pl-[16px] mb-[24px]`;
+    } h-[56px] rounded-xl shadow-lg w-full py-[17px] pl-[16px] `;
   };
 
   const iconStyle = (name) => {
-    return ` ${isRequired && !name? 'text-error' : name ? `text-black` :  `text-neutral-400 `} focus:text-primary absolute top-1 right-4 translate-y-3`;
+    return ` ${
+      isRequired && !name
+        ? "text-error"
+        : name
+        ? `text-black`
+        : `text-neutral-400 `
+    } focus:text-primary absolute top-1 right-4 translate-y-3`;
   };
 
   const toggleRequired = () => {
@@ -98,26 +116,26 @@ const Register = () => {
   };
 
   return (
-    <div className="bg-[#F3F7FF] h-full w-full flex items-center justify-center gap-[58px]">
+    <div className="bg-[#F3F7FF] h-full w-full flex items-center justify-center gap-10  py-8 px-[8%]">
       {/* Kiri */}
-      <div className="bg-blue w-50 flex items-center justify-center rounded-2xl shadow-lg h-[864px] w-[530px]">
-        <img src={RegisterImg} width={590} height={590} alt="bg-register"/>
+      <div className="bg-blue w-50 flex items-center justify-center rounded-2xl shadow-lg h-[864px] w-[50%]">
+        <img src={RegisterImg} width={590} height={590} alt="bg-register" />
       </div>
       {/* Kanan */}
-      <div className="bg-secondary w-50 flex flex-col items-center justify-center rounded-2xl shadow-lg h-auto w-[530px] my-[80px]">
-        <img
-          className="mx-[231px] mt-[44px] mb-[20px]"
-          alt=""
-          src={Logo}
-          width="67px" />
-        <div className="w-[380px] h-[65px] mx-[75px] mb-[32px] text-center">
-          <h1 className="font-bold text-4xl">Yuk, Daftar Dulu!</h1>
-        </div>
-        <div className="w-[350px] h-[588px] mx-[90px] mb-[48px]">
-          <form onSubmit={handleRegister} className="flex flex-col" action="" >
+      <div className="container flex flex-col items-center w-[50%] ">
+        <div className="bg-secondary h-[864px] w-50 flex flex-col items-center justify-center rounded-2xl shadow-lg  w-full ">
+          <img className="  " alt="" src={Logo} width="67px" />
+          <div className="w-[380px] h-[65px]   text-center">
+            <h1 className="font-bold text-4xl">Yuk, Daftar Dulu!</h1>
+          </div>
+          <form
+            onSubmit={handleRegister}
+            className="flex flex-col w-full px-24 gap-6"
+            action=""
+          >
             <div className="relative">
               <input
-                className={`h-[56px] rounded-xl shadow-lg w-full py-[17px] pl-[16px] mb-[24px] ${
+                className={`h-[56px] rounded-xl shadow-lg w-full py-[17px] pl-[16px]  ${
                   isRequired
                     ? `invalid:border-error 
                 focus:invalid:border-error
@@ -141,9 +159,10 @@ const Register = () => {
               <p
                 className={`  ${
                   isRequired && !nama
-                    ? `relative ease text-error transform translate-x-0 mt-[-22px] left-[16px]`
-                    : "absolute left-[-9999px]"
-                }`}>
+                    ? `relative ease text-error transform translate-x-0 mt-[-22px] left-[16px] top-[20px]`
+                    : "absolute left-[-9999px] "
+                }`}
+              >
                 Required Field
               </p>
             </div>
@@ -184,20 +203,10 @@ const Register = () => {
               />
             </div>
             <div className="relative">
-              <input
-                className={InputText()}
-                type="text"
-                id="program_studi"
+              <Dropdown
+                setProgram_studi={setProgram_studi}
                 name="program_studi"
-                value={program_studi}
-                onChange={(e) => setProgram_studi(e.target.value)}
-                required={isRequired}
-                placeholder="Program Studi"
-              />
-              <Icon
-                icon="fluent:building-24-regular"
-                width="24"
-                className={iconStyle(program_studi)}
+                id="program_studi"
               />
             </div>
             <div className="relative">
@@ -214,7 +223,8 @@ const Register = () => {
               {password ? (
                 <div
                   onClick={handleType}
-                  className="absolute right-[18px] top-4">
+                  className="absolute right-[18px] top-4"
+                >
                   {eyes()}
                 </div>
               ) : (
@@ -240,7 +250,8 @@ const Register = () => {
               {confirm_password ? (
                 <div
                   onClick={handleType}
-                  className="absolute right-[18px] top-4">
+                  className="absolute right-[18px] top-4"
+                >
                   {eyes()}
                 </div>
               ) : (
@@ -254,21 +265,27 @@ const Register = () => {
 
             <button
               onClick={toggleRequired}
-              className="bg-primary rounded-xl font-bold text-base text-secondary h-[56px] p-[16px] mb-[24px] mt-[8px]">
+              className="bg-primary rounded-xl font-bold text-base text-secondary h-[56px] p-[16px]  "
+            >
               Register
             </button>
           </form>
-          <div className="flex justify-center">
+          <div className="flex justify-center mt-4">
             <p className="text-neutral-400 text-[15px]">
               Sudah mempunyai akun?{" "}
             </p>
-            <a className="text-primary text-[15px]" >
+            <a className="text-primary text-[15px]">
               <Link to="/login"> &nbsp;Login</Link>
             </a>
           </div>
+
+          <Success
+            isOpen={success}
+            for="Resgister"
+            messages="Silahkan login terlebih dahulu"
+          ></Success>
+          {notSuccess ? <Error errmsg={errMsg}></Error> : ""}
         </div>
-        {success ? <Success></Success> : ""}
-        {notSuccess ? <Error errmsg={errMsg}></Error> : ""}
       </div>
     </div>
   );

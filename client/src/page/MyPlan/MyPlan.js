@@ -6,7 +6,7 @@ import TablePlan from "../../component/TablePlan";
 const MyPlan = () => {
   const [myPlan, setMyPlan] = useState([]);
   const [success, setSuccess] = useState(false);
-  const [trigger, setTrigger] = useState(true);
+
   // Pagination Logic
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage] = useState(5);
@@ -26,7 +26,7 @@ const MyPlan = () => {
         };
         console.log("Get Data My Plan");
         const res = await url.get("/my-plan", config);
-        console.log(res);
+        console.log(res.data.data);
         setMyPlan(res.data.data);
         setSuccess(true);
       } catch (err) {
@@ -34,7 +34,7 @@ const MyPlan = () => {
       }
     };
     fetchMyPlan();
-  }, [trigger]);
+  }, []);
 
   // Delete Handler
   const deleteHandler = async (id) => {
@@ -50,7 +50,7 @@ const MyPlan = () => {
       const res = await url.delete(`/my-plan/${id}`, config);
       console.log(res);
       if (res.status === 200) {
-        setTrigger(!trigger);
+        window.location.reload();
       }
     } catch (err) {
       console.log(err);

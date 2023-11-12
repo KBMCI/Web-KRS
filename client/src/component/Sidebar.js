@@ -30,7 +30,7 @@ function Sidebar({ items }) {
     <aside
       className={` ${
         open ? "w-1/5 " : "w-1/12 "
-      } bg-secondary duration-300 shadow-lg fixed h-full z-20 `}
+      } bg-secondary duration-100 shadow-lg fixed h-full z-20 `}
     >
       {/* LOGO */}
       <div

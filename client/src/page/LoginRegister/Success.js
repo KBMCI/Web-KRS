@@ -21,7 +21,9 @@ const Success = (props) => {
         </div>
         <div className="basis-[85%]">
           <h1 className={`font-bold text-xl`}>Yippie!</h1>
-          <p>Login berhasil. Selamat datang, Sobat. </p>
+          <p>
+            {props.for} berhasil. {props.messages}.{" "}
+          </p>
         </div>
       </div>
     </div>

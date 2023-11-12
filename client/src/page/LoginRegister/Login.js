@@ -1,5 +1,4 @@
 import { Icon } from "@iconify/react";
-import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Eyes_close from "../../assets/Eyes_close.svg";
@@ -9,6 +8,7 @@ import Logo from "../../assets/Logo.png";
 import AuthContext from "../../context/AuthContext";
 import Error from "./Error";
 import Success from "./Success";
+import { postUserLogin } from "./services/postUserLogin";
 
 const Login = () => {
   const [password, setPassword] = useState("User123.");
@@ -24,17 +24,14 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:8080/user/login",
-        JSON.stringify({ email, password })
+      const response = await postUserLogin(
+        email,
+        password,
+        setErrMsg,
+        setNotSuccess
       );
-      // console.log("INI RESPONSENYA");
-      // console.log(response);
-      // console.log(response.data.data.token);
       const dataUser = response.data.data.user;
-      // console.log(response.data.data);
       const role = dataUser.role;
-
       setAuth({
         id: dataUser.id,
         email,
@@ -71,17 +68,7 @@ const Login = () => {
           navigate("/");
         }, 3100);
       }
-    } catch (err) {
-      console.log(err);
-      setErrMsg(err.response.message);
-      setNotSuccess(true);
-      if (err.response.status === 400) {
-        setErrMsg("Invalid Email or Password");
-        setTimeout(() => {
-          setNotSuccess(false);
-        }, 5000);
-      }
-    }
+    } catch (err) {}
   };
 
   const handleType = () => {
@@ -212,7 +199,11 @@ const Login = () => {
           </div>
         </div>
       </div>
-      <Success isOpen={success}></Success>
+      <Success
+        isOpen={success}
+        for="Login"
+        messages="Selamat datang, Sobat"
+      ></Success>
       {success ? "" : ""}
       {notSuccess ? <Error errmsg={errMsg}></Error> : ""}
     </div>

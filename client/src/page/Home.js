@@ -1,9 +1,9 @@
-import Sidebar from "../component/Sidebar";
-import Navbar from "../component/Navbar";
-import { Outlet } from "react-router-dom";
 import { useContext } from "react";
+import { FiAirplay, FiCoffee, FiFolder, FiUsers } from "react-icons/fi";
+import { Outlet } from "react-router-dom";
+import Navbar from "../component/Navbar";
+import Sidebar from "../component/Sidebar";
 import { DataContext } from "../context/DataContext";
-import { FiCoffee, FiUsers, FiAirplay, FiFolder } from "react-icons/fi";
 
 export function Home() {
   const { open } = useContext(DataContext);
