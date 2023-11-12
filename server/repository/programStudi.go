@@ -25,15 +25,6 @@ func (r *programStudiRepository) Create(programStudi *model.ProgramStudi) (*mode
 	return programStudi, nil
 }
 
-func (r *programStudiRepository) UpdateByID(programStudi *model.ProgramStudi) (*model.ProgramStudi, error) {
-	err := r.database.Model(&programStudi).Updates(&programStudi).First(&programStudi).Error
-	if err != nil {
-		return nil, err
-	}
-
-	return programStudi, nil
-}
-
 func (r *programStudiRepository) FindByID(id uint) (*model.ProgramStudi, error) {
 	programStudi := new(model.ProgramStudi)
 
@@ -57,8 +48,19 @@ func (r *programStudiRepository) CountAllProgramStudi() (int64, error) {
 	return programStudi, nil
 }
 
-func (r *programStudiRepository) Delete(programStudi *model.ProgramStudi) (*model.ProgramStudi, error) {
-	err := r.database.Delete(&programStudi).Error
+func (r *programStudiRepository) Fetch() ([]*model.ProgramStudi, error) {
+	var data []*model.ProgramStudi
+
+	err := r.database.InnerJoins("Fakultas").Order("fakultas.nama, program_studis.nama").Find(&data).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}
+
+func (r *programStudiRepository) UpdateByID(programStudi *model.ProgramStudi) (*model.ProgramStudi, error) {
+	err := r.database.Model(&programStudi).Updates(&programStudi).First(&programStudi).Error
 	if err != nil {
 		return nil, err
 	}
@@ -66,13 +68,11 @@ func (r *programStudiRepository) Delete(programStudi *model.ProgramStudi) (*mode
 	return programStudi, nil
 }
 
-func (r *programStudiRepository) Fetch() ([]*model.ProgramStudi, error) {
-	var data []*model.ProgramStudi
-
-	err := r.database.Preload("Fakultas").Find(&data).Error
+func (r *programStudiRepository) Delete(programStudi *model.ProgramStudi) (*model.ProgramStudi, error) {
+	err := r.database.Delete(&programStudi).Error
 	if err != nil {
 		return nil, err
 	}
 
-	return data, nil
+	return programStudi, nil
 }

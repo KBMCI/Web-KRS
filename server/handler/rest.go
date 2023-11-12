@@ -89,7 +89,7 @@ func (r *rest) RegisterMiddlewareAndRoutes() {
 		prodi.PATCH("/:id", r.EditProdiHandler)
 		prodi.GET("/:id", r.DetailProdiHandler)
 		prodi.DELETE("/:id", r.DeleteProdiHandler)
-		prodi.GET("", r.FetchProdiHandler)
+		r.httpServer.GET("program-studi", r.FetchProdiHandler)
 	}
 
 	// matkul routes
