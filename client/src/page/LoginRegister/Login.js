@@ -32,12 +32,12 @@ const Login = () => {
       console.log("INI RESPONSENYA");
       console.log(response);
       console.log(response.data.data.token);
-      const dataUser = response.data.data.data;
+      const dataUser = response.data.data;
       const id = dataUser.ID;
       const nama = dataUser.nama;
       const nim = dataUser.nim;
       const program_studi = dataUser.program_studi;
-      const role = dataUser.role;
+      const role = dataUser.user.role;
 
       setAuth({ id, email, nama, nim, program_studi, role });
 
@@ -63,17 +63,17 @@ const Login = () => {
 
       console.log(`000000000000000000000000000`);
     } catch (err) {
-      console.log("error dijalankan");
-      setErrMsg(err.response.message);
+      // console.log("error dijalankan");
+      // setErrMsg(err.response.message);
       setNotSuccess(true);
-      if (err.response.status === 400) {
-        setErrMsg("Invalid Email or Password");
-        setTimeout(() => {
-          setNotSuccess(false);
-        }, 5000);
-      }
+      // if (err.response.status === 400) {
+      //   setErrMsg("Invalid Email or Password");
+      //   setTimeout(() => {
+      //     setNotSuccess(false);
+      //   }, 5000);
+      // }
       console.log(email);
-      console.log(err.response.status);
+      // console.log(err.response.status);
     }
   };
 
@@ -103,16 +103,15 @@ const Login = () => {
   }, [email, password]);
 
   const iconStyle = () => {
-    return `${
-      notSuccess ? `text-error` : `text-neutral-400 `
-    } absolute top-1 right-4 translate-y-3`;
+    return `${notSuccess ? `text-error` : `text-neutral-400 `
+      } absolute top-1 right-4 translate-y-3`;
   };
 
   return (
     <div className="bg-[#F3F7FF] h-screen w-full flex items-center justify-center gap-20">
       {/* Kiri */}
       <div className="bg-blue flex items-center justify-center rounded-2xl shadow-lg p-8 ">
-        <img src={LoginImg} alt="bg-login" className="object-cover w-full h-full object-center"/>
+        <img src={LoginImg} alt="bg-login" className="object-cover w-full h-full object-center" />
       </div>
       {/* Kanan */}
       <div className=" bg-secondary flex flex-col items-center justify-center rounded-2xl shadow-lg z-10 p-10">
@@ -155,9 +154,8 @@ const Login = () => {
             </div>
             <div className="relative">
               <input
-                className={`h-[56px] rounded-xl shadow-lg w-full py-[17px] pl-[16px] mb-[12px] ${
-                  notSuccess ? `border-error` : ``
-                }`}
+                className={`h-[56px] rounded-xl shadow-lg w-full py-[17px] pl-[16px] mb-[12px] ${notSuccess ? `border-error` : ``
+                  }`}
                 type={type}
                 id="password"
                 name="password"

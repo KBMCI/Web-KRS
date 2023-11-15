@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import PageLoading from "../../../component/loader/PageLoading";
 import { usePrompt } from "../../../hooks/usePrompt";
 import Message from "../components/message/Message";
 import TablePlanningEdit from "../components/table/TablePlanningEdit";
@@ -16,6 +17,7 @@ const PlanningKrs = () => {
   const { state } = useLocation();
   const [idPlan, setIdPlan] = useState(state?.id);
   const token = window.localStorage.getItem("Authorization");
+  const [pageLoading, setPageLoading] = useState(false);
 
   // Suggestion
   const [lockMatkul, setLockMatkul] = useState({
@@ -70,16 +72,20 @@ const PlanningKrs = () => {
 
   // useEffect untuk mengambil data userHasMatkul
   useEffect(() => {
+    setPageLoading((prev) => !prev);
     const getUserHasMatkul = async () => {
       try {
         const result = await userHasMatkul(token);
 
         if (result?.response?.data) {
           alert(result.response.data.message);
+          setLoading((prev) => !prev);
           return;
         }
-
         setStatus(result.data.data.matkuls);
+        setTimeout(() => {
+          setPageLoading((prev) => !prev);
+        }, 1500);
       } catch (err) {
         console.log(err);
       }
@@ -164,13 +170,13 @@ const PlanningKrs = () => {
       return;
     }
     setIsSave(false);
-    resetStatus();
     setLockMatkul(() => ({
       showSuggest: false,
       fetchSuggest: false,
       idMatkulLock: [],
       historyMatkul: [],
     }));
+    resetStatus();
   };
 
   // Reset All status kelas 0
@@ -371,94 +377,98 @@ const PlanningKrs = () => {
   usePrompt("Ini tidak akan disave", showConfirModal());
   return (
     <>
-      <div className="min-h-[448px] bg-secondary px-7 pb-7 pt-4 flex flex-col gap-6">
-        <h1 className="text-2xl font-bold">Planning KRS</h1>
-        <div>
-          <div className="flex gap-4">
-            <div>
-              <h2 className="text-xl font-medium mb-2">Custom KRS</h2>
-              <TablePlanningEdit
-                matkuls={data}
-                setData={setData}
-                setTrigger={setTrigger}
-                trigger={trigger}
-                statusHandlerTrue={statusHandlerTrue}
-              />
-            </div>
-            <div>
-              <h2 className="text-xl font-medium mb-2">My Current Plan</h2>
-              <TablePlanningResult matkuls={data} trigger={trigger} />
+      {!pageLoading ? (
+        <div className="min-h-screen bg-secondary px-7 pb-8 pt-4 mb-7">
+          <h1 className="text-2xl font-bold mb-7">Planning KRS</h1>
+          <div className="mb-7">
+            <div className="flex gap-4">
+              <div className="w-full">
+                <h2 className="text-xl font-medium mb-2">Custom KRS</h2>
+                <TablePlanningEdit
+                  matkuls={data}
+                  setData={setData}
+                  setTrigger={setTrigger}
+                  trigger={trigger}
+                  statusHandlerTrue={statusHandlerTrue}
+                />
+              </div>
+              <div className="w-full">
+                <h2 className="text-xl font-medium mb-2">My Current Plan</h2>
+                <TablePlanningResult matkuls={data} trigger={trigger} />
+              </div>
             </div>
           </div>
-        </div>
-        <div className="flex justify-between">
-          <div>
-            <button
-              className="p-2 bg-accent text-neutral-900 rounded-md font-semibold "
-              onClick={addAnotherPlan}
-            >
-              <h1>+ Add Another Plan</h1>
-            </button>
-          </div>
-          {isSave ? (
-            <div className="flex flex-col items-end justify-end gap-2">
-              <div className="flex justify-center items-center flex-row bg-neutral-200 w-[150px] h-[50px] gap-2 rounded-[10px] font-bold">
-                <p className="text-neutral-400">Plan Added</p>
-              </div>
-              <div>
-                To see your saved plan, go to &nbsp;
-                <span className="text-primary hover:underline hover:duration-500">
-                  <Link to="/myplan">My Plan</Link>
-                </span>
-              </div>
-            </div>
-          ) : (
-            <div className="flex gap-5 items-center">
-              <div className="flex gap-2 items-center">
-                <div
-                  className="rounded-full p-4 bg-primary flex justify-center items-center w-6 h-6 cursor-pointer "
-                  onClick={lockMatkulPlanning}
-                >
-                  {!lockMatkul.showSuggest ? "🔓" : "🔒"}
-                </div>
-                <button
-                  className={`p-2 rounded-md font-semibold ${
-                    !lockMatkul.showSuggest
-                      ? "bg-neutral-200 text-neutral-400"
-                      : "bg-accent "
-                  }`}
-                  onClick={() => postSuggest()}
-                  disabled={
-                    !lockMatkul.showSuggest
-                      ? true
-                      : !loading.suggestion
-                      ? false
-                      : true
-                  }
-                >
-                  {!loading.suggestion ? "Suggestion" : "Loading..."}
-                </button>
-              </div>
+          <div className="flex justify-between">
+            <div>
               <button
                 className="p-2 bg-accent text-neutral-900 rounded-md font-semibold "
-                onClick={idPlan ? () => updatePlan() : () => postSave()}
-                disabled={loading.saveUpdateMyPlan}
+                onClick={addAnotherPlan}
               >
-                {!loading.saveUpdateMyPlan
-                  ? idPlan
-                    ? "Update"
-                    : "Save"
-                  : "Loading.."}
+                <h1>+ Add Another Plan</h1>
               </button>
             </div>
-          )}
+            {isSave ? (
+              <div className="flex flex-col items-end justify-end gap-2">
+                <div className="flex justify-center items-center flex-row bg-neutral-200 w-[150px] h-[50px] gap-2 rounded-[10px] font-bold">
+                  <p className="text-neutral-400">Plan Added</p>
+                </div>
+                <div>
+                  To see your saved plan, go to &nbsp;
+                  <span className="text-primary hover:underline hover:duration-500">
+                    <Link to="/myplan">My Plan</Link>
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div className="flex gap-5 items-center">
+                <div className="flex gap-2 items-center">
+                  <div
+                    className="rounded-full p-4 bg-primary flex justify-center items-center w-6 h-6 cursor-pointer "
+                    onClick={lockMatkulPlanning}
+                  >
+                    {!lockMatkul.showSuggest ? "🔓" : "🔒"}
+                  </div>
+                  <button
+                    className={`p-2 rounded-md font-semibold ${
+                      !lockMatkul.showSuggest
+                        ? "bg-neutral-200 text-neutral-400"
+                        : "bg-accent "
+                    }`}
+                    onClick={() => postSuggest()}
+                    disabled={
+                      !lockMatkul.showSuggest
+                        ? true
+                        : !loading.suggestion
+                        ? false
+                        : true
+                    }
+                  >
+                    {!loading.suggestion ? "Suggestion" : "Loading..."}
+                  </button>
+                </div>
+                <button
+                  className="p-2 bg-accent text-neutral-900 rounded-md font-semibold "
+                  onClick={idPlan ? () => updatePlan() : () => postSave()}
+                  disabled={loading.saveUpdateMyPlan}
+                >
+                  {!loading.saveUpdateMyPlan
+                    ? idPlan
+                      ? "Update"
+                      : "Save"
+                    : "Loading.."}
+                </button>
+              </div>
+            )}
+          </div>
+          <Message
+            open={notif.open}
+            statusMsg={notif.status}
+            textMsg={notif.message}
+          />
         </div>
-        <Message
-          open={notif.open}
-          statusMsg={notif.status}
-          textMsg={notif.message}
-        />
-      </div>
+      ) : (
+        <PageLoading />
+      )}
     </>
   );
 };

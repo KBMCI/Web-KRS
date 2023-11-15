@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { getAllProgramStudi } from "../../programStudi/services/getAllProgrmStudi";
+import { getAllProgramStudi } from "../../programStudi/services/getAllProgramStudi";
 import { validateMatkul } from "../lib/validateMatkul";
 import { editMatkul } from "../services/editMatkul";
 import { getMatkulById } from "../services/getMatkulById";

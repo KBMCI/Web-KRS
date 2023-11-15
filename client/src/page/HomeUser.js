@@ -38,7 +38,7 @@ const HomeUser = () => {
   ];
 
   return (
-    <div className="flex min-h-[105vh] font-sans bg-neutral-50">
+    <div className="flex min-h-screen font-sans bg-neutral-50">
       <Sidebar items={itemsSidebar} />
       <div>
         <div

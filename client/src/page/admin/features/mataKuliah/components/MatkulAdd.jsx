@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { getAllProgramStudi } from "../../programStudi/services/getAllProgrmStudi";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { getAllProgramStudi } from "../../programStudi/services/getAllProgramStudi";
 import { validateMatkul } from "../lib/validateMatkul";
 import { createMatkul } from "../services/createMatkul";
 import MatkulForm from "./MatkulForm";
 
-const MatkulEdit = () => {
+const MatkulAdd = () => {
   const token = window.localStorage.getItem("Authorization");
   const { setNotif, setRefresh } = useOutletContext();
   const navigate = useNavigate();
-  const { kode } = useParams();
   const [dataAllProgramStudi, setDataAllProgramStudi] = useState([]);
   const [loadingBtn, setLoadinBtn] = useState(false);
 
@@ -116,4 +115,4 @@ const MatkulEdit = () => {
   );
 };
 
-export default MatkulEdit;
+export default MatkulAdd;

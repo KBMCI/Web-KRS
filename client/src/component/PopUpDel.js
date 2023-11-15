@@ -23,6 +23,7 @@ export default function PopUpDel({ deleteHandlerFalse, deleteHandlerTrue, loadin
           <button
             className="bg-primary text-secondary py-2 px-[60px] rounded-lg font-bold text-base"
             onClick={deleteHandlerTrue}
+            disabled={loading}
           >
             {loading ? <ReactLoading height="5px" width="14px" /> : "OK"}
           </button>

@@ -12,7 +12,7 @@ const MataKuliah = () => {
   const token = window.localStorage.getItem("Authorization");
   const [dataMatkul, setDataMatkul] = useState([]);
   const [refresh, setRefresh] = useState(false);
-  const [loadingTable, setLoadingTable] = useState(false);
+  const [loadingTable, setLoadingTable] = useState(true);
 
   // getAllMatkul
   useEffect(() => {
