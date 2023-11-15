@@ -13,7 +13,6 @@ export function DataProvider({ children }) {
   const [open, setOpen] = useState(true);
   const [kelasFiltered, setKelasFiltered] = useState([]);
   const [randomKrsFiltered, setRandomKrsFiltered] = useState([]);
-  const [randomKrs, setRandomKrs] = useState([]);
   const [waktuFiltered, setWaktuFiltered] = useState([]);
   // SelectedIdMatkul dari dashboard
   const [selectedIdMatkul, setSelectedIdMatkul] = useState([]);
@@ -127,8 +126,7 @@ export function DataProvider({ children }) {
         setKelasFiltered,
         randomKrsFiltered,
         setRandomKrsFiltered,
-        randomKrs,
-        setRandomKrs,
+
         waktuFiltered,
         setWaktuFiltered,
       }}

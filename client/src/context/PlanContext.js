@@ -1,12 +1,12 @@
 import React, { createContext, useState } from "react";
 export const PlanContext = createContext();
 const PlanProvider = ({ children }) => {
-  const [planContext, setPlanContext] = useState([]);
+  const [tableHeaderContext, setTableHeaderContext] = useState([]);
   return (
     <PlanContext.Provider
       value={{
-        planContext,
-        setPlanContext,
+        tableHeaderContext,
+        setTableHeaderContext,
       }}
     >
       {children}

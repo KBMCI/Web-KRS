@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { DataContext } from "../../context/DataContext";
+import { DataContext } from "../../../../context/DataContext";
 
 const InputJam = (props) => {
   const { type, name, id, size, value, day, time } = props;
@@ -19,8 +19,6 @@ const InputJam = (props) => {
       setIsChecked(false);
       setWaktuFiltered(notFiltered);
     }
-    // console.log(day);
-    // console.log(time);
   };
 
   useEffect(() => {

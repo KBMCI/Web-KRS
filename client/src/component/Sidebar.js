@@ -13,9 +13,10 @@ function Sidebar({ items }) {
       //   Membersihkan localStorage
       localStorage.removeItem("Authorization");
       localStorage.removeItem("role");
-      localStorage.removeItem("Temporary_plan");
+      localStorage.removeItem("Profile");
+      // localStorage.removeItem("Temporary_plan");
       navigate("/login");
-      console.log("LocalStorage is Empty now");
+      // console.log("LocalStorage is Empty now");
     } catch (err) {
       console.log(err.message);
     }
@@ -29,7 +30,7 @@ function Sidebar({ items }) {
     <aside
       className={` ${
         open ? "w-1/5 " : "w-1/12 "
-      } bg-secondary duration-300 shadow-lg fixed h-full z-20 `}
+      } bg-secondary duration-100 shadow-lg fixed h-full z-20 `}
     >
       {/* LOGO */}
       <div

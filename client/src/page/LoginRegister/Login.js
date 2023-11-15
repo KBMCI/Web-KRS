@@ -1,6 +1,5 @@
 import { Icon } from "@iconify/react";
-import axios from "axios";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Eyes_close from "../../assets/Eyes_close.svg";
 import Eyes_open from "../../assets/Eyes_open.svg";
@@ -9,15 +8,15 @@ import Logo from "../../assets/Logo.png";
 import AuthContext from "../../context/AuthContext";
 import Error from "./Error";
 import Success from "./Success";
+import { postUserLogin } from "./services/postUserLogin";
 
 const Login = () => {
-  const [password, setPassword] = useState("User123.");
-  const [email, setEmail] = useState("user@gmail.com");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [type, setType] = useState("password");
   const [errMsg, setErrMsg] = useState("");
   const [notSuccess, setNotSuccess] = useState(false);
   const [success, setSuccess] = useState(false);
-  const errRef = useRef();
   const navigate = useNavigate();
   // Set Auth berasal dari AuthContext.js
   const { auth, setAuth } = useContext(AuthContext);
@@ -25,27 +24,36 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:8080/user/login",
-        JSON.stringify({ email, password })
+      const response = await postUserLogin(
+        email,
+        password,
+        setErrMsg,
+        setNotSuccess
       );
-      console.log("INI RESPONSENYA");
-      console.log(response);
-      console.log(response.data.data.token);
-      const dataUser = response.data.data;
-      const id = dataUser.ID;
-      const nama = dataUser.nama;
-      const nim = dataUser.nim;
-      const program_studi = dataUser.program_studi;
-      const role = dataUser.user.role;
-
-      setAuth({ id, email, nama, nim, program_studi, role });
+      const dataUser = response.data.data.user;
+      const role = dataUser.role;
+      setAuth({
+        id: dataUser.id,
+        email,
+        nama: dataUser.nama,
+        nim: dataUser.nim,
+        program_studi: dataUser.program_studi,
+        role,
+      });
 
       // ambil token
       const accessToken = response.data.data.token;
       // Simpan token pada localStorage
       localStorage.setItem("Authorization", accessToken);
       localStorage.setItem("role", role);
+
+      const profileObject = {
+        id: dataUser.id,
+        nama: dataUser.nama,
+        nim: dataUser.nim,
+        program_studi: dataUser.program_studi,
+      };
+      localStorage.setItem("Profile", JSON.stringify(profileObject));
       setSuccess(true);
 
       if (role === "admin") {
@@ -55,26 +63,12 @@ const Login = () => {
         }, 3100);
       } else {
         setTimeout(() => {
-          console.log(`000000000000000000000000000`);
+          console.log(`masuk sebagai user`);
           setSuccess(false);
           navigate("/");
         }, 3100);
       }
-
-      console.log(`000000000000000000000000000`);
-    } catch (err) {
-      // console.log("error dijalankan");
-      // setErrMsg(err.response.message);
-      setNotSuccess(true);
-      // if (err.response.status === 400) {
-      //   setErrMsg("Invalid Email or Password");
-      //   setTimeout(() => {
-      //     setNotSuccess(false);
-      //   }, 5000);
-      // }
-      console.log(email);
-      // console.log(err.response.status);
-    }
+    } catch (err) {}
   };
 
   const handleType = () => {
@@ -93,33 +87,30 @@ const Login = () => {
     }
   };
 
-  // const logout = () => {
-  //   localStorage.removeItem("Authorization");
-  // };
-
   useEffect(() => {
     console.log(email);
     console.log(errMsg);
   }, [email, password]);
 
   const iconStyle = () => {
-    return `${notSuccess ? `text-error` : `text-neutral-400 `
-      } absolute top-1 right-4 translate-y-3`;
+    return `${
+      notSuccess ? `text-error` : `text-neutral-400 `
+    } absolute top-1 right-4 translate-y-3`;
   };
 
   return (
     <div className="bg-[#F3F7FF] h-screen w-full flex items-center justify-center gap-20">
       {/* Kiri */}
       <div className="bg-blue flex items-center justify-center rounded-2xl shadow-lg p-8 ">
-        <img src={LoginImg} alt="bg-login" className="object-cover w-full h-full object-center" />
+        <img
+          src={LoginImg}
+          alt="bg-login"
+          className="object-cover w-full h-full object-center"
+        />
       </div>
       {/* Kanan */}
       <div className=" bg-secondary flex flex-col items-center justify-center rounded-2xl shadow-lg z-10 p-10">
-        <img
-          src={Logo}
-          width="67px"
-          alt="bg-login"
-        />
+        <img src={Logo} width="67px" alt="bg-login" />
         <div className="w-[351px] h-full">
           <h1 className="font-bold text-5xl flex justify-center mb-[14px]">
             Aloo!
@@ -154,8 +145,9 @@ const Login = () => {
             </div>
             <div className="relative">
               <input
-                className={`h-[56px] rounded-xl shadow-lg w-full py-[17px] pl-[16px] mb-[12px] ${notSuccess ? `border-error` : ``
-                  }`}
+                className={`h-[56px] rounded-xl shadow-lg w-full py-[17px] pl-[16px] mb-[12px] ${
+                  notSuccess ? `border-error` : ``
+                }`}
                 type={type}
                 id="password"
                 name="password"
@@ -207,8 +199,12 @@ const Login = () => {
           </div>
         </div>
       </div>
-      <Success isOpen={success}></Success>
-      {success ? <>{/* <Success isOpen={success}></Success> */}</> : ""}
+      <Success
+        isOpen={success}
+        for="Login"
+        messages="Selamat datang, Sobat"
+      ></Success>
+      {success ? "" : ""}
       {notSuccess ? <Error errmsg={errMsg}></Error> : ""}
     </div>
   );

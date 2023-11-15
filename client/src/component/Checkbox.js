@@ -1,5 +1,5 @@
-import InputJam from "../page/RandomKrs/InputJam";
-import InputKelas from "../page/RandomKrs/InputKelas";
+import InputJam from "../page/RandomKrs/components/Checkbox/InputJam";
+import InputKelas from "../page/RandomKrs/components/Checkbox/InputKelas";
 
 const Checkbox = ({
   namaKelas,

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
+import { AiOutlineLoading } from "react-icons/ai";
 import { FiEdit2, FiPlus, FiTrash } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import { url } from "../api/url";
 import LogoJam from "../assets/LogoJam.svg";
 import success from "../assets/success.svg";
 import Button from "./Button";
-import { header } from "./TableHeader";
+import { tableHeader } from "./TableHeader";
 
 const TablePlan = ({
   data,
@@ -21,14 +22,21 @@ const TablePlan = ({
   idPlan,
 }) => {
   // menetapkan agar header tidak akan berubah
-  Object.freeze(header);
+  Object.freeze(tableHeader);
   // menyalin header untuk dimanipulasi
-  const newData = [...header];
+  const newData = [...tableHeader];
+  const [getTableHeaders, setTableHeaders] = useState([]);
+  const [getHeader, setHeader] = useState([]);
   const [refresh, setRefresh] = useState();
   const [jadwalKuliah, setJadwalKuliah] = useState(newData);
   const [isSave, setIsSave] = useState(false);
   const [id_kelas, setId_kelas] = useState([]);
+  // mengambil plan dari backend
 
+  useEffect(() => {
+    console.log("==============");
+    console.log(getHeader);
+  }, [getHeader]);
   // membuat plan
   useEffect(() => {
     // console.log( is_saved , data.id)
@@ -38,6 +46,7 @@ const TablePlan = ({
       } else {
         setIsSave(false);
       }
+
       // console.log(data);
       // console.log("ini current page nya" + currentPage);
       // console.log(jadwalKuliah);
@@ -96,10 +105,11 @@ const TablePlan = ({
   }, [currentPage]);
 
   // isSave
+  const [isLoading, setIsLoading] = useState(false);
   const handleIsSave = async () => {
     const token = localStorage.getItem("Authorization");
     // membuat header agar bisa akses endpoint dengan token
-
+    setIsLoading(true);
     let config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -113,24 +123,23 @@ const TablePlan = ({
       }
     });
 
-    // console.log(id_kelas);
-    // console.log(isSave);
-    // console.log("ini baru");
-    // console.log(data);
     try {
       const response = await url.post("/my-plan", { id_kelas }, config);
-      console.log("Berhasil");
-      console.log(response);
+      // console.log("Berhasil");
+      // console.log(response);
     } catch (err) {
       console.log(err);
     }
 
-    setIsSave(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      setIsSave(true);
+    }, 2000);
   };
 
-  useEffect(() => {
-    console.log(isSave);
-  }, [isSave]);
+  // useEffect(() => {
+  //   console.log(isSave);
+  // }, [isSave]);
 
   const navigate = useNavigate();
 
@@ -149,7 +158,7 @@ const TablePlan = ({
   // Melakukan update terhadap jadwal
   const update = () => {
     setId_kelas([]);
-    console.log(data);
+    // console.log(data);
     data.forEach((item, i) => {
       id_kelas.push(item.id_kelas);
     });
@@ -199,7 +208,13 @@ const TablePlan = ({
                     <th
                       className={`${headerTabel()} flex justify-center items-center `}
                     >
-                      <img src={LogoJam} alt="logo-jam" className="" />
+                      <img
+                        src={LogoJam}
+                        width={20}
+                        height={20}
+                        alt="logo-jam"
+                        className=""
+                      />
                     </th>
                     <th className={headerTabel()}>Senin</th>
                     <th className={headerTabel()}>Selasa</th>
@@ -266,9 +281,10 @@ const TablePlan = ({
                 </>
               ) : (
                 <Button
-                  icon={<FiPlus />}
-                  name='Add to "MyPlans"'
+                  icon={isLoading ? <AiOutlineLoading /> : <FiPlus />}
+                  name={isLoading ? `Processing` : 'Add to "MyPlans"'}
                   disabled={isDisabled}
+                  loading={isLoading}
                   onClick={(e) => handleIsSave()}
                 />
               )}

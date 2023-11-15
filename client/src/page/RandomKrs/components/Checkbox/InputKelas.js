@@ -1,38 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
-import { DataContext } from "../../context/DataContext";
+import { DataContext } from "../../../../context/DataContext";
 
 const InputKelas = (props) => {
-  const [getFiltered, setFiltered] = useState([]);
-  const [test, setTest] = useState(false);
-  const [isSame, setIsSame] = useState(false);
   const [trigger, setTrigger] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const {
-    kelasFiltered,
-    setKelasFiltered,
-    randomKrs,
-    setRandomKrs,
-    filteredClass,
-    setFilteredClass,
-  } = useContext(DataContext);
-  const {
-    type,
-    namaKelas,
-    namaMatkul,
-    id,
-    size,
-    onChange,
-    checked,
-    label,
-    value,
-  } = props;
+  const { kelasFiltered, setKelasFiltered } = useContext(DataContext);
+  const { namaKelas, namaMatkul, id } = props;
 
   const selectedClass = (event) => {
-    console.log(event.target.id);
-    console.log(id);
+    // console.log(event.target.id);
+    // console.log(id);
     if (event.target.checked) {
-      console.log("randomKrs");
-      console.log(`${namaMatkul}-${namaKelas}`);
+      // console.log("randomKrs");
+      // console.log(`${namaMatkul}-${namaKelas}`);
 
       setKelasFiltered([...kelasFiltered, `${namaMatkul}-${namaKelas}`]);
       setTrigger(true);
@@ -59,10 +39,6 @@ const InputKelas = (props) => {
       setIsChecked(true);
     }
   }, []);
-
-  // useEffect(() => {
-  //   console.log(kelasFiltered);
-  // }, [trigger]);
 
   return (
     <>

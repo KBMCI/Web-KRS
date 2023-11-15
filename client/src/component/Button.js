@@ -9,8 +9,7 @@ export default function Button(props) {
           props.fixed ? `absolute  top-[130px] right-8` : ``
         } text-neutral-900 font-bold px-5 py-3 rounded-xl flex items-center gap-2 `}
       >
-        {" "}
-        {props.icon}
+        <div className={props.loading && `animate-spin`}>{props.icon}</div>
         {props.name}
       </button>
     </Link>
