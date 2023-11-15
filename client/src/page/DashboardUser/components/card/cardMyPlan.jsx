@@ -11,7 +11,7 @@ const CardMyPlan = ({ firstPlan, isFilled }) => {
       </h1>
       <div className="Tabel-My-Plan col-span-4">
         <div
-          className={`  flex flex-col justify-center items-center w-full h-fit  md:h-[303px] shadow-2xl rounded-[10px]`}
+          className={`  flex flex-col justify-center items-center w-full h-full  md:h-[303px] shadow-2xl rounded-[10px]`}
         >
           {isFilled && firstPlan ? (
             <>

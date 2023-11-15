@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { MdOutlineArrowDropDownCircle } from "react-icons/md";
-import { dataProgramStudi } from "../lib/dataProgramStudi";
+import { getAllProgramStudi } from "../services/getAllProgramStudi";
 import "../styles/animation.css";
 const Dropdown = ({ setProgram_studi }) => {
   const [selectedProgramStudi, setSelectedProgramStudi] =
     useState("Program Studi");
-  const [selectedIDProgStud, setSelectedIDProgStud] = useState(0);
+  const [listProgramStudi, setListProgramStudi] = useState([]);
   const [isActive, setIsActive] = useState(false);
-
+  useEffect(() => {
+    const getAllProgStud = async () => {
+      const response = await getAllProgramStudi();
+      setListProgramStudi(response.data.data);
+      console.log(response);
+    };
+    getAllProgStud();
+  }, []);
   useEffect(() => {
     console.log(isActive);
   }, [isActive]);
@@ -38,7 +45,7 @@ const Dropdown = ({ setProgram_studi }) => {
             <div
               className={`rounded-xl shadow-lg py-[17px] px-4 bg-secondary border animation absolute top-[90%] w-full h-fit z-10 `}
             >
-              {dataProgramStudi.map((item, index) => {
+              {listProgramStudi?.map((item, index) => {
                 return (
                   <div
                     className=" hover:text-accent cursor-pointer "

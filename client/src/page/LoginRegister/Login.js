@@ -11,8 +11,8 @@ import Success from "./Success";
 import { postUserLogin } from "./services/postUserLogin";
 
 const Login = () => {
-  const [password, setPassword] = useState("User123.");
-  const [email, setEmail] = useState("user@gmail.com");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [type, setType] = useState("password");
   const [errMsg, setErrMsg] = useState("");
   const [notSuccess, setNotSuccess] = useState(false);

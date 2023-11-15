@@ -33,8 +33,7 @@ const DashboardUser = () => {
     // Get one Plan from User
     const getMyplans = async () => {
       try {
-        const response = await getMyPlan(token);
-        setIsFilled(true);
+        const response = await getMyPlan(token, setIsFilled);
 
         setFirstPlan(response.data.data);
       } catch (err) {

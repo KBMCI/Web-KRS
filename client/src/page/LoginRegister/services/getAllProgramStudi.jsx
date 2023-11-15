@@ -15,4 +15,4 @@ const getAllProgramStudi = async () => {
   } catch {}
 };
 
-export default getAllProgramStudi;
+export { getAllProgramStudi };

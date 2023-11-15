@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Eyes_close from "../../assets/Eyes_close.svg";
 import Eyes_open from "../../assets/Eyes_open.svg";
@@ -9,7 +9,6 @@ import RegisterImg from "../../assets/RegisterImg.png";
 import Error from "./Error";
 import Success from "./Success";
 import Dropdown from "./components/Dropdown";
-import getAllProgramStudi from "./services/getAllProgramStudi";
 
 const Register = () => {
   const [nama, setNama] = useState("");
@@ -25,16 +24,6 @@ const Register = () => {
   const [errMsg, setErrMsg] = useState("");
   const [isRequired, setIsRequired] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const getAllProgStud = async () => {
-      const response = await getAllProgramStudi();
-      console.log(response);
-    };
-    getAllProgStud();
-
-    console.log(program_studi);
-  }, [, program_studi]);
 
   const handleRegister = async (e) => {
     e.preventDefault();
