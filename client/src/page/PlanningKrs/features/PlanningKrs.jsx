@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+
 import { usePrompt } from "../../../hooks/usePrompt";
 import Message from "../components/message/Message";
 import TablePlanningEdit from "../components/table/TablePlanningEdit";
@@ -76,6 +77,7 @@ const PlanningKrs = () => {
 
         if (result?.response?.data) {
           alert(result.response.data.message);
+
           return;
         }
 
@@ -164,7 +166,9 @@ const PlanningKrs = () => {
       return;
     }
     setIsSave(false);
+
     resetStatus();
+
     setLockMatkul(() => ({
       showSuggest: false,
       fetchSuggest: false,
@@ -462,5 +466,4 @@ const PlanningKrs = () => {
     </>
   );
 };
-
 export default PlanningKrs;

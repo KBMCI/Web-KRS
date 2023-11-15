@@ -33,7 +33,7 @@ export function DataProvider({ children }) {
         console.log(error);
       }
     };
-    getDataMatkul();
+    // getDataMatkul();
   }, [triggerMatkul]);
 
   const TriggerMatkul = () => {
@@ -56,7 +56,7 @@ export function DataProvider({ children }) {
         console.log(err);
       }
     };
-    getDataKelas();
+    // getDataKelas();
   }, [triggerKelas]);
 
   const TriggerKelas = () => {
@@ -79,7 +79,7 @@ export function DataProvider({ children }) {
         console.log(err);
       }
     };
-    getDataUser();
+    // getDataUser();
   }, [triggerUser]);
 
   const TriggerUser = () => {

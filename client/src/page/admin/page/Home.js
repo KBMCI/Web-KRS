@@ -1,39 +1,49 @@
 import { useContext } from "react";
+
 import { FiAirplay, FiCoffee, FiFolder, FiUsers } from "react-icons/fi";
 import { Outlet } from "react-router-dom";
 import Navbar from "../component/Navbar";
 import Sidebar from "../component/Sidebar";
 import { DataContext } from "../context/DataContext";
 
-const HomeUser = () => {
+export function Home() {
   const { open } = useContext(DataContext);
   // Items Navbar
   const itemsNavbar = {
-    name: "user",
-    link: "/",
+    name: "admin",
+    link: "/admin/",
   };
-
   // Items Sidebar
   const itemsSidebar = [
     {
       name: "Dashboard",
-      link: "/",
+      link: "/admin/",
       icon: <FiFolder size={24} className={`${!open && "w-full"}`} />,
     },
     {
-      name: "Random KRS",
-      link: "/random-krs",
+      name: "User Panel",
+      link: "/admin/user-panel",
       icon: <FiUsers size={24} className={`${!open && "w-full"}`} />,
     },
     {
-      name: "Planning KRS",
-      link: "/planning-krs",
+      name: "Mata Kuliah",
+      link: "/admin/mata-kuliah",
       icon: <FiCoffee size={24} className={`${!open && "w-full"}`} />,
     },
     {
-      name: "My Plan",
-      link: "/myplan",
+      name: "Kelas",
+      link: "/admin/kelas",
       icon: <FiAirplay size={24} className={`${!open && "w-full"}`} />,
+    },
+    {
+      name: "Fakultas",
+      link: "/admin/fakultas",
+      icon: <FiBook size={24} className={`${!open && "w-full"}`} />,
+    },
+    {
+      name: "Program Studi",
+      link: "/admin/program-studi",
+      icon: <FiBookOpen size={24} className={`${!open && "w-full"}`} />,
     },
   ];
 
@@ -44,7 +54,7 @@ const HomeUser = () => {
         <div
           className={`${
             open ? "w-4/5" : "w-11/12"
-          } fixed bg-neutral-100 right-0 z-10 duration-300  bg-neutral-50`}
+          } fixed bg-neutral-100 right-0 z-50 duration-300  bg-neutral-50`}
         >
           <Navbar items={itemsNavbar} />
         </div>
@@ -58,6 +68,6 @@ const HomeUser = () => {
       </div>
     </div>
   );
-};
+}
 
-export default HomeUser;
+export default Home;
