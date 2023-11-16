@@ -1,10 +1,10 @@
 import { useContext } from "react";
 
-import { FiAirplay, FiCoffee, FiFolder, FiUsers } from "react-icons/fi";
+import { FiAirplay, FiCoffee, FiFolder, FiUsers, FiBook, FiBookOpen } from "react-icons/fi";
 import { Outlet } from "react-router-dom";
-import Navbar from "../component/Navbar";
-import Sidebar from "../component/Sidebar";
-import { DataContext } from "../context/DataContext";
+import Navbar from "../../../component/Navbar";
+import Sidebar from "../../../component/Navbar";
+import { DataContext } from "../../../context/DataContext";
 
 export function Home() {
   const { open } = useContext(DataContext);
