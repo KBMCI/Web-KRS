@@ -11,19 +11,19 @@ const Dropdown = ({ setProgram_studi }) => {
     const getAllProgStud = async () => {
       const response = await getAllProgramStudi();
       setListProgramStudi(response.data.data);
-      console.log(response);
+      // console.log(response);
     };
     getAllProgStud();
   }, []);
-  useEffect(() => {
-    console.log(isActive);
-  }, [isActive]);
+  // useEffect(() => {
+  //   console.log(isActive);
+  // }, [isActive]);
 
   return (
     <>
       <div className="relative ">
         <div
-          className={`h-[56px] rounded-xl shadow-lg w-full py-[17px] pl-[16px]  border `}
+          className={`h-[56px] rounded-xl shadow-lg w-full py-[17px] pl-[16px] ... border border-solid border-gray-300 `}
           onClick={(e) => setIsActive(!isActive)}
           style={{ userSelect: "none" }}
         >

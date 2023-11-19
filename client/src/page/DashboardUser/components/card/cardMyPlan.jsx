@@ -21,11 +21,11 @@ const CardMyPlan = ({ firstPlan, isFilled }) => {
               ></TablePlan>
             </>
           ) : (
-            <>
+            <div className="flex flex-col justify-center items-center gap-3">
               <div className="mt-[20px]">
                 <img className="mb-[10px]" src={LogoMyPlans} alt="" />
               </div>
-              <p className="neutral-900 text-center font-semibold text-base lg:p-[10px] ">
+              <p className="neutral-900 text-center font-medium text-base mx-[10%]">
                 Oops, kamu belum memiliki plan apapun yang tersimpan. Buat satu
                 atau lebih agar dapat ditampilkan disini
               </p>
@@ -35,7 +35,7 @@ const CardMyPlan = ({ firstPlan, isFilled }) => {
                   Add Plan
                 </button>
               </Link>
-            </>
+            </div>
           )}
         </div>
       </div>

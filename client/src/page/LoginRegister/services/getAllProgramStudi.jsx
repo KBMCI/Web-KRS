@@ -5,7 +5,7 @@ const getAllProgramStudi = async () => {
     const response = await url
       .get("/program-studi")
       .then((result) => {
-        console.log(result);
+        // console.log(result);
         return result;
       })
       .catch((err) => {
