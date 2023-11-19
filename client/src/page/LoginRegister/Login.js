@@ -125,7 +125,9 @@ const Login = () => {
             <div className="relative">
               <input
                 className={`h-[56px] rounded-xl shadow-lg w-full py-[17px] pl-[16px] mb-[20px] ... 
-                invalid:border-error 
+                 ${
+                   email ? "invalid:border-error" : `invalid:border-neutral-600`
+                 }
                 focus:invalid:border-error
                 focus:invalid:ring-error ${notSuccess ? `border-error` : ``}`}
                 type="email"
