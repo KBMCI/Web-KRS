@@ -1,5 +1,6 @@
 import axios from "axios";
 
 export const url = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "http://api.desasumberpucung.web.id/api/",
+  // baseURL: "http://localhost:8080",
 });

@@ -9,6 +9,7 @@ import AuthContext from "../../context/AuthContext";
 import Error from "./Error";
 import Success from "./Success";
 import { postUserLogin } from "./services/postUserLogin";
+import { url } from "../../api/url";
 
 const Login = () => {
   const [password, setPassword] = useState("");
@@ -87,10 +88,9 @@ const Login = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(email);
-    console.log(errMsg);
-  }, [email, password]);
+  // useEffect(() => {
+  //   console.log(urlForRandomKrs);
+  // }, [email, password]);
 
   const iconStyle = () => {
     return `${

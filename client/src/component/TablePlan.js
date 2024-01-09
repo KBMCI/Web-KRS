@@ -33,10 +33,10 @@ const TablePlan = ({
   const [id_kelas, setId_kelas] = useState([]);
   // mengambil plan dari backend
 
-  useEffect(() => {
-    console.log("==============");
-    console.log(getHeader);
-  }, [getHeader]);
+  // useEffect(() => {
+  //   console.log("==============");
+  //   console.log(getHeader);
+  // }, [getHeader]);
   // membuat plan
   useEffect(() => {
     // console.log( is_saved , data.id)

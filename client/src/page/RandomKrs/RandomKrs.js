@@ -2,7 +2,7 @@ import qs from "qs";
 import React, { useContext, useEffect, useState } from "react";
 import { BsFillArrowUpCircleFill } from "react-icons/bs";
 import { FiFilter } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../../component/Button";
 import TablePlan from "../../component/TablePlan";
 import { DataContext } from "../../context/DataContext";
@@ -17,6 +17,7 @@ const RandomKrs = () => {
   const [success, setSuccess] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
+  const location = useLocation();
 
   const { kelasFiltered, waktuFiltered, setKelasFiltered, setWaktuFiltered } =
     useContext(DataContext);
@@ -55,9 +56,12 @@ const RandomKrs = () => {
           urlParameterKelas
         );
 
-        const getURL = `${response.request?.responseURL}`;
-        const newURL = getURL.replace("http://localhost:8080", "");
-        navigate(newURL);
+        // const getURL = `${response.request?.responseURL}`;
+        // console.log(getURL);
+        // console.log(location);
+        // const newURL = getURL.replace("http://localhost:8080", "");
+        // console.log(newURL);
+        navigate(location.pathname);
         setSuccess(true);
         checkLengthPlan(response.data.data);
       } catch (err) {
@@ -102,9 +106,9 @@ const RandomKrs = () => {
           urlParameterKelas
         );
         checkLengthPlan(response.data.data);
-        const getURL = `${response.request?.responseURL}`;
-        const newURL = getURL.replace("http://localhost:8080", "");
-        navigate(newURL);
+        // const getURL = `${response.request?.responseURL}`;
+        // const newURL = getURL.replace("http://localhost:8080", "");
+        navigate(location.pathname);
       } catch (err) {
         console.log();
       }
