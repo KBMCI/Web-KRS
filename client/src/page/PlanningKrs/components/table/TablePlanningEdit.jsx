@@ -196,11 +196,11 @@ const TablePlanningEdit = ({
   };
   // Style Tabel
   const barisTabel = () => {
-    return "p-2 text-center font-semibold text-[12px] w-1/2 flex flex-col gap-2 items-center";
+    return "px-2 py-3 text-center font-semibold text-[12px] w-1/2 flex flex-col gap-2 items-center";
   };
 
   const jamTabel = () => {
-    return "p-2 text-center font-bold text-[12px] w-1/2 flex items-center justify-center";
+    return "px-2 py-3  text-center font-bold text-[12px] w-1/2 flex items-center justify-center";
   };
 
   const headerTabel = () => {

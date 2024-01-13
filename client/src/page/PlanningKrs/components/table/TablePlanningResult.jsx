@@ -59,11 +59,11 @@ const TablePlanningResult = ({ matkuls, trigger }) => {
   }, [matkuls, trigger, setTabel]);
   // Style Tabel
   const barisTabel = () => {
-    return "p-2 text-center font-semibold text-[12px] w-1/2";
+    return "px-2 py-3 text-center font-semibold text-[12px] w-1/2";
   };
 
   const jamTabel = () => {
-    return "p-2 text-center font-bold text-[12px] w-1/2";
+    return "px-2 py-3 text-center font-bold text-[12px] w-1/2 flex items-center justify-center";
   };
 
   const headerTabel = () => {
@@ -71,8 +71,8 @@ const TablePlanningResult = ({ matkuls, trigger }) => {
   };
   return (
     <div className="">
-      <table className="w-full table-fixed drop-shadow-xl ">
-        <thead className="w-full rounded-full bg-primary ">
+      <table className="w-full table-fixed drop-shadow-xl">
+        <thead className="flex rounded-t-xl bg-primary ">
           <tr className="flex w-full text-secondary justify-center">
             <th className={headerTabel()}></th>
             <th className={headerTabel()}>Senin</th>
@@ -83,13 +83,13 @@ const TablePlanningResult = ({ matkuls, trigger }) => {
           </tr>
         </thead>
         <tbody
-          className="flex flex-col items-center rounded-b-xl justify-between overflow-y-scroll w-full scrollbar scrollbar-w-[5px] scrollbar-thumb-neutral-400 scrollbar-thumb-rounded-full"
+          className="flex flex-col w-full rounded-b-xl justify-between overflow-y-scroll scrollbar scrollbar-w-[5px] scrollbar-thumb-neutral-400 scrollbar-thumb-rounded-full"
           style={{ height: "80vh", width: `calc(100% + 5px)` }}
         >
           {tabelJadwal?.map((jadwal, index) => (
             <tr
               key={index}
-              className="bg-secondary text-neutral-900 border-b border-neutral-400 flex w-full "
+              className="bg-secondary text-neutral-900 border-b border-neutral-400 flex w-full"
             >
               <td className={jamTabel()}>{jadwal.jam}</td>
               <td className={barisTabel()}>{jadwal.hari.senin}</td>

@@ -9,6 +9,10 @@ import timeToDecimal from "../lib/timeToDecimal";
 import { patchMyPlan, postMyPlan } from "../services/myPlan";
 import { suggestion } from "../services/suggestion";
 import { userHasMatkul } from "../services/userHasMatkul";
+import Button from "../../../component/button/Button";
+import { FiPlus, FiSave } from "react-icons/fi";
+import { AiOutlineLoading } from "react-icons/ai";
+import { FiShuffle } from "react-icons/fi";
 
 const PlanningKrs = () => {
   const [data, setData] = useState([]);
@@ -104,7 +108,20 @@ const PlanningKrs = () => {
 
   const postSave = async () => {
     if (matkulSelected.length < data.length) {
-      return alert("Matkul yang di pilih kurang");
+      setNotif(() => ({
+        open: true,
+        status: false,
+        message: "Matkul yang dipilih kurang",
+      }));
+
+      setTimeout(() => {
+        setNotif((prev) => ({
+          ...prev,
+          open: false,
+        }));
+      }, 2000);
+
+      return;
     }
     setLoading((prev) => ({
       ...prev,
@@ -161,7 +178,7 @@ const PlanningKrs = () => {
 
   // Add Another Plan
   const addAnotherPlan = () => {
-    const confirm = window.confirm("Ini bakalan tidak disave");
+    const confirm = window.confirm("Apakah anda yakin ingin menghapus plan?");
     if (!confirm) {
       return;
     }
@@ -278,7 +295,20 @@ const PlanningKrs = () => {
   // Untuk mengupdate
   const updatePlan = async () => {
     if (matkulSelected.length < data.length) {
-      return alert("Matkul yang di pilih kurang");
+      setNotif(() => ({
+        open: true,
+        status: false,
+        message: "Matkul yang dipilih kurang",
+      }));
+
+      setTimeout(() => {
+        setNotif((prev) => ({
+          ...prev,
+          open: false,
+        }));
+      }, 2000);
+
+      return;
     }
     setLoading((prev) => ({
       ...prev,
@@ -372,7 +402,7 @@ const PlanningKrs = () => {
     setTrigger(!trigger);
   };
 
-  usePrompt("Ini tidak akan disave", showConfirModal());
+  usePrompt("Apakah anda yakin ingin meninggalkan halaman ini?", showConfirModal());
   return (
     <>
       <div className="min-h-[448px] bg-secondary px-7 pb-7 pt-4 flex flex-col gap-6">
@@ -397,12 +427,14 @@ const PlanningKrs = () => {
         </div>
         <div className="flex justify-between">
           <div>
-            <button
-              className="p-2 bg-accent text-neutral-900 rounded-md font-semibold "
+            <Button
+              type={"button"}
               onClick={addAnotherPlan}
+              className={"w-44 h-10 bg-accent text-neutral-900"}
+              icon={<FiPlus />}
             >
-              <h1>+ Add Another Plan</h1>
-            </button>
+              Add Another Plan
+            </Button>
           </div>
           {isSave ? (
             <div className="flex flex-col items-end justify-end gap-2">
@@ -426,7 +458,7 @@ const PlanningKrs = () => {
                   {!lockMatkul.showSuggest ? "🔓" : "🔒"}
                 </div>
                 <button
-                  className={`p-2 rounded-md font-semibold ${
+                  className={`h-10 w-36 flex justify-center items-center rounded-xl font-bold gap-2 ${
                     !lockMatkul.showSuggest
                       ? "bg-neutral-200 text-neutral-400"
                       : "bg-accent "
@@ -440,20 +472,24 @@ const PlanningKrs = () => {
                       : true
                   }
                 >
-                  {!loading.suggestion ? "Suggestion" : "Loading..."}
+                  {!loading.suggestion ? (
+                    <>
+                      <FiShuffle />
+                      <p>Suggestion</p>
+                    </>
+                  ) : (
+                    <AiOutlineLoading className="animate-spin" />
+                  )}
                 </button>
               </div>
-              <button
-                className="p-2 bg-accent text-neutral-900 rounded-md font-semibold "
+              <Button
+                className="h-10 w-24 bg-accent text-neutral-900"
                 onClick={idPlan ? () => updatePlan() : () => postSave()}
-                disabled={loading.saveUpdateMyPlan}
+                loading={loading.saveUpdateMyPlan}
+                icon={<FiSave />}
               >
-                {!loading.saveUpdateMyPlan
-                  ? idPlan
-                    ? "Update"
-                    : "Save"
-                  : "Loading.."}
-              </button>
+                {idPlan ? "Update" : "Save"}
+              </Button>
             </div>
           )}
         </div>
