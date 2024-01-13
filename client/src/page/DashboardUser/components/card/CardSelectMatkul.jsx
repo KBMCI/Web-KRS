@@ -22,11 +22,7 @@ const CardSelectMatkul = ({ onPostHandle, namaMataKuliahTabel }) => {
   };
   return (
     <>
-      {" "}
-      <h1 className="neutral-900 font-semibold text-2xl  p-[10px] col-span-6 ">
-        Mata Kuliah Dipilih
-      </h1>
-      <div className="Tabel-Mata-Kuliah  col-span-4">
+      <div className="Tabel-Mata-Kuliah col-span-4">
         <div className="w-full shadow-lg  rounded-[10px] mb-[10px] h-[451px] max-h-[451px] overflow-y-scroll scrollbar scrollbar-thumb-neutral-400 scrollbar-w-1 scrollbar-thumb-rounded-lg">
           <table className="table-auto border-collapse border-b border-neutral-400 w-full drop-shadow-xl ">
             <thead className="">

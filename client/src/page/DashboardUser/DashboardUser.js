@@ -64,6 +64,9 @@ const DashboardUser = () => {
 
   return (
     <div className="bg-secondary p-7">
+      <h1 className="neutral-900 font-semibold text-2xl p-[10px]">
+        Mata Kuliah Dipilih
+      </h1>
       <div className=" grid grid-cols-6 gap-3">
         {/* Tabel Mata Kuliah */}
         <CardSelectMatkul
