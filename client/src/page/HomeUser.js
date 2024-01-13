@@ -51,7 +51,7 @@ const HomeUser = () => {
         <div
           className={`${
             open ? "w-4/5" : "w-11/12"
-          } duration-300 absolute right-0 top-0 pt-[6rem] bg-neutral-50`}
+          } duration-300 absolute right-0 top-0 pt-[5rem] bg-neutral-50`}
         >
           <Outlet />
         </div>
