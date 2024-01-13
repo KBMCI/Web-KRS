@@ -2,29 +2,30 @@ import React, { useEffect, useState } from "react";
 import { MdOutlineArrowDropDownCircle } from "react-icons/md";
 import { getAllProgramStudi } from "../services/getAllProgramStudi";
 import "../styles/animation.css";
-const Dropdown = ({ setProgram_studi }) => {
-  const [selectedProgramStudi, setSelectedProgramStudi] =
-    useState("Program Studi");
+
+const Dropdown = ({ setProgram_studi, required, id_program_studi }) => {
+  const [selectedProgramStudi, setSelectedProgramStudi] = useState(
+    "Pilih Program Studi"
+  );
+
   const [listProgramStudi, setListProgramStudi] = useState([]);
+
   const [isActive, setIsActive] = useState(false);
+
   useEffect(() => {
-    const getAllProgStud = async () => {
+    const getAllProgStudi = async () => {
       const response = await getAllProgramStudi();
       setListProgramStudi(response.data.data);
-      // console.log(response);
     };
-    getAllProgStud();
+    getAllProgStudi();
   }, []);
-  // useEffect(() => {
-  //   console.log(isActive);
-  // }, [isActive]);
 
   return (
     <>
       <div className="relative ">
         <div
-          className={`h-[56px] rounded-xl shadow-lg w-full py-[17px] pl-[16px] ... border border-solid border-gray-300 `}
-          onClick={(e) => setIsActive(!isActive)}
+          className={`rounded-xl shadow-lg w-full py-4 pl-4`}
+          onClick={() => setIsActive((prev) => !prev)}
           style={{ userSelect: "none" }}
         >
           {selectedProgramStudi}
@@ -48,11 +49,14 @@ const Dropdown = ({ setProgram_studi }) => {
               {listProgramStudi?.map((item, index) => {
                 return (
                   <div
-                    className=" hover:text-accent cursor-pointer "
+                    className="cursor-pointer "
                     key={index}
                     onClick={(e) => {
                       setSelectedProgramStudi(item.nama);
-                      setProgram_studi(item.id);
+                      setProgram_studi((prev) => ({
+                        ...prev,
+                        id_program_studi: item.id,
+                      }));
                       setIsActive(false);
                     }}
                     style={{ userSelect: "none" }}
