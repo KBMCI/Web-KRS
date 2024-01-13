@@ -8,7 +8,7 @@ const Button = ({
   const [pilih, setPilih] = useState("");
 
   const selected = () => {
-    return "p-1 bg-primary/10 border border-1 text-neutral-10 border-primary rounded-lg my-2 bg-primary ";
+    return "p-1 bg-primary border border-1 text-neutral-10 border-primary rounded-lg my-2 bg-primary ";
   };
   const disable = () => {
     return "p-1 text-neutral-400 border border-1 border-neutral-400 rounded-lg my-2";
