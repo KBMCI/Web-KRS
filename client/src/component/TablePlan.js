@@ -282,7 +282,7 @@ const TablePlan = ({
               ) : (
                 <Button
                   icon={isLoading ? <AiOutlineLoading /> : <FiPlus />}
-                  name={isLoading ? `Processing` : 'Add to "MyPlans"'}
+                  name={isLoading ? `` : 'Add to "MyPlans"'}
                   disabled={isDisabled}
                   loading={isLoading}
                   onClick={(e) => handleIsSave()}
