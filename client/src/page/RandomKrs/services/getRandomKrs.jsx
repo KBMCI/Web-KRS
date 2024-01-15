@@ -20,7 +20,9 @@ const getRandomKrs = async (token, urlParameterWaktu, urlParameterKelas) => {
         return result;
       });
     return response;
-  } catch {}
+  } catch (err) {
+    return err;
+  }
 };
 
 export { getRandomKrs };
