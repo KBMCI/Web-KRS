@@ -25,7 +25,6 @@ const KelasTable = ({ data, setNotif, setRefresh }) => {
 
   // perform deletion and hide popup
   const deleteHandlerTrue = async () => {
-    console.log(showDel);
     if (showDel.show && showDel.id) {
       setLoadingBtn(true);
       try {
@@ -66,8 +65,6 @@ const KelasTable = ({ data, setNotif, setRefresh }) => {
         }, 3000);
       } catch (err) {
         console.log(err);
-        // feedbackHandler(false, "delete");
-        // setLoading(false);
       }
     }
   };
