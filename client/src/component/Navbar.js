@@ -13,7 +13,7 @@ function Navbar({ items }) {
   // console.log(auth);
   return (
     <>
-      <nav className="flex justify-between items-center px-10 py-4 shadow-lg">
+      <nav className="flex justify-between items-center px-7 py-4 shadow-lg">
         <div className="mr-10 my-4">
           <Breadcrumb items={items} />
         </div>
@@ -21,13 +21,11 @@ function Navbar({ items }) {
           className="flex items-center gap-3"
           onClick={() => setIsOpen(!isOpen)}
         >
-          <FiUser size={40} className="rounded-full border-2 border-primary" />
           <div className="cursor-pointer text-end">
-            <h1 className="font-bold text-[20px]">
-              {profileObject.nama} || {profileObject.program_studi}
-            </h1>
+            <h1 className="font-bold text-[20px]">{profileObject.nama}</h1>
             <p>{profileObject.nim}</p>
           </div>
+          <FiUser size={40} className="rounded-full border-2 border-primary" />
         </div>
       </nav>
       {isOpen ? <PopUpEditProfile /> : ""}
