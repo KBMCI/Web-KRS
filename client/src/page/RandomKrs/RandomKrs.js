@@ -1,7 +1,7 @@
 import qs from "qs";
 import React, { useContext, useEffect, useState } from "react";
 import { BsFillArrowUpCircleFill } from "react-icons/bs";
-import { FiFilter } from "react-icons/fi";
+import { FiFilter, FiLoader } from "react-icons/fi";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../../component/Button";
 import TablePlan from "../../component/TablePlan";
@@ -10,14 +10,20 @@ import FilterTabel from "./components/Filter/FIlterTabel";
 import { getRandomKrs } from "./services/getRandomKrs";
 import PageLoading from "../../component/loader/PageLoading";
 import Message from "../PlanningKrs/components/message/Message";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { url } from "../../api/url";
 
 const RandomKrs = () => {
   const navigate = useNavigate();
   const [plan, setPlan] = useState([]);
+  // TODO: Infinite Scroll
+  const [AllPlan, setAllPlan] = useState([]);
+  // ===================
   const [trigerred, setTrigerred] = useState(false);
   const [emptySignError, setEmptySignError] = useState("");
   const [success, setSuccess] = useState(false);
   const [disabled, setDisabled] = useState(false);
+
   const location = useLocation();
 
   const [notif, setNotif] = useState({
@@ -35,7 +41,7 @@ const RandomKrs = () => {
   // Get Token
   const token = localStorage.getItem("Authorization");
 
-  // Mengosongkan FIlter jika masuk ke Random KRS
+  // Mengosongkan Filter jika masuk ke Random KRS
   useEffect(() => {
     setKelasFiltered([]);
     setWaktuFiltered([]);
@@ -44,8 +50,10 @@ const RandomKrs = () => {
   // Check plan, jika terdapat hasil filter atau tidak
   const checkLengthPlan = (plan) => {
     if (plan !== null) {
-      setPlan(plan);
-      console.log(plan);
+      // TODO: INFINITE SCROLL
+      setAllPlan(plan);
+      setPlan(plan.slice(0, 10));
+      // ===============================================
     } else {
       setPlan([]);
       setEmptySignError(
@@ -63,12 +71,10 @@ const RandomKrs = () => {
           urlParameterWaktu,
           urlParameterKelas
         );
-        // const getURL = `${response.request?.responseURL}`;
-        // console.log(getURL);
-        // console.log(location);
-        // const newURL = getURL.replace("http://localhost:8080", "");
-        // console.log(newURL);
-        navigate(location.pathname);
+        const getURL = `${response.request?.responseURL}`;
+        const urlParts = getURL.split("?");
+        navigate(`${location.pathname}?${urlParts[1] ? urlParts[1] : ""}`);
+
         setSuccess(true);
         checkLengthPlan(response.data.data);
       } catch (err) {
@@ -104,6 +110,8 @@ const RandomKrs = () => {
   // Ketika fileter di klik maka akan menjalankan fungsi ini
   const click = () => {
     const fetchFilterRandomKrs = async (e) => {
+      setHasMore(true);
+      setIndex(1);
       try {
         setPlan([]);
         const response = await getRandomKrs(
@@ -111,10 +119,11 @@ const RandomKrs = () => {
           urlParameterWaktu,
           urlParameterKelas
         );
+        const getURL = `${response.request?.responseURL}`;
+        const urlParts = getURL.split("?");
+        navigate(`${location.pathname}?${urlParts[1] ? urlParts[1] : ""}`);
+
         checkLengthPlan(response.data.data);
-        // const getURL = `${response.request?.responseURL}`;
-        // const newURL = getURL.replace("http://localhost:8080", "");
-        navigate(location.pathname);
       } catch (err) {
         console.log();
       }
@@ -232,6 +241,26 @@ const RandomKrs = () => {
     }
   }, [selected]);
 
+  // TODO: INFINITE SCROLL
+  const [hasMore, setHasMore] = useState(true);
+  const [index, setIndex] = useState(1);
+  // get data for Infinite Scroll
+  const fetchMoreData = () => {
+    // get Data
+
+    if (plan.length < AllPlan.length) {
+      setTimeout(() => {
+        setPlan(plan.concat(AllPlan.slice(index * 10, (index + 1) * 10)));
+
+        setIndex((i) => i + 1);
+        console.log(`plan ${plan.length}`);
+        console.log(`All Plan ${AllPlan.length}`);
+      }, 2000);
+    } else {
+      setHasMore(false);
+    }
+  };
+  // =========================
   return (
     <>
       {success && plan !== null ? (
@@ -282,19 +311,31 @@ const RandomKrs = () => {
           </div>
 
           {plan.length > 0 ? (
-            plan &&
-            plan.map((plans, i) => (
-              <div key={i}>
-                <TablePlan
-                  is_saved={plans.is_saved}
-                  data={plans.random_krs}
-                  plan={i + 1}
-                  // currentPage={currentPage}
-                  isDisabled={false}
-                  setNotif={setNotif}
-                />
-              </div>
-            ))
+            plan && (
+              <InfiniteScroll
+                dataLength={plan.length}
+                next={fetchMoreData}
+                hasMore={hasMore}
+                loader={
+                  <div className="absolute right-[50%] left-[50%] bottom-2 text-primary">
+                    <FiLoader size={60} className="animate-spin" />
+                    {/* <h1 className="font-semibold">Loading...</h1> */}
+                  </div>
+                }
+              >
+                {plan.map((plans, i) => (
+                  <div key={i}>
+                    <TablePlan
+                      is_saved={plans.is_saved}
+                      data={plans.random_krs}
+                      plan={i + 1}
+                      // currentPage={currentPage}
+                      isDisabled={false}
+                    ></TablePlan>
+                  </div>
+                ))}
+              </InfiniteScroll>
+            )
           ) : (
             <>
               <h1 className="bg-secondary text-error font-extrabold italic px-7 pt-7">
