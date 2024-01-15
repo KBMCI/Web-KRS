@@ -8,6 +8,8 @@ import TablePlan from "../../component/TablePlan";
 import { DataContext } from "../../context/DataContext";
 import FilterTabel from "./components/Filter/FIlterTabel";
 import { getRandomKrs } from "./services/getRandomKrs";
+import PageLoading from "../../component/loader/PageLoading";
+import Message from "../PlanningKrs/components/message/Message";
 
 const RandomKrs = () => {
   const navigate = useNavigate();
@@ -16,8 +18,13 @@ const RandomKrs = () => {
   const [emptySignError, setEmptySignError] = useState("");
   const [success, setSuccess] = useState(false);
   const [disabled, setDisabled] = useState(false);
-  const [buttonLoading, setButtonLoading] = useState(false);
   const location = useLocation();
+
+  const [notif, setNotif] = useState({
+    open: false,
+    status: false,
+    message: "",
+  });
 
   const { kelasFiltered, waktuFiltered, setKelasFiltered, setWaktuFiltered } =
     useContext(DataContext);
@@ -38,6 +45,7 @@ const RandomKrs = () => {
   const checkLengthPlan = (plan) => {
     if (plan !== null) {
       setPlan(plan);
+      console.log(plan);
     } else {
       setPlan([]);
       setEmptySignError(
@@ -55,7 +63,6 @@ const RandomKrs = () => {
           urlParameterWaktu,
           urlParameterKelas
         );
-
         // const getURL = `${response.request?.responseURL}`;
         // console.log(getURL);
         // console.log(location);
@@ -65,7 +72,6 @@ const RandomKrs = () => {
         setSuccess(true);
         checkLengthPlan(response.data.data);
       } catch (err) {
-        console.log(err);
         setPlan([]);
         setDisabled(true);
         setSuccess(true);
@@ -266,10 +272,13 @@ const RandomKrs = () => {
             // disabled={plan.length > 0 ? false : true}
           />
 
-          <div className="fixed right-5 bottom-4 z-10 text-primary shadow-primary shadow-2xl rounded-full">
-            <a href="#">
-              <BsFillArrowUpCircleFill size={60} />
-            </a>
+          <div
+            className="fixed right-6 bottom-6 z-10 text-primary shadow-primary bg-secondary shadow-2xl rounded-full cursor-pointer"
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+          >
+            <BsFillArrowUpCircleFill size={50} />
           </div>
 
           {plan.length > 0 ? (
@@ -282,7 +291,8 @@ const RandomKrs = () => {
                   plan={i + 1}
                   // currentPage={currentPage}
                   isDisabled={false}
-                ></TablePlan>
+                  setNotif={setNotif}
+                />
               </div>
             ))
           ) : (
@@ -297,13 +307,16 @@ const RandomKrs = () => {
           )}
         </>
       ) : (
-        <div className="flex justify-center items-center mt-[25%]">
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/962/962207.png?w=740&t=st=1683589903~exp=1683590503~hmac=4380adf1cbdd075c3cc273144e3d75dff9290e8fe92e3d2f536913c220f59088"
-            className="animate-spin h-16 w-16"
-          ></img>
-        </div>
+        <>
+          <PageLoading />
+        </>
       )}
+
+      <Message
+        textMsg={notif.message}
+        statusMsg={notif.status}
+        open={notif.open}
+      />
     </>
   );
 };
