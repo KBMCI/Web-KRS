@@ -15,17 +15,15 @@ const postUserMatkul = async (token, selectedIdMatkul) => {
         }
       )
       .then((result) => {
-        window.alert(
-          "Mata kuliah anda sudah dipilih untuk diproses dalam Random Krs"
-        );
-        console.log(selectedIdMatkul);
         return result;
       })
       .catch((result) => {
         return result;
       });
     return response;
-  } catch {}
+  } catch (err) {
+    return err;
+  }
 };
 
 export default postUserMatkul;
