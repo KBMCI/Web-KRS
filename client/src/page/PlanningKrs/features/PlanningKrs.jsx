@@ -10,7 +10,7 @@ import { patchMyPlan, postMyPlan } from "../services/myPlan";
 import { suggestion } from "../services/suggestion";
 import { userHasMatkul } from "../services/userHasMatkul";
 import Button from "../../../component/button/Button";
-import { FiPlus, FiSave } from "react-icons/fi";
+import { FiLock, FiPlus, FiSave, FiUnlock } from "react-icons/fi";
 import { AiOutlineLoading } from "react-icons/ai";
 import { FiShuffle } from "react-icons/fi";
 
@@ -21,6 +21,7 @@ const PlanningKrs = () => {
   const { state } = useLocation();
   const [idPlan, setIdPlan] = useState(state?.id);
   const token = window.localStorage.getItem("Authorization");
+  const [loadingPage, setLoadingPage] = useState(true);
 
   // Suggestion
   const [lockMatkul, setLockMatkul] = useState({
@@ -73,21 +74,30 @@ const PlanningKrs = () => {
     [state]
   );
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   // useEffect untuk mengambil data userHasMatkul
   useEffect(() => {
+    setLoadingPage(() => true);
     const getUserHasMatkul = async () => {
       try {
         const result = await userHasMatkul(token);
 
         if (result?.response?.data) {
           alert(result.response.data.message);
-
+          setLoadingPage(() => false);
           return;
         }
-
         setStatus(result.data.data.matkuls);
+
+        setTimeout(() => {
+          setLoadingPage(() => false);
+        }, 1500);
       } catch (err) {
         console.log(err);
+        setLoadingPage(() => false);
       }
     };
     getUserHasMatkul();
@@ -265,7 +275,19 @@ const PlanningKrs = () => {
 
   const setSugget = (res) => {
     if (res.length === 0) {
-      alert("Tidak ada suggestion");
+      setNotif(() => ({
+        open: true,
+        status: false,
+        message: "Tidak ada plan yang ditemukan",
+      }));
+
+      setTimeout(() => {
+        setNotif((prev) => ({
+          ...prev,
+          open: false,
+        }));
+      }, 2000);
+
       return;
     }
 
@@ -402,26 +424,42 @@ const PlanningKrs = () => {
     setTrigger(!trigger);
   };
 
-  usePrompt("Apakah anda yakin ingin meninggalkan halaman ini?", showConfirModal());
+  usePrompt(
+    "Apakah anda yakin ingin meninggalkan halaman ini?",
+    showConfirModal()
+  );
   return (
     <>
-      <div className="min-h-[448px] bg-secondary px-7 pb-7 pt-4 flex flex-col gap-6">
-        <h1 className="text-2xl font-bold">Planning KRS</h1>
+      <div className="min-h-[448px] bg-secondary px-7 py-7 flex flex-col gap-6">
+        <h3 className="text-2xl font-bold pt-4">Planning KRS</h3>
+        <p>Kamu bisa membuat KRS sesuai kemauanmu!</p>
         <div>
           <div className="flex gap-4">
-            <div>
+            <div className="w-1/2">
               <h2 className="text-xl font-medium mb-2">Custom KRS</h2>
-              <TablePlanningEdit
-                matkuls={data}
-                setData={setData}
-                setTrigger={setTrigger}
-                trigger={trigger}
-                statusHandlerTrue={statusHandlerTrue}
-              />
+              {loadingPage ? (
+                <div className="h-[80vh] w-full flex flex-col items-center drop-shadow-2xl animate-pulse bg-neutral-400 rounded-xl">
+                  {/* <PageLoading /> */}
+                </div>
+              ) : (
+                <TablePlanningEdit
+                  matkuls={data}
+                  setData={setData}
+                  setTrigger={setTrigger}
+                  trigger={trigger}
+                  statusHandlerTrue={statusHandlerTrue}
+                />
+              )}
             </div>
-            <div>
+            <div className="w-1/2">
               <h2 className="text-xl font-medium mb-2">My Current Plan</h2>
-              <TablePlanningResult matkuls={data} trigger={trigger} />
+              {loadingPage ? (
+                <div className="h-[80vh] w-full flex flex-col items-center drop-shadow-2xl animate-pulse bg-neutral-400 rounded-xl">
+                  {/* <PageLoading /> */}
+                </div>
+              ) : (
+                <TablePlanningResult matkuls={data} trigger={trigger} />
+              )}
             </div>
           </div>
         </div>
@@ -451,11 +489,27 @@ const PlanningKrs = () => {
           ) : (
             <div className="flex gap-5 items-center">
               <div className="flex gap-2 items-center">
+                <p className="text-[10px]">
+                  *Untuk menggunakan fitur randomize perlu melakukan lock pada
+                  matkul yang ingin dikunci
+                </p>
                 <div
-                  className="rounded-full p-4 bg-primary flex justify-center items-center w-6 h-6 cursor-pointer "
+                  className="w-20 bg-neutral-200 rounded-full p-1 flex items-center group cursor-pointer"
                   onClick={lockMatkulPlanning}
                 >
-                  {!lockMatkul.showSuggest ? "🔓" : "🔒"}
+                  <div
+                    className={`w-fit p-[6px] rounded-full ${
+                      !lockMatkul.showSuggest
+                        ? "translate-x-0 bg-secondary"
+                        : "translate-x-[2.5rem] bg-accent"
+                    } transition duration-300`}
+                  >
+                    {!lockMatkul.showSuggest ? (
+                      <FiUnlock size={20} />
+                    ) : (
+                      <FiLock size={20} />
+                    )}
+                  </div>
                 </div>
                 <button
                   className={`h-10 w-36 flex justify-center items-center rounded-xl font-bold gap-2 ${
@@ -475,7 +529,7 @@ const PlanningKrs = () => {
                   {!loading.suggestion ? (
                     <>
                       <FiShuffle />
-                      <p>Suggestion</p>
+                      <p>Randomize</p>
                     </>
                   ) : (
                     <AiOutlineLoading className="animate-spin" />
