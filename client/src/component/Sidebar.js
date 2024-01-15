@@ -30,13 +30,13 @@ function Sidebar({ items }) {
     <aside
       className={` ${
         open ? "w-1/5 " : "w-1/12 "
-      } bg-secondary duration-100 shadow-lg fixed h-full z-20 `}
+      } bg-secondary duration-100 shadow-lg fixed h-full z-20 transition-transform`}
     >
       {/* LOGO */}
       <div
         className={`${
-          open && "pl-8"
-        } mt-4 mb-7 flex items-center gap-x-4 cursor-pointer text-primary`}
+          open ? "pl-8" : ""
+        } mt-4 mb-7 flex items-center gap-x-4 cursor-pointer text-primary h-12`}
         onClick={() => SetOpen()}
       >
         <div className={`${!open && "w-full"} flex justify-center `}>
@@ -46,7 +46,7 @@ function Sidebar({ items }) {
         {/* <div className="flex flex-row justify-center items-center "> */}
         <h1
           className={`${
-            !open && "hidden"
+            !open ? "hidden" : "block"
           } origin-left duration-100 font-bold text-[30px] flex flex-row gap-1  items-center`}
         >
           {/* <img
@@ -70,7 +70,11 @@ function Sidebar({ items }) {
               className={({ isActive }) => (isActive ? activeLink : normalLink)}
             >
               {item.icon}
-              <h1 className={`${!open && "hidden"} origin-left duration-200`}>
+              <h1
+                className={`${
+                  !open ? "hidden" : "block"
+                } origin-left duration-200`}
+              >
                 {item.name}
               </h1>
             </NavLink>
@@ -81,8 +85,10 @@ function Sidebar({ items }) {
         className=" py-3 px-8   text-neutral-400 cursor-pointer hover:text-neutral-900 duration-100 gap-x-4 flex flex-row"
         onClick={logout}
       >
-        <FiLogOut size={24} className={`${!open && "w-full"}`} />
-        <h1 className={`${!open && "hidden"} origin-left duration-200 `}>
+        <FiLogOut size={24} className={`${!open ? "w-full" : ""}`} />
+        <h1
+          className={`${!open ? "hidden" : "block"} origin-left duration-200 `}
+        >
           Log Out
         </h1>
       </div>
