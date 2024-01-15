@@ -208,7 +208,7 @@ const TablePlanningEdit = ({
   };
 
   return (
-    <div className="">
+    <div className="w-full">
       <table className="w-full table-fixed basis-1/2 drop-shadow-xl">
         <thead className="flex rounded-t-xl bg-primary ">
           <tr className="flex w-full text-secondary justify-center">
