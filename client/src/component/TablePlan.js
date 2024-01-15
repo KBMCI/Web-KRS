@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { AiOutlineLoading } from "react-icons/ai";
 import { FiEdit2, FiPlus, FiTrash } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import { url } from "../api/url";
 import LogoJam from "../assets/LogoJam.svg";
 import success from "../assets/success.svg";
-import Button from "./Button";
 import { tableHeader } from "./TableHeader";
+import Button from "./button/Button";
 
 const TablePlan = ({
   data,
@@ -17,9 +16,8 @@ const TablePlan = ({
   myPlan,
   idDelete,
   dashboardUser,
-  postPerPage,
-  isDisabled,
   idPlan,
+  setNotif,
 }) => {
   // menetapkan agar header tidak akan berubah
   Object.freeze(tableHeader);
@@ -106,6 +104,7 @@ const TablePlan = ({
 
   // isSave
   const [isLoading, setIsLoading] = useState(false);
+
   const handleIsSave = async () => {
     const token = localStorage.getItem("Authorization");
     // membuat header agar bisa akses endpoint dengan token
@@ -117,24 +116,51 @@ const TablePlan = ({
     };
 
     setId_kelas([]);
-    data.map((item, i) => {
+    data.map((item) => {
       {
         id_kelas.push(item.id_kelas);
       }
     });
 
     try {
-      const response = await url.post("/my-plan", { id_kelas }, config);
-      // console.log("Berhasil");
-      // console.log(response);
+      const result = await url.post("/my-plan", { id_kelas }, config);
+      if (result?.response?.data) {
+        setNotif(() => ({
+          open: true,
+          status: false,
+          message: result.response.data.message,
+        }));
+
+        setIsLoading(false);
+
+        setTimeout(() => {
+          setNotif((prev) => ({
+            ...prev,
+            open: false,
+          }));
+        }, 2000);
+        return;
+      }
+
+      setNotif(() => ({
+        open: true,
+        status: true,
+        message: result.data.message,
+      }));
+
+      setIsLoading(false);
+
+      setIsSave(true);
+
+      setTimeout(() => {
+        setNotif((prev) => ({
+          ...prev,
+          open: false,
+        }));
+      }, 2000);
     } catch (err) {
       console.log(err);
     }
-
-    setTimeout(() => {
-      setIsLoading(false);
-      setIsSave(true);
-    }, 2000);
   };
 
   // useEffect(() => {
@@ -247,22 +273,20 @@ const TablePlan = ({
                 <></>
               ) : myPlan ? (
                 <div className="flex gap-6">
-                  <button
-                    onClick={() => {
-                      update();
-                    }}
-                    className="font-bold bg-accent flex items-center py-[11px] px-[16px] gap-2 rounded-[10px]"
+                  <Button
+                    className={`bg-accent w-28 h-12`}
+                    onClick={() => update()}
+                    icon={<FiEdit2 size={18} />}
                   >
-                    <FiEdit2 />
                     Update
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    className={`bg-error text-secondary w-28 h-12`}
                     onClick={() => deleteHandler(idDelete)}
-                    className="font-bold bg-error flex items-center py-[11px] px-[16px] gap-2 rounded-[10px] text-secondary"
+                    icon={<FiTrash size={18} />}
                   >
-                    <FiTrash />
                     Delete
-                  </button>
+                  </Button>
                 </div>
               ) : isSave ? (
                 <>
@@ -281,12 +305,13 @@ const TablePlan = ({
                 </>
               ) : (
                 <Button
-                  icon={isLoading ? <AiOutlineLoading /> : <FiPlus />}
-                  name={isLoading ? `` : 'Add to "MyPlans"'}
-                  disabled={isDisabled}
+                  icon={<FiPlus size={18} />}
                   loading={isLoading}
-                  onClick={(e) => handleIsSave()}
-                />
+                  onClick={() => handleIsSave()}
+                  className={`bg-accent w-48 h-12`}
+                >
+                  Add to "My Plans"
+                </Button>
               )}
             </div>
           </>
