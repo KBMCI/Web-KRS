@@ -1,42 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import LogoPlanning from "../../../../assets/LogoPlanning.svg";
+import { FiFileText } from "react-icons/fi";
 
 const CardPlanning = () => {
   return (
-    <>
-      <div className="Card-Planning  col-span-2">
-        <div className="flex-col">
-          <div className="bg-secondary h-[451px] w-[337px] flex flex-col justify-center items-center shadow-2xl rounded-xl p-5 ">
-            <div className="">
-              <div className=" flex justify-center items-center">
-                <img
-                  src={LogoPlanning}
-                  width={75}
-                  height={75}
-                  alt="Planning KRS"
-                />
-              </div>
-              <div>
-                <h1 className="neutral-900 font-bold text-2xl text-center p-[10px]">
-                  Planning KRS
-                </h1>
-                <p className="neutral-900 text-center p-[10px]">
-                  merupakan fitur yang dibuat untuk anda melakukan perencanaan
-                  Kartu Rencana Semester. Akan disediakan banyak mata kuliah
-                  yang dapat Anda pilih nantinya.
-                </p>
-              </div>
-            </div>
-            <Link to="/planning-krs">
-              <button className="bg-accent rounded-[10px] font-semibold text-base px-6 py-3 ">
-                Coba
-              </button>
-            </Link>
-          </div>
+    <div className="bg-secondary shadow-2xl rounded-xl h-full flex justify-center">
+      <div className="flex flex-col gap-4 justify-center items-center w-3/4 h-full">
+        <div>
+          <FiFileText size={75} color="#4071F0" />
         </div>
+        <h1 className="neutral-900 font-bold text-2xl text-center">
+          Planning KRS
+        </h1>
+        <p className="neutral-900 text-center">
+          merupakan fitur yang dibuat untuk anda melakukan perencanaan Kartu
+          Rencana Semester. Akan disediakan banyak mata kuliah yang dapat Anda
+          pilih nantinya.
+        </p>
+        <button className="bg-secondary border border-primary hover:bg-primary/10 rounded-2xl font-semibold text-base px-6 py-3 ">
+          <Link to="/planning-krs">Coba</Link>
+        </button>
       </div>
-    </>
+    </div>
   );
 };
 

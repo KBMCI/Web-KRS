@@ -4,25 +4,21 @@ import LogoRandom from "../../../../assets/LogoRandom.svg";
 
 const CardRandomKrs = () => {
   return (
-    <div className="Card-Random-KRS col-span-2">
-      <div className="bg-secondary h-full w-[337px] flex flex-col items-center shadow-2xl rounded-xl p-5 justify-center">
-        <div className="flex justify-center items-center">
-          <img className="" src={LogoRandom} alt="Random KRS" />
-        </div>
+    <div className="bg-secondary shadow-2xl rounded-xl h-full flex justify-center">
+      <div className="flex flex-col gap-4 justify-center items-center w-3/4 h-full">
         <div>
-          <h1 className="neutral-900 font-bold text-2xl text-center p-[10px]">
-            Random KRS
-          </h1>
-          <p className="neutral-900 text-center p-[10px] mx-[22.5px] mb-[8px]">
-            dengan random krs sistem akan memberikan jadwal yang tersedia dengan
-            acak
-          </p>
+          <img src={LogoRandom} alt="Random KRS" />
         </div>
-        <Link to="/random-krs">
-          <button className="bg-accent rounded-[10px] font-semibold text-base px-6 py-3">
-            Coba
-          </button>
-        </Link>
+        <h1 className="neutral-900 font-bold text-2xl text-center">
+          Random KRS
+        </h1>
+        <p className="neutral-900 text-center">
+          dengan random krs sistem akan memberikan jadwal yang tersedia dengan
+          acak
+        </p>
+        <button className="bg-secondary border border-primary hover:bg-primary/10 rounded-2xl font-semibold text-base px-6 py-3 ">
+          <Link to="/random-krs">Coba</Link>
+        </button>
       </div>
     </div>
   );
