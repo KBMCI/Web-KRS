@@ -12,6 +12,7 @@ import PageLoading from "../../component/loader/PageLoading";
 import Message from "../PlanningKrs/components/message/Message";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { url } from "../../api/url";
+import { AiOutlineLoading } from "react-icons/ai";
 
 const RandomKrs = () => {
   const navigate = useNavigate();
@@ -318,7 +319,7 @@ const RandomKrs = () => {
                 hasMore={hasMore}
                 loader={
                   <div className="absolute right-[50%] left-[50%] bottom-2 text-primary">
-                    <FiLoader size={60} className="animate-spin" />
+                    <AiOutlineLoading size={60} className="animate-spin" />
                     {/* <h1 className="font-semibold">Loading...</h1> */}
                   </div>
                 }
