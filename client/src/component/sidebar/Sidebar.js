@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { FiLogOut } from "react-icons/fi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { NavLink, useNavigate } from "react-router-dom";
-import { DataContext } from "../context/DataContext";
+import { DataContext } from "../../context/DataContext";
 
 function Sidebar({ items }) {
   const { open, SetOpen } = useContext(DataContext);

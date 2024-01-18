@@ -8,13 +8,13 @@ const Button = ({
   const [pilih, setPilih] = useState("");
 
   const selected = () => {
-    return "p-1 bg-primary border border-1 text-neutral-10 border-primary rounded-lg my-2 bg-primary ";
+    return "px-1 py-2 bg-primary/10 border border-primary border-2 text-neutral-900 border-primary rounded-lg bg-primary ";
   };
   const disable = () => {
-    return "p-1 text-neutral-400 border border-1 border-neutral-400 rounded-lg my-2";
+    return "px-1 py-2 text-neutral-400 border border-1 border-neutral-400 rounded-lg";
   };
   const active = () => {
-    return "p-1 my-2 rounded-lg border border-1 text-neutral-900 border-neutral-900 ";
+    return "px-1 py-2 rounded-lg border border-1 text-neutral-900 border-neutral-900 ";
   };
 
   useEffect(() => {

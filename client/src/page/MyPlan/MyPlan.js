@@ -139,13 +139,13 @@ const MyPlan = () => {
       ) : (
         <>
           <div className=" bg-secondary px-7 pt-7">
-            <div className="flex flex-row justify-between items-center">
-              <h3 className="text-sm font-semibold mb-4 pt-4">
-                Kumpulan Plan KRS yang telah kamu simpan sebelumnya
-              </h3>
+            <div className="space-y-1 text-neutral-900">
+              <h1 className="font-bold text-[28px]">My Plans</h1>
+              <h2 className="font-semibold">
+                Kamu bisa membuat KRS sesuai kemauanmu!
+              </h2>
             </div>
           </div>
-
           {myPlan &&
             myPlan?.slice(firstPostIndex, lastPostIndex).map((plans, i) => {
               console.log(plans);

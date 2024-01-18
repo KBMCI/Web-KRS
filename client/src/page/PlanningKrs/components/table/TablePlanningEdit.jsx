@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { createTable } from "../../lib/tableOfCourseHours";
 import timeToDecimal from "../../lib/timeToDecimal";
 import Button from "../button/Button";
+import { FiClock } from "react-icons/fi";
 
 const TablePlanningEdit = ({
   matkuls,
@@ -9,6 +10,7 @@ const TablePlanningEdit = ({
   setTrigger,
   trigger,
   statusHandlerTrue,
+  setLockMatkul
 }) => {
   const table = createTable();
   const [tabelJadwal, setTabelJadwal] = useState();
@@ -133,6 +135,11 @@ const TablePlanningEdit = ({
     });
     setData(dataTemp);
     setTrigger(!trigger);
+    setLockMatkul((prev) => ({
+      ...prev,
+      showSuggest: false,
+      fetchSuggest: false,
+    }));
   };
 
   const setStatusSameMatkul = (kls, idM) => {
@@ -196,20 +203,110 @@ const TablePlanningEdit = ({
   };
   // Style Tabel
   const barisTabel = () => {
-    return "px-2 py-3 text-center font-semibold text-[12px] w-1/2 flex flex-col gap-2 items-center";
+    return "w-1/6 block px-1 flex items-center flex-col py-1 gap-2  ";
   };
 
   const jamTabel = () => {
-    return "px-2 py-3  text-center font-bold text-[12px] w-1/2 flex items-center justify-center";
+    return "text-center font-bold text-base h-28 w-1/6 flex items-center justify-center";
   };
 
   const headerTabel = () => {
-    return "p-2 text-[12px] w-1/2";
+    return "w-1/6 flex justify-center items-center text-base py-1";
+  };
+
+  const jamMataKuliah = (jam) => {
+    const arrJam = jam.split(" ");
+    return (
+      <div className="flex flex-col gap-1 justify-center items-center">
+        {arrJam.map((jam) => {
+          return <p>{jam}</p>;
+        })}
+      </div>
+    );
   };
 
   return (
     <div className="w-full">
-      <table className="w-full table-fixed basis-1/2 drop-shadow-xl">
+      <div className="w-full drop-shadow-xl">
+        <div className="flex rounded-t-xl bg-primary text-secondary text-[12px] font-bold text-center py-2">
+          <p className={headerTabel()}>
+            {<FiClock size={20} strokeWidth={2} />}
+          </p>
+          <p className={headerTabel()}>Senin</p>
+          <p className={headerTabel()}>Selasa</p>
+          <p className={headerTabel()}>Rabu</p>
+          <p className={headerTabel()}>Kamis</p>
+          <p className={headerTabel()}>Jumat</p>
+        </div>
+        <div className="h-[80vh] bg-secondary overflow-y-auto scrollbar scrollbar-w-[5px] scrollbar-thumb-neutral-400 scrollbar-thumb-rounded-full">
+          {tabelJadwal?.map((jadwal, index) => (
+            <div
+              key={index}
+              className="bg-secondary text-neutral-900 border-b border-neutral-400 flex w-full items-center text-center font-semibold text-[10px]"
+            >
+              <div className={jamTabel()}>
+                <p>{jamMataKuliah(jadwal.jam)}</p>
+              </div>
+              <div className={barisTabel()}>
+                {jadwal.hari.senin?.map((value, index) => (
+                  <div key={index}>
+                    <Button
+                      value={value}
+                      statusHandlerTrue={statusHandlerTrue}
+                      statusHandlerfalse={statusHandlerFalse}
+                    />
+                  </div>
+                ))}
+              </div>
+              <div className={barisTabel()}>
+                {jadwal.hari.selasa?.map((value, index) => (
+                  <div key={index}>
+                    <Button
+                      value={value}
+                      statusHandlerTrue={statusHandlerTrue}
+                      statusHandlerfalse={statusHandlerFalse}
+                    />
+                  </div>
+                ))}
+              </div>
+              <div className={barisTabel()}>
+                {jadwal.hari.rabu?.map((value, index) => (
+                  <div key={index}>
+                    <Button
+                      value={value}
+                      statusHandlerTrue={statusHandlerTrue}
+                      statusHandlerfalse={statusHandlerFalse}
+                    />
+                  </div>
+                ))}
+              </div>
+              <div className={barisTabel()}>
+                {jadwal.hari.kamis?.map((value, index) => (
+                  <div key={index}>
+                    <Button
+                      value={value}
+                      statusHandlerTrue={statusHandlerTrue}
+                      statusHandlerfalse={statusHandlerFalse}
+                    />
+                  </div>
+                ))}
+              </div>
+              <div className={barisTabel()}>
+                {jadwal.hari.jumat?.map((value, index) => (
+                  <div key={index}>
+                    <Button
+                      value={value}
+                      statusHandlerTrue={statusHandlerTrue}
+                      statusHandlerfalse={statusHandlerFalse}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* <table className="w-full table-fixed basis-1/2 drop-shadow-xl">
         <thead className="flex rounded-t-xl bg-primary ">
           <tr className="flex w-full text-secondary justify-center">
             <th className={headerTabel()}></th>
@@ -288,7 +385,7 @@ const TablePlanningEdit = ({
             </tr>
           ))}
         </tbody>
-      </table>
+      </table> */}
     </div>
   );
 };

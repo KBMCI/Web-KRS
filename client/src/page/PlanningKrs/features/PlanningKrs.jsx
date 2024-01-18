@@ -431,16 +431,21 @@ const PlanningKrs = () => {
   return (
     <>
       <div className="min-h-[448px] bg-secondary px-7 py-7 flex flex-col gap-6">
-        <h3 className="text-2xl font-bold pt-4">Planning KRS</h3>
-        <p>Kamu bisa membuat KRS sesuai kemauanmu!</p>
+        <div className="space-y-1 text-neutral-900">
+          <h1 className="font-bold text-[28px]">Planning KRS</h1>
+          <h2 className="font-semibold">
+            Kamu bisa membuat KRS sesuai kemauanmu!
+          </h2>
+        </div>
         <div>
           <div className="flex gap-4">
-            <div className="w-1/2">
-              <h2 className="text-xl font-medium mb-2">Custom KRS</h2>
+            <div className="w-1/2 space-y-1">
+              <h2 className="text-2xl font-bold">Custom KRS</h2>
+              <h3 className="text-[14px]">
+                Pilih kelas yang akan kamu ambil disini.
+              </h3>
               {loadingPage ? (
-                <div className="h-[80vh] w-full flex flex-col items-center drop-shadow-2xl animate-pulse bg-neutral-400 rounded-xl">
-                  {/* <PageLoading /> */}
-                </div>
+                <div className="h-[80vh] w-full flex flex-col items-center drop-shadow-2xl animate-pulse bg-neutral-400 rounded-xl"></div>
               ) : (
                 <TablePlanningEdit
                   matkuls={data}
@@ -448,23 +453,25 @@ const PlanningKrs = () => {
                   setTrigger={setTrigger}
                   trigger={trigger}
                   statusHandlerTrue={statusHandlerTrue}
+                  setLockMatkul={setLockMatkul}
                 />
               )}
             </div>
-            <div className="w-1/2">
-              <h2 className="text-xl font-medium mb-2">My Current Plan</h2>
+            <div className="w-1/2 space-y-1">
+              <h2 className="text-2xl font-bold">My Current Plan</h2>
+              <h3 className="text-[14px]">
+                Preview kelas yang telah kamu pilih.
+              </h3>
               {loadingPage ? (
-                <div className="h-[80vh] w-full flex flex-col items-center drop-shadow-2xl animate-pulse bg-neutral-400 rounded-xl">
-                  {/* <PageLoading /> */}
-                </div>
+                <div className="h-[80vh] w-full flex flex-col items-center drop-shadow-2xl animate-pulse bg-neutral-400 rounded-xl"></div>
               ) : (
                 <TablePlanningResult matkuls={data} trigger={trigger} />
               )}
             </div>
           </div>
         </div>
-        <div className="flex justify-between">
-          <div>
+        <div className={`flex ${idPlan ? "justify-end" : "justify-between"}`}>
+          <div className={`${idPlan && "hidden"} `}>
             <Button
               type={"button"}
               onClick={addAnotherPlan}

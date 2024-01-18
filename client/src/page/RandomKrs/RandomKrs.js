@@ -1,9 +1,9 @@
 import qs from "qs";
 import React, { useContext, useEffect, useState } from "react";
 import { BsFillArrowUpCircleFill } from "react-icons/bs";
-import { FiFilter, FiLoader } from "react-icons/fi";
+import { FiFilter } from "react-icons/fi";
 import { useLocation, useNavigate } from "react-router-dom";
-import Button from "../../component/Button";
+import Button from "../../component/button/Button";
 import TablePlan from "../../component/TablePlan";
 import { DataContext } from "../../context/DataContext";
 import FilterTabel from "./components/Filter/FIlterTabel";
@@ -11,7 +11,6 @@ import { getRandomKrs } from "./services/getRandomKrs";
 import PageLoading from "../../component/loader/PageLoading";
 import Message from "../PlanningKrs/components/message/Message";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { url } from "../../api/url";
 import { AiOutlineLoading } from "react-icons/ai";
 
 const RandomKrs = () => {
@@ -53,7 +52,7 @@ const RandomKrs = () => {
     if (plan !== null) {
       // TODO: INFINITE SCROLL
       setAllPlan(plan);
-      setPlan(plan.slice(0, 10));
+      setPlan(plan.slice(0, 3));
       // ===============================================
     } else {
       setPlan([]);
@@ -248,10 +247,9 @@ const RandomKrs = () => {
   // get data for Infinite Scroll
   const fetchMoreData = () => {
     // get Data
-
     if (plan.length < AllPlan.length) {
       setTimeout(() => {
-        setPlan(plan.concat(AllPlan.slice(index * 10, (index + 1) * 10)));
+        setPlan(plan.concat(AllPlan.slice(index * 3, (index + 1) * 3)));
 
         setIndex((i) => i + 1);
         console.log(`plan ${plan.length}`);
@@ -282,33 +280,26 @@ const RandomKrs = () => {
           )}
 
           <div className=" bg-secondary px-7 pt-7">
-            <div className="flex flex-row justify-between items-center">
-              <h3 className="text-sm font-semibold mb-4 pt-4">
-                Kamu dapat menemukan Plan KRS tanpa melakukan perencanaan KRS
-                secara manual.
-              </h3>
+            <div className="flex justify-between items-center">
+              <div className="space-y-1 text-neutral-900">
+                <h1 className="font-bold text-[28px]">Random KRS</h1>
+                <h2 className="font-semibold">
+                  Kamu dapat menemukan Plan KRS tanpa melakukan perencanaan KRS
+                  secara manual
+                </h2>
+              </div>
+              <Button
+                type={"button"}
+                icon={<FiFilter />}
+                onClick={() => {
+                  setShowFilter(() => true);
+                }}
+                loading={disabled}
+                className={"bg-accent h-12 w-24"}
+              >
+                Filter
+              </Button>
             </div>
-          </div>
-
-          <Button
-            icon={<FiFilter />}
-            name="Filter"
-            onClick={(e) => {
-              setShowFilter(true);
-              e.preventDefault();
-            }}
-            disabled={disabled}
-            fixed={true}
-            // disabled={plan.length > 0 ? false : true}
-          />
-
-          <div
-            className="fixed right-6 bottom-6 z-10 text-primary shadow-primary bg-secondary shadow-2xl rounded-full cursor-pointer"
-            onClick={() => {
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
-          >
-            <BsFillArrowUpCircleFill size={50} />
           </div>
 
           {plan.length > 0 ? (
@@ -318,23 +309,30 @@ const RandomKrs = () => {
                 next={fetchMoreData}
                 hasMore={hasMore}
                 loader={
-                  <div className="absolute right-[50%] left-[50%] bottom-2 text-primary">
-                    <AiOutlineLoading size={60} className="animate-spin" />
-                    {/* <h1 className="font-semibold">Loading...</h1> */}
+                  <div className="absolute bottom-2 text-primary translate-x-1/2 left-1/2">
+                    <div className="animate-spin duration-50 relative">
+                      <AiOutlineLoading
+                        strokeWidth={10}
+                        size={40}
+                        color="4071F0"
+                      />
+                    </div>
                   </div>
                 }
               >
-                {plan.map((plans, i) => (
-                  <div key={i}>
+                <div className="pb-10 bg-secondary">
+                  {plan.map((plans, i) => (
                     <TablePlan
                       is_saved={plans.is_saved}
                       data={plans.random_krs}
                       plan={i + 1}
                       // currentPage={currentPage}
                       isDisabled={false}
+                      setNotif={setNotif}
+                      key={i}
                     ></TablePlan>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </InfiniteScroll>
             )
           ) : (
@@ -347,18 +345,27 @@ const RandomKrs = () => {
               />
             </>
           )}
+
+          <div
+            className="fixed right-6 bottom-6 z-10 text-primary shadow-primary bg-secondary shadow-2xl rounded-full cursor-pointer"
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+          >
+            <BsFillArrowUpCircleFill size={50} />
+          </div>
+
+          <Message
+            textMsg={notif.message}
+            statusMsg={notif.status}
+            open={notif.open}
+          />
         </>
       ) : (
         <>
           <PageLoading />
         </>
       )}
-
-      <Message
-        textMsg={notif.message}
-        statusMsg={notif.status}
-        open={notif.open}
-      />
     </>
   );
 };

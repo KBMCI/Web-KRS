@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { FiAirplay, FiCoffee, FiFolder, FiUsers } from "react-icons/fi";
+import { FiAirplay, FiInbox, FiFolder, FiClipboard } from "react-icons/fi";
 import { Outlet } from "react-router-dom";
 import Navbar from "../component/Navbar";
-import Sidebar from "../component/Sidebar";
+import Sidebar from "../component/sidebar/Sidebar";
 import { DataContext } from "../context/DataContext";
 
 const HomeUser = () => {
@@ -23,12 +23,12 @@ const HomeUser = () => {
     {
       name: "Random KRS",
       link: "/random-krs",
-      icon: <FiUsers size={24} className={`${!open && "w-full"}`} />,
+      icon: <FiClipboard size={24} className={`${!open && "w-full"}`} />,
     },
     {
       name: "Planning KRS",
       link: "/planning-krs",
-      icon: <FiCoffee size={24} className={`${!open && "w-full"}`} />,
+      icon: <FiInbox size={24} className={`${!open && "w-full"}`} />,
     },
     {
       name: "My Plan",

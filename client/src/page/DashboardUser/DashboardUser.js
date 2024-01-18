@@ -10,7 +10,6 @@ import { getIDMatkuls } from "./services/getIDMatkuls";
 import { getMyPlan } from "./services/getMyPlan";
 import postUserMatkul from "./services/postUserMatkul";
 import Message from "../PlanningKrs/components/message/Message";
-import PageLoading from "../../component/loader/PageLoading";
 
 const DashboardUser = () => {
   const [isFilled, setIsFilled] = useState(false);
@@ -137,14 +136,12 @@ const DashboardUser = () => {
   };
 
   return (
-    <div className="bg-secondary p-7 flex flex-col gap-4">
+    <div className="bg-secondary p-7 flex flex-col gap-3">
       <div className="w-full flex gap-4">
         <div className="w-[70%]">
-          <h1 className="font-semibold text-2xl py-2">Mata Kuliah dipilih</h1>
+          <h1 className="font-semibold text-2xl py-1">Mata Kuliah dipilih</h1>
           {loadingPage.namaMatkul ? (
-            <div className="h-[441px] flex flex-col items-center drop-shadow-2xl animate-pulse bg-neutral-400 rounded-xl">
-              {/* <PageLoading /> */}
-            </div>
+            <div className="h-[22rem] flex flex-col items-center drop-shadow-2xl animate-pulse bg-neutral-400 rounded-xl"></div>
           ) : (
             <CardSelectMatkul
               onPostHandle={onPostHandle}
@@ -153,22 +150,20 @@ const DashboardUser = () => {
             />
           )}
         </div>
-        <div className="pt-12 w-[30%]">
+        <div className="pt-10 w-[30%]">
           <CardPlanning />
         </div>
       </div>
       <div className="w-full flex gap-4">
         <div className="w-[70%]">
-          <h1 className="font-semibold text-2xl py-2">My Plans</h1>
+          <h1 className="font-semibold text-2xl py-1">My Plans</h1>
           {loadingPage.myPlan ? (
-            <div className="h-[340px] flex flex-col items-center drop-shadow-2xl animate-pulse bg-neutral-400 rounded-xl">
-              {/* <PageLoading /> */}
-            </div>
+            <div className="h-[22rem] flex flex-col items-center drop-shadow-2xl animate-pulse bg-neutral-400 rounded-xl"></div>
           ) : (
             <CardMyPlan firstPlan={firstPlan} isFilled={isFilled} />
           )}
         </div>
-        <div className="pt-12 w-[30%]">
+        <div className="pt-10 w-[30%]">
           <CardRandomKrs />
         </div>
       </div>

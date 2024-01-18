@@ -200,10 +200,10 @@ const TablePlan = ({
     <>
       <div
         className={` ${
-          dashboardUser ? "" : "min-h-[448px] bg-secondary px-7 pb-1 pt-4"
+          dashboardUser ? "" : "min-h-[400px] bg-secondary px-7 pb-1 pt-4"
         } `}
       >
-        <div className={`${dashboardUser ? `` : `mt-5 mb-9`}`}>
+        <div className={`${dashboardUser ? `` : `mt-5 mb-2`}`}>
           {" "}
           {/* mbungkus semua plan */}
           <>
@@ -268,7 +268,7 @@ const TablePlan = ({
                 </tbody>
               </table>
             </div>
-            <div className="my-6 flex justify-end">
+            <div className="mt-6 flex justify-end">
               {dashboardUser ? (
                 <></>
               ) : myPlan ? (
