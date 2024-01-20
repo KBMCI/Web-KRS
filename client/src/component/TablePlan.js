@@ -6,7 +6,7 @@ import LogoJam from "../assets/LogoJam.svg";
 import success from "../assets/success.svg";
 import { tableHeader } from "./TableHeader";
 import Button from "./button/Button";
-
+import PopUpDonation from "../page/RandomKrs/components/Donation/PopUpDonation";
 const TablePlan = ({
   data,
   plan,
@@ -29,6 +29,9 @@ const TablePlan = ({
   const [jadwalKuliah, setJadwalKuliah] = useState(newData);
   const [isSave, setIsSave] = useState(false);
   const [id_kelas, setId_kelas] = useState([]);
+  // TODO:
+  const [popUp, setPopUp] = useState(false);
+  // ==============
   // mengambil plan dari backend
 
   // useEffect(() => {
@@ -148,6 +151,9 @@ const TablePlan = ({
         message: result.data.message,
       }));
 
+      // TODO:
+      setPopUp(!popUp);
+      // ==================
       setIsLoading(false);
 
       setIsSave(true);
@@ -290,6 +296,9 @@ const TablePlan = ({
                 </div>
               ) : isSave ? (
                 <>
+                  {/* TODO: */}
+                  {popUp && <PopUpDonation setPopUp={setPopUp} popUp={popUp} />}
+                  {/* ===================== */}
                   <div className="flex flex-col items-end justify-end gap-2">
                     <div className="flex justify-center items-center flex-row bg-neutral-200 w-[150px] h-[50px] gap-2 rounded-[10px] font-bold">
                       <img src={success}></img>

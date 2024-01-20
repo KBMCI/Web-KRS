@@ -13,6 +13,7 @@ import Button from "../../../component/button/Button";
 import { FiLock, FiPlus, FiSave, FiUnlock } from "react-icons/fi";
 import { AiOutlineLoading } from "react-icons/ai";
 import { FiShuffle } from "react-icons/fi";
+import PopUpDonation from "../../RandomKrs/components/Donation/PopUpDonation";
 
 const PlanningKrs = () => {
   const [data, setData] = useState([]);
@@ -22,6 +23,7 @@ const PlanningKrs = () => {
   const [idPlan, setIdPlan] = useState(state?.id);
   const token = window.localStorage.getItem("Authorization");
   const [loadingPage, setLoadingPage] = useState(true);
+  const [popUpDonation, setPopUpDonation] = useState(false);
 
   // Suggestion
   const [lockMatkul, setLockMatkul] = useState({
@@ -117,7 +119,11 @@ const PlanningKrs = () => {
   }, [data, trigger]);
 
   const postSave = async () => {
+    // TODO: POP DONATION
+    setPopUpDonation(!popUpDonation);
+    // ==================
     if (matkulSelected.length < data.length) {
+      setPopUpDonation(false);
       setNotif(() => ({
         open: true,
         status: false,
@@ -539,7 +545,9 @@ const PlanningKrs = () => {
                       <p>Randomize</p>
                     </>
                   ) : (
-                    <AiOutlineLoading className="animate-spin" />
+                    <>
+                      <AiOutlineLoading className="animate-spin" />
+                    </>
                   )}
                 </button>
               </div>
@@ -551,6 +559,13 @@ const PlanningKrs = () => {
               >
                 {idPlan ? "Update" : "Save"}
               </Button>
+              {/* PopUp Donation */}
+              {popUpDonation && notif.status && (
+                <PopUpDonation
+                  popUp={popUpDonation}
+                  setPopUp={setPopUpDonation}
+                />
+              )}
             </div>
           )}
         </div>

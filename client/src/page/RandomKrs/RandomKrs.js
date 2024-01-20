@@ -327,8 +327,8 @@ const RandomKrs = () => {
                       data={plans.random_krs}
                       plan={i + 1}
                       // currentPage={currentPage}
-                      isDisabled={false}
                       setNotif={setNotif}
+                      isDisabled={false}
                       key={i}
                     ></TablePlan>
                   ))}
