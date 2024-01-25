@@ -1,6 +1,5 @@
 import { Icon } from "@iconify/react";
-import Eyes_close from "../../../assets/Eyes_close.svg";
-import Eyes_open from "../../../assets/Eyes_open.svg";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const Input = ({
   type,
@@ -55,12 +54,15 @@ const Input = ({
       {!password ? (
         <Icon icon={icon} width={24} className={iconStyle(value)} />
       ) : value ? (
-        <div onClick={handleType} className="absolute right-[18px] top-4">
-          <img
-            src={type === "password" ? Eyes_close : Eyes_open}
-            alt="icon eye"
-            width="24"
-          />
+        <div
+          onClick={handleType}
+          className="absolute right-[18px] top-4 cursor-pointer"
+        >
+          {type !== "password" ? (
+            <FiEye size={24} color="#4071F0" />
+          ) : (
+            <FiEyeOff size={24} color={`#A8B5C2`} />
+          )}
         </div>
       ) : (
         <Icon

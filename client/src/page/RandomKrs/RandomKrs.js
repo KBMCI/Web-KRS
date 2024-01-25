@@ -2,7 +2,7 @@ import qs from "qs";
 import React, { useContext, useEffect, useState } from "react";
 import { BsFillArrowUpCircleFill } from "react-icons/bs";
 import { FiFilter } from "react-icons/fi";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Button from "../../component/button/Button";
 import TablePlan from "../../component/TablePlan";
 import { DataContext } from "../../context/DataContext";
@@ -12,6 +12,8 @@ import PageLoading from "../../component/loader/PageLoading";
 import Message from "../PlanningKrs/components/message/Message";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { AiOutlineLoading } from "react-icons/ai";
+import bgBlue from "../../assets/backgroundBlue.png"
+import noPlanImage from "../../assets/noPlanImage.svg";
 
 const RandomKrs = () => {
   const navigate = useNavigate();
@@ -279,26 +281,28 @@ const RandomKrs = () => {
             </div>
           )}
 
-          <div className=" bg-secondary px-7 pt-7">
+          <div className=" bg-secondary px-7 py-[15px] mt-2" style={{ backgroundImage: `url(${bgBlue})` }}>
             <div className="flex justify-between items-center">
-              <div className="space-y-1 text-neutral-900">
+              <div className="space-y-1 text-secondary">
                 <h1 className="font-bold text-[28px]">Random KRS</h1>
                 <h2 className="font-semibold">
                   Kamu dapat menemukan Plan KRS tanpa melakukan perencanaan KRS
                   secara manual
                 </h2>
               </div>
-              <Button
-                type={"button"}
-                icon={<FiFilter />}
-                onClick={() => {
-                  setShowFilter(() => true);
-                }}
-                loading={disabled}
-                className={"bg-accent h-12 w-24"}
-              >
-                Filter
-              </Button>
+              {plan.length > 0 && (
+                <Button
+                  type={"button"}
+                  icon={<FiFilter />}
+                  onClick={() => {
+                    setShowFilter(() => true);
+                  }}
+                  loading={disabled}
+                  className={"bg-accent h-12 w-24"}
+                >
+                  Filter
+                </Button>
+              )}
             </div>
           </div>
 
@@ -336,24 +340,30 @@ const RandomKrs = () => {
               </InfiniteScroll>
             )
           ) : (
-            <>
-              <h1 className="bg-secondary text-error font-extrabold italic px-7 pt-7">
-                {emptySignError}
-              </h1>
-              <TablePlan
-                isDisabled={plan === null || plan.length === 0 ? true : false}
-              />
-            </>
+            <div className="flex justify-center bg-secondary">
+              <div className="pt-8 flex flex-col space-y-2 justify-center items-center">
+                <h1 className="w-3/4 text-center text-neutral-400">
+                  Oops! Silahkan pilih mata kuliah apapun yang ingin kamu plan
+                  pada halaman <Link className="font-semibold" to={`/`}>Dashboard</Link> terlebih dahulu
+                </h1>
+                <img
+                  src={noPlanImage}
+                  alt="noPlanImage"
+                />
+              </div>
+            </div>
           )}
 
-          <div
-            className="fixed right-6 bottom-6 z-10 text-primary shadow-primary bg-secondary shadow-2xl rounded-full cursor-pointer"
-            onClick={() => {
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
-          >
-            <BsFillArrowUpCircleFill size={50} />
-          </div>
+          {plan.length > 0 && (
+            <div
+              className="fixed right-6 bottom-6 z-10 text-primary shadow-primary bg-secondary shadow-2xl rounded-full cursor-pointer"
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+            >
+              <BsFillArrowUpCircleFill size={50} />
+            </div>
+          )}
 
           <Message
             textMsg={notif.message}

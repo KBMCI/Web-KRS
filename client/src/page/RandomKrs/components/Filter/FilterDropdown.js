@@ -21,10 +21,10 @@ const FilterDropdown = ({ nama, kelas, kelasChange, selectedKelas }) => {
           isOpen
             ? `opacity-100 overflow-visible -translate-y-0  `
             : `opacity-0 overflow-hidden  max-h-0  -translate-y-14   `
-        } items-start px-6 w-full bg-neutral-10  ...   transition-all duration-1000`}
+        } items-start px-6 w-full bg-neutral-10  ...   transition-all duration-700 `}
       >
         {kelas.map((kls, index) => (
-          <div className={`flex w-full justify-between`} key={index}>
+          <div key={index}>
             <Checkbox
               namaKelas={kls.nama}
               namaMatkul={nama}

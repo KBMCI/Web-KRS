@@ -138,7 +138,7 @@ const Login = () => {
           <img src={LoginImg} alt="background login" />
         </div>
         {/* Kanan */}
-        <div className="w-2/6 bg-secondary rounded-2xl shadow-lg flex flex-col items-center py-8 gap-6">
+        <div className="w-2/6 bg-secondary rounded-2xl shadow-lg flex flex-col items-center py-8 space-y-6">
           <img alt="logo" src={Logo} className="w-16" />
           <div className="mt-10 w-4/6 flex flex-col justify-center gap-4">
             <h1 className="font-bold text-4xl text-center">Aloo!</h1>
@@ -196,15 +196,6 @@ const Login = () => {
             >
               Login
             </Button>
-            {/* <button
-              className={`${
-                !loading ? "bg-primary" : "bg-neutral-600"
-              }  rounded-xl font-medium text-base text-secondary p-4 w-full transition-colors`}
-              type="submit"
-              onClick={toggleRequired}
-            >
-              Login
-            </button> */}
           </form>
           <div className="flex justify-center">
             <p className="text-neutral-400 text-[15px]">

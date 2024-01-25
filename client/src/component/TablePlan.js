@@ -22,9 +22,7 @@ const TablePlan = ({
   // menetapkan agar header tidak akan berubah
   Object.freeze(tableHeader);
   // menyalin header untuk dimanipulasi
-  const newData = [...tableHeader];
-  const [getTableHeaders, setTableHeaders] = useState([]);
-  const [getHeader, setHeader] = useState([]);
+  const newData = [...tableHeader]; 
   const [refresh, setRefresh] = useState();
   const [jadwalKuliah, setJadwalKuliah] = useState(newData);
   const [isSave, setIsSave] = useState(false);
@@ -205,9 +203,8 @@ const TablePlan = ({
   return (
     <>
       <div
-        className={` ${
-          dashboardUser ? "" : "min-h-[400px] bg-secondary px-7 pb-1 pt-4"
-        } `}
+        className={` ${dashboardUser ? "" : "min-h-[400px] bg-secondary px-7 pb-1 pt-4"
+          } `}
       >
         <div className={`${dashboardUser ? `` : `mt-5 mb-2`}`}>
           {" "}
@@ -221,21 +218,18 @@ const TablePlan = ({
               <h1 className="text-2xl font-bold mb-4">Plan {plan}</h1>
             )}
             <div
-              className={`${
-                dashboardUser &&
+              className={`${dashboardUser &&
                 `rounded-2xl overflow-y-scroll mt-[10px] h-[290px] scrollbar scrollbar-w-[5px] scrollbar-thumb-neutral-400 `
-              } `}
+                } `}
             >
               <table
-                className={`table-fixed  border-collapse border-b border-neutral-400 w-full drop-shadow-xl rounded-2xl  ... ${
-                  dashboardUser ? `` : ` overflow-hidden  min-w-fit`
-                } `}
+                className={`table-fixed  border-collapse border-b border-neutral-400 w-full drop-shadow-xl rounded-2xl  ... ${dashboardUser ? `` : ` overflow-hidden  min-w-fit`
+                  } `}
               >
                 <thead className="">
                   <tr
-                    className={` ${
-                      dashboardUser && ` sticky top-0 `
-                    } bg-primary  text-secondary`}
+                    className={` ${dashboardUser && ` sticky top-0 `
+                      } bg-primary  text-secondary`}
                   >
                     <th
                       className={`${headerTabel()} flex justify-center items-center `}
@@ -259,9 +253,8 @@ const TablePlan = ({
                   {jadwalKuliah.map((jadwal, index) => (
                     <tr
                       key={index}
-                      className={` ${
-                        dashboardUser && ``
-                      } bg-secondary text-neutral-900 border-b border-neutral-400`}
+                      className={` ${dashboardUser && ``
+                        } bg-secondary text-neutral-900 border-b border-neutral-400`}
                     >
                       <td className={jamTabel()}>{jadwal.jam}</td>
                       <td className={barisTabel()}>{jadwal.senin}</td>
@@ -301,7 +294,7 @@ const TablePlan = ({
                   {/* ===================== */}
                   <div className="flex flex-col items-end justify-end gap-2">
                     <div className="flex justify-center items-center flex-row bg-neutral-200 w-[150px] h-[50px] gap-2 rounded-[10px] font-bold">
-                      <img src={success}></img>
+                      <img src={success} alt="succes" />
                       <p className="text-neutral-400">Plan Added</p>
                     </div>
                     <div>

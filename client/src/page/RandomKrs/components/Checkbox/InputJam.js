@@ -28,16 +28,14 @@ const InputJam = (props) => {
     if (hasBeenChecked) {
       setIsChecked(true);
     }
-    // console.log(waktuFiltered);
-    // console.log(id);
-  }, [, isChecked]);
+  }, [isChecked]);
 
   return (
     <>
       <input
         type="checkbox"
         checked={isChecked}
-        className="w-4 h-4  duration-500 "
+        className="w-4 h-4 "
         onChange={(event) => selectedTime(event)}
       />
     </>

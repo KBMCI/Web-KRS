@@ -4,7 +4,7 @@ import True from "../../../../assets/True.svg";
 const Message = ({ open, statusMsg, textMsg }) => {
   return (
     <div
-      className={` z-50 bottom-10 right-10 fixed flex justify-end items-end h-screen  .... ${
+      className={` z-[60] bottom-10 right-10 fixed flex justify-end items-end h-screen  .... ${
         open ? `-translate-x-0` : `right-[-100%] `
       }  duration-500 transition-all`}
     >

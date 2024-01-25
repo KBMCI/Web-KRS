@@ -198,14 +198,14 @@ const Register = () => {
                 type={"submit"}
                 loading={loading}
                 onClick={toggleRequired}
-                className={"bg-primary w-full h-12 text-secondary"}
+                className={"bg-primary w-full h-12 text-secondary focus:outline-primary"}
               >
                 Register
               </Button>
-              <div className="flex justify-center mt-4">
+              <div className="flex justify-center mt-4 space-x-1">
                 <p className="text-neutral-400">Sudah mempunyai akun?</p>
-                <p className="text-primary">
-                  <Link to="/login"> &nbsp;Login</Link>
+                <p className="text-primary focus:outline-primary">
+                  <Link to="/login">Login</Link>
                 </p>
               </div>
             </form>

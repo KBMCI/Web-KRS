@@ -14,6 +14,9 @@ import { FiLock, FiPlus, FiSave, FiUnlock } from "react-icons/fi";
 import { AiOutlineLoading } from "react-icons/ai";
 import { FiShuffle } from "react-icons/fi";
 import PopUpDonation from "../../RandomKrs/components/Donation/PopUpDonation";
+import bgBlue from "../../../assets/backgroundBlue.png";
+import noPlanImage from "../../../assets/noPlanImage.svg";
+import PageLoading from "../../../component/loader/PageLoading";
 
 const PlanningKrs = () => {
   const [data, setData] = useState([]);
@@ -93,7 +96,6 @@ const PlanningKrs = () => {
           return;
         }
         setStatus(result.data.data.matkuls);
-
         setTimeout(() => {
           setLoadingPage(() => false);
         }, 1500);
@@ -120,10 +122,10 @@ const PlanningKrs = () => {
 
   const postSave = async () => {
     // TODO: POP DONATION
-    setPopUpDonation(!popUpDonation);
+    setPopUpDonation((prev) => !prev);
     // ==================
     if (matkulSelected.length < data.length) {
-      setPopUpDonation(false);
+      setPopUpDonation(() => false);
       setNotif(() => ({
         open: true,
         status: false,
@@ -434,147 +436,168 @@ const PlanningKrs = () => {
     "Apakah anda yakin ingin meninggalkan halaman ini?",
     showConfirModal()
   );
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
   return (
     <>
-      <div className="min-h-[448px] bg-secondary px-7 py-7 flex flex-col gap-6">
-        <div className="space-y-1 text-neutral-900">
-          <h1 className="font-bold text-[28px]">Planning KRS</h1>
-          <h2 className="font-semibold">
-            Kamu bisa membuat KRS sesuai kemauanmu!
-          </h2>
-        </div>
-        <div>
-          <div className="flex gap-4">
-            <div className="w-1/2 space-y-1">
-              <h2 className="text-2xl font-bold">Custom KRS</h2>
-              <h3 className="text-[14px]">
-                Pilih kelas yang akan kamu ambil disini.
-              </h3>
-              {loadingPage ? (
-                <div className="h-[80vh] w-full flex flex-col items-center drop-shadow-2xl animate-pulse bg-neutral-400 rounded-xl"></div>
-              ) : (
-                <TablePlanningEdit
-                  matkuls={data}
-                  setData={setData}
-                  setTrigger={setTrigger}
-                  trigger={trigger}
-                  statusHandlerTrue={statusHandlerTrue}
-                  setLockMatkul={setLockMatkul}
-                />
-              )}
-            </div>
-            <div className="w-1/2 space-y-1">
-              <h2 className="text-2xl font-bold">My Current Plan</h2>
-              <h3 className="text-[14px]">
-                Preview kelas yang telah kamu pilih.
-              </h3>
-              {loadingPage ? (
-                <div className="h-[80vh] w-full flex flex-col items-center drop-shadow-2xl animate-pulse bg-neutral-400 rounded-xl"></div>
-              ) : (
-                <TablePlanningResult matkuls={data} trigger={trigger} />
-              )}
+      {!loadingPage ? (
+        <div className="min-h-[448px] bg-secondary flex flex-col gap-6">
+          <div
+            className="px-7 py-[15px] mt-2"
+            style={{ backgroundImage: `url(${bgBlue})` }}
+          >
+            <div className="space-y-1 text-secondary">
+              <h1 className="font-bold text-[28px]">Planning KRS</h1>
+              <h2 className="font-semibold">
+                Kamu bisa membuat KRS sesuai kemauanmu!
+              </h2>
             </div>
           </div>
-        </div>
-        <div className={`flex ${idPlan ? "justify-end" : "justify-between"}`}>
-          <div className={`${idPlan && "hidden"} `}>
-            <Button
-              type={"button"}
-              onClick={addAnotherPlan}
-              className={"w-44 h-10 bg-accent text-neutral-900"}
-              icon={<FiPlus />}
-            >
-              Add Another Plan
-            </Button>
-          </div>
-          {isSave ? (
-            <div className="flex flex-col items-end justify-end gap-2">
-              <div className="flex justify-center items-center flex-row bg-neutral-200 w-[150px] h-[50px] gap-2 rounded-[10px] font-bold">
-                <p className="text-neutral-400">Plan Added</p>
+          {data.length !== 0 ? (
+            <div className="px-7 space-y-4">
+              <div className="flex gap-4">
+                <div className="w-1/2 space-y-1">
+                  <h2 className="text-2xl font-bold">Custom KRS</h2>
+                  <h3 className="text-[14px]">
+                    Pilih kelas yang akan kamu ambil disini.
+                  </h3>
+                  <TablePlanningEdit
+                    matkuls={data}
+                    setData={setData}
+                    setTrigger={setTrigger}
+                    trigger={trigger}
+                    statusHandlerTrue={statusHandlerTrue}
+                    setLockMatkul={setLockMatkul}
+                  />
+                </div>
+                <div className="w-1/2 space-y-1">
+                  <h2 className="text-2xl font-bold">My Current Plan</h2>
+                  <h3 className="text-[14px]">
+                    Preview kelas yang telah kamu pilih.
+                  </h3>
+                  <TablePlanningResult matkuls={data} trigger={trigger} />
+                </div>
               </div>
-              <div>
-                To see your saved plan, go to &nbsp;
-                <span className="text-primary hover:underline hover:duration-500">
-                  <Link to="/myplan">My Plan</Link>
-                </span>
+              <div
+                className={`flex ${
+                  idPlan ? "justify-end" : "justify-between"
+                } pb-4`}
+              >
+                <div className={`${idPlan && "hidden"} `}>
+                  <Button
+                    type={"button"}
+                    onClick={addAnotherPlan}
+                    className={"w-44 h-10 bg-accent text-neutral-900"}
+                    icon={<FiPlus />}
+                  >
+                    Add Another Plan
+                  </Button>
+                </div>
+                {isSave ? (
+                  <div className="flex flex-col items-end justify-end gap-2">
+                    <div className="flex justify-center items-center flex-row bg-neutral-200 w-[150px] h-[50px] gap-2 rounded-[10px] font-bold">
+                      <p className="text-neutral-400">Plan Added</p>
+                    </div>
+                    <div>
+                      To see your saved plan, go to &nbsp;
+                      <span className="text-primary hover:underline hover:duration-500">
+                        <Link to="/myplan">My Plan</Link>
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex gap-5 items-center">
+                    <div className="flex gap-2 items-center">
+                      <p className="text-[10px]">
+                        *Untuk menggunakan fitur randomize perlu melakukan lock
+                        pada matkul yang ingin dikunci
+                      </p>
+                      <div
+                        className="w-20 bg-neutral-200 rounded-full p-1 flex items-center group cursor-pointer"
+                        onClick={lockMatkulPlanning}
+                      >
+                        <div
+                          className={`w-fit p-[6px] rounded-full ${
+                            !lockMatkul.showSuggest
+                              ? "translate-x-0 bg-secondary"
+                              : "translate-x-[2.5rem] bg-accent"
+                          } transition duration-300`}
+                        >
+                          {!lockMatkul.showSuggest ? (
+                            <FiUnlock size={20} />
+                          ) : (
+                            <FiLock size={20} />
+                          )}
+                        </div>
+                      </div>
+                      <button
+                        className={`h-10 w-36 flex justify-center items-center rounded-xl font-bold gap-2 ${
+                          !lockMatkul.showSuggest
+                            ? "bg-neutral-200 text-neutral-400"
+                            : "bg-accent "
+                        }`}
+                        onClick={() => postSuggest()}
+                        disabled={
+                          !lockMatkul.showSuggest
+                            ? true
+                            : !loading.suggestion
+                            ? false
+                            : true
+                        }
+                      >
+                        {!loading.suggestion ? (
+                          <>
+                            <FiShuffle />
+                            <p>Randomize</p>
+                          </>
+                        ) : (
+                          <AiOutlineLoading className="animate-spin" />
+                        )}
+                      </button>
+                    </div>
+                    <Button
+                      className="h-10 w-24 bg-accent text-neutral-900"
+                      onClick={idPlan ? () => updatePlan() : () => postSave()}
+                      loading={loading.saveUpdateMyPlan}
+                      icon={<FiSave />}
+                    >
+                      {idPlan ? "Update" : "Save"}
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           ) : (
-            <div className="flex gap-5 items-center">
-              <div className="flex gap-2 items-center">
-                <p className="text-[10px]">
-                  *Untuk menggunakan fitur randomize perlu melakukan lock pada
-                  matkul yang ingin dikunci
-                </p>
-                <div
-                  className="w-20 bg-neutral-200 rounded-full p-1 flex items-center group cursor-pointer"
-                  onClick={lockMatkulPlanning}
-                >
-                  <div
-                    className={`w-fit p-[6px] rounded-full ${
-                      !lockMatkul.showSuggest
-                        ? "translate-x-0 bg-secondary"
-                        : "translate-x-[2.5rem] bg-accent"
-                    } transition duration-300`}
-                  >
-                    {!lockMatkul.showSuggest ? (
-                      <FiUnlock size={20} />
-                    ) : (
-                      <FiLock size={20} />
-                    )}
-                  </div>
-                </div>
-                <button
-                  className={`h-10 w-36 flex justify-center items-center rounded-xl font-bold gap-2 ${
-                    !lockMatkul.showSuggest
-                      ? "bg-neutral-200 text-neutral-400"
-                      : "bg-accent "
-                  }`}
-                  onClick={() => postSuggest()}
-                  disabled={
-                    !lockMatkul.showSuggest
-                      ? true
-                      : !loading.suggestion
-                      ? false
-                      : true
-                  }
-                >
-                  {!loading.suggestion ? (
-                    <>
-                      <FiShuffle />
-                      <p>Randomize</p>
-                    </>
-                  ) : (
-                    <>
-                      <AiOutlineLoading className="animate-spin" />
-                    </>
-                  )}
-                </button>
+            <div className="flex justify-center bg-secondary">
+              <div className="pt-2 flex flex-col space-y-2 justify-center items-center">
+                <h1 className="w-3/4 text-center text-neutral-400">
+                  Oops! Silahkan pilih mata kuliah apapun yang ingin kamu plan
+                  pada halaman{" "}
+                  <Link className="font-semibold" to={`/`}>
+                    Dashboard
+                  </Link>{" "}
+                  terlebih dahulu
+                </h1>
+                <img src={noPlanImage} alt="noPlanImage" />
               </div>
-              <Button
-                className="h-10 w-24 bg-accent text-neutral-900"
-                onClick={idPlan ? () => updatePlan() : () => postSave()}
-                loading={loading.saveUpdateMyPlan}
-                icon={<FiSave />}
-              >
-                {idPlan ? "Update" : "Save"}
-              </Button>
-              {/* PopUp Donation */}
-              {popUpDonation && notif.status && (
-                <PopUpDonation
-                  popUp={popUpDonation}
-                  setPopUp={setPopUpDonation}
-                />
-              )}
             </div>
           )}
+          <Message
+            open={notif.open}
+            statusMsg={notif.status}
+            textMsg={notif.message}
+          />
+          {/* PopUp Donation */}
+          {popUpDonation && notif.status && (
+            <PopUpDonation popUp={popUpDonation} setPopUp={setPopUpDonation} />
+          )}
         </div>
-        <Message
-          open={notif.open}
-          statusMsg={notif.status}
-          textMsg={notif.message}
-        />
-      </div>
+      ) : (
+        <PageLoading />
+      )}
     </>
   );
 };
