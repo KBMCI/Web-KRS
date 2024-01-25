@@ -48,7 +48,7 @@ const TabelFilter = ({
   return (
     <div className={``}>
       <div
-        className={`flex justify-end align-center fixed top-20 right-[0] left-0 bottom-0 z-[12] ... duration-1000  ${
+        className={`flex justify-end align-center fixed top-20 right-[0] left-0 bottom-0 z-[12] ... duration-700  ${
           animation ? `backdrop-blur-sm bg-black/30 bg-opacity-100` : ``
         }  `}
       >

@@ -42,15 +42,16 @@ const InputKelas = (props) => {
 
   return (
     <>
-      <div className="flex flex-row-reverse justify-center items-center gap-1">
-        <label className="font-semibold ">{namaKelas}</label>
+      <label className="flex flex-row justify-between items-center gap-1 cursor-pointer" htmlFor={id}>
+        <p className="font-semibold ">Kelas {namaKelas}</p>
         <input
           type="checkbox"
           checked={isChecked}
+          id={id}
           className={`w-4 h-4 rounded-full duration-500 `}
           onChange={(event) => selectedClass(event, id)}
         />
-      </div>
+      </label>
     </>
   );
 };

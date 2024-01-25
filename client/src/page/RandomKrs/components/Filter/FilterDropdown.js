@@ -20,8 +20,8 @@ const FilterDropdown = ({ nama, kelas, kelasChange, selectedKelas }) => {
         className={`${
           isOpen
             ? `opacity-100 overflow-visible -translate-y-0  `
-            : `opacity-0 overflow-hidden  max-h-0  -translate-y-14   `
-        } items-start px-6 w-full bg-neutral-10  ...   transition-all duration-700 `}
+            : `opacity-0 overflow-hidden  max-h-0 -translate-y-14   `
+        } items-start px-6 w-full bg-neutral-10 space-y-2 transition-all duration-700 `}
       >
         {kelas.map((kls, index) => (
           <div key={index}>
