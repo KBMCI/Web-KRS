@@ -63,7 +63,7 @@ func SeederRefresh() {
         {Kode: "CIT60034", Nama: "Sistem Informasi Geografi", TahunKurikulum: 2020, Sks: 3, ProgramStudiID: 1},
         {Kode: "CIT60036", Nama: "Teknologi Berbasis Cloud", TahunKurikulum: 2020, Sks: 3, ProgramStudiID: 1},
         {Kode: "CIT60039", Nama: "Pemrograman Web Lanjut", TahunKurikulum: 2020, Sks: 3, ProgramStudiID: 1},
-        {Kode: "CSD60013", Nama: "Pengatar Big Data", TahunKurikulum: 2020, Sks: 3, ProgramStudiID: 1},
+        {Kode: "CSD60013", Nama: "Pengantar Big Data", TahunKurikulum: 2020, Sks: 3, ProgramStudiID: 1},
 
         // Teknik Informatika
         {Kode: "CIF62015", Nama: "Pemrograman Web", TahunKurikulum: 2020, Sks: 4, ProgramStudiID: 2},
@@ -127,6 +127,16 @@ func SeederRefresh() {
 		},
 		{
 			JamMulai:   "14:30",
+			JamSelesai: "16:19",
+			FakultasID: 1,
+		},
+		{
+			JamMulai:   "14:30",
+			JamSelesai: "17:09",
+			FakultasID: 1,
+		},
+		{
+			JamMulai:   "15:30",
 			JamSelesai: "17:09",
 			FakultasID: 1,
 		},
